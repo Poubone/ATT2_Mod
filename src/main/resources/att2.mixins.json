@@ -1,0 +1,35 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "fr.poubone.att2.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "client": [
+    "ArmorStandRendererMixin",
+    "ArmorStandRenderStateMixin",
+    "BossHealthOverlayMixin",
+    "ClientCommonPacketListenerMixin",
+    "ClientPacketListenerMixin",
+    "HideBroadcastItemMixin",
+    "PingProjectionMixin",
+    "input.ContainerScreenDropMixin",
+    "input.ForcedSneakMixin",
+    "input.LocalPlayerDropMixin",
+    "teleport.BlindnessFogMixin",
+    "teleport.CameraAccessor",
+    "teleport.CameraMixin",
+    "teleport.EntityRendererMixin",
+    "teleport.GuiMixin",
+    "teleport.KeyboardInputMixin",
+    "teleport.LevelRendererSkyMixin",
+    "teleport.LivingEntityRendererMixin",
+    "teleport.MouseHandlerMixin",
+    "teleport.NauseaSuppressMixin",
+    "teleport.RenderSectionMixin",
+    "teleport.SkyRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

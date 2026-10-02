@@ -1,0 +1,18 @@
+{
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "HUDの切り替え",
+  "key.att2.stat_upgrade_menu": "ステータスメニュー",
+  "key.att2.player_glow": "プレイヤーを発光させる",
+  "key.att2.collect_items": "アイテムを拾う",
+  "key.att2.quest_main": "クエストブック",
+  "key.att2.repair_menu": "修理メニュー",
+  "key.att2.whistle": "馬に口笛",
+  "key.att2.hud_config": "HUDを設定",
+  "key.att2.weapon_skill": "武器スキル（状況依存）",
+  "key.att2.spell_level_menu": "スペルレベル（ラジアルメニュー）",
+  "key.att2.broadcast": "チャットでアイテムを共有",
+  "key.att2.ping": "位置をピン留め",
+  "key.att2.compare_shop": "店のアイテムを比較",
+  "subtitles.att2.ui.book.open": "本が開く",
+  "subtitles.att2.ui.book.turn_page": "ページをめくる"
+}

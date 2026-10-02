@@ -1,0 +1,18 @@
+{
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "Alternar o HUD",
+  "key.att2.stat_upgrade_menu": "Menu de atributos",
+  "key.att2.player_glow": "Fazer os jogadores brilharem",
+  "key.att2.collect_items": "Coletar itens",
+  "key.att2.quest_main": "Livro de missões",
+  "key.att2.repair_menu": "Menu de reparo",
+  "key.att2.whistle": "Assobiar para o cavalo",
+  "key.att2.hud_config": "Configurar o HUD",
+  "key.att2.weapon_skill": "Habilidade de arma (contextual)",
+  "key.att2.spell_level_menu": "Nível da magia (menu radial)",
+  "key.att2.broadcast": "Compartilhar um item no chat",
+  "key.att2.ping": "Marcar um local (ping)",
+  "key.att2.compare_shop": "Comparar item da loja",
+  "subtitles.att2.ui.book.open": "Livro abre",
+  "subtitles.att2.ui.book.turn_page": "Página vira"
+}

@@ -1,0 +1,18 @@
+{
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "HUD umschalten",
+  "key.att2.stat_upgrade_menu": "Stats-Menü",
+  "key.att2.player_glow": "Spieler zum Leuchten bringen",
+  "key.att2.collect_items": "Gegenstände aufsammeln",
+  "key.att2.quest_main": "Questbuch",
+  "key.att2.repair_menu": "Reparaturmenü",
+  "key.att2.whistle": "Pferd herbeipfeifen",
+  "key.att2.hud_config": "HUD konfigurieren",
+  "key.att2.weapon_skill": "Waffenfertigkeit (kontextbezogen)",
+  "key.att2.spell_level_menu": "Zauberstufe (Radialmenü)",
+  "key.att2.broadcast": "Gegenstand im Chat teilen",
+  "key.att2.ping": "Ort markieren (Ping)",
+  "key.att2.compare_shop": "Shop-Gegenstand vergleichen",
+  "subtitles.att2.ui.book.open": "Buch geöffnet",
+  "subtitles.att2.ui.book.turn_page": "Seite umgeblättert"
+}

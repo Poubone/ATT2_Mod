@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "att2",
+  "version": "${version}",
+  "name": "ATT2_Project",
+  "description": "Client-side companion mod for the Across The Time II adventure map (remaster 1.1.1): custom HUD, quest book, stat menus and cinematic teleporter transitions.",
+  "authors": [
+    "Poubone"
+  ],
+  "contributors": [
+    "Simuciokas"
+  ],
+  "license": "MIT",
+  "icon": "assets/att2/icon.jpg",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "fr.poubone.att2.client.ATT2_ProjectClient"
+    ]
+  },
+  "mixins": [
+    "att2.mixins.json",
+    "lootbeams.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}",
+    "java": ">=21"
+  }
+}

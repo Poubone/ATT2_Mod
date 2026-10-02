@@ -1,0 +1,22 @@
+{
+  "att2.ui.rune_pouch": "Rune pouch",
+  "att2.ui.compare": "Hold %s to compare",
+  "att2.ui.equipped": "Currently equipped",
+  "att2.ui.unequipped": "No armor equipped in this slot",
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "Toggle HUD",
+  "key.att2.stat_upgrade_menu": "Stats Menu",
+  "key.att2.player_glow": "Make Players Glow",
+  "key.att2.collect_items": "Collect Items",
+  "key.att2.quest_main": "Quest Book",
+  "key.att2.repair_menu": "Repair Menu",
+  "key.att2.whistle": "Whistle Horse",
+  "key.att2.hud_config": "Configure HUD",
+  "key.att2.weapon_skill": "Weapon skill (contextual)",
+  "key.att2.spell_level_menu": "Spell level (radial menu)",
+  "key.att2.broadcast": "Display an item in chat",
+  "key.att2.ping": "Ping a location",
+  "key.att2.compare_shop": "Compare shop item",
+  "subtitles.att2.ui.book.open": "Book opens",
+  "subtitles.att2.ui.book.turn_page": "Page turns"
+}

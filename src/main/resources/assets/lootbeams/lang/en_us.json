@@ -1,0 +1,361 @@
+{
+  "lootbeams.title": "Loot Beams",
+
+
+  "lootbeams.config.main": "Main",
+
+  "lootbeams.config.main.renderNameColor": "Render Name Color",
+  "lootbeams.config.main.renderNameColor.description": "If beams should be colored the same as the Items name (excludes name colors from rarity). \nThis has priority over render_rarity_color.",
+
+  "lootbeams.config.main.renderRarityColor": "Render Rarity Color",
+  "lootbeams.config.main.renderRarityColor.description": "If beams should be colored the same as the Items rarity.",
+
+  "lootbeams.config.main.renderBeam": "Render Beam",
+  "lootbeams.config.main.renderBeam.description": "If Loot beam should be visible.",
+
+  "lootbeams.config.main.renderDroplightBeam": "Render Droplight Beam",
+  "lootbeams.config.main.renderDroplightBeam.description": "If Loot beam should be like droplight.",
+
+  "lootbeams.config.main.animateDroplightBeam": "Animate Droplight Beam",
+  "lootbeams.config.main.animateDroplightBeam.description": "If Loot beam should be animated.",
+
+  "lootbeams.config.main.droplightBeamAnimationSpeed": "Droplight Beam Animation Speed",
+  "lootbeams.config.main.droplightBeamAnimationSpeed.description": "Loot beam animation speed.",
+
+  "lootbeams.config.main.beamGradientModifiers": "Beam Gradient Modifiers",
+  "lootbeams.config.main.beamGradientModifiers.description": "Modifiers to be applied to color to get second gradient color.",
+
+  "lootbeams.config.main.smoothBeamSize": "Smooth Beam Size",
+  "lootbeams.config.main.smoothBeamSize.description": "If Loot beam side should change smooth.",
+
+  "lootbeams.config.main.smoothDuration": "Smooth Duration",
+  "lootbeams.config.main.smoothDuration.description": "The duration for smooth change.",
+
+  "lootbeams.config.main.beamRadius": "Beam Radius",
+  "lootbeams.config.main.beamRadius.description": "The radius of the Loot Beam.",
+
+  "lootbeams.config.main.minBeamRadius": "Min Beam Radius",
+  "lootbeams.config.main.minBeamRadius.description": "The minimal radius of the Loot Beam.",
+
+  "lootbeams.config.main.beamHeight": "Beam Height",
+  "lootbeams.config.main.beamHeight.description": "The height of the Loot Beam.",
+
+  "lootbeams.config.main.minBeamHeight": "Min Beam Height",
+  "lootbeams.config.main.minBeamHeight.description": "The minimal height of the Loot Beam.",
+
+  "lootbeams.config.main.beamYOffset": "Beam Y Offset",
+  "lootbeams.config.main.beamYOffset.description": "The height of the Loot Beam.",
+
+  "lootbeams.config.main.commonShorterBeam": "Common Shorter Beam",
+  "lootbeams.config.main.commonShorterBeam.description": "If the Loot Beam should be shorter for common items.",
+
+  "lootbeams.config.main.beamAlpha": "Beam Alpha",
+  "lootbeams.config.main.beamAlpha.description": "Transparency of the Loot Beam.",
+
+  "lootbeams.config.main.minBeamAlpha": "Min Beam Alpha",
+  "lootbeams.config.main.minBeamAlpha.description": "Minimal transparency of the Loot Beam.",
+
+  "lootbeams.config.main.solidBeam": "Solid Beam",
+  "lootbeams.config.main.solidBeam.description": "If the Loot Beam should use a solid texture or the beacon style texture.",
+
+  "lootbeams.config.main.whiteCenter": "White Center",
+  "lootbeams.config.main.whiteCenter.description": "If the Loot Beam should have a white center.",
+
+  "lootbeams.config.main.glowingBeam": "Glowing Beam",
+  "lootbeams.config.main.glowingBeam.description": "If the Loot Beam should be glowing.",
+
+  "lootbeams.config.main.renderDistance": "Beam Render Distance",
+  "lootbeams.config.main.renderDistance.description": "How close the player has to be to see the beam.\n(note: this option overwrite default Item render distance)",
+
+  "lootbeams.config.main.changeDistance": "Beam Change Distance",
+  "lootbeams.config.main.changeDistance.description": "How close the player has to be to the beam to cause beam changes.\n (note: smooth distance is 1 unit)",
+
+  "lootbeams.config.main.changeOffset": "Beam Change Offset",
+  "lootbeams.config.main.changeOffset.description": "Distance from beam (in blocks) when beam changes starts.",
+
+  "lootbeams.config.main.beamOpacityOnApproach": "Beam Opacity on Approach",
+  "lootbeams.config.main.beamOpacityOnApproach.description": "Enables or disables the fading effect of the loot beam when an player approaches it.",
+
+  "lootbeams.config.main.beamSizeOnApproach": "Beam Size on Approach",
+  "lootbeams.config.main.beamSizeOnApproach.description": "Enables or disables the size change of the loot beam when an player approaches it.",
+
+  "lootbeams.config.main.requireOnGround": "Require on ground",
+  "lootbeams.config.main.requireOnGround.description": "If the item must be on the ground to render a beam.",
+
+
+  "lootbeams.config.groundGlow": "Ground glow",
+
+  "lootbeams.config.groundGlow.glowEffect": "Glow Effect",
+  "lootbeams.config.groundGlow.glowEffect.description": "If the Loot Beam should have a glow effect around the base of the item.",
+
+  "lootbeams.config.groundGlow.glowCustomShader": "Glow Custom Shader",
+  "lootbeams.config.groundGlow.glowCustomShader.description": "If the Ground Effect should use a custom shader.",
+
+  "lootbeams.config.groundGlow.useGlowGradient": "Use Glow Gradient",
+  "lootbeams.config.groundGlow.useGlowGradient.description": "If the Ground Effect should use a gradient color.",
+
+  "lootbeams.config.groundGlow.glowGradientModifiers": "Glow Gradient Modifiers",
+  "lootbeams.config.groundGlow.glowGradientModifiers.description": "Modifiers to be applied to color to get second gradient color.",
+
+  "lootbeams.config.groundGlow.glowGradientStart": "Glow Gradient Start",
+  "lootbeams.config.groundGlow.glowGradientStart.description": "The position in percentage where the gradient should start transitioning the color.",
+
+  "lootbeams.config.groundGlow.glowGradientEnd": "Glow Gradient End",
+  "lootbeams.config.groundGlow.glowGradientEnd.description": "The position in percentage where the gradient should end transitioning the color.",
+
+  "lootbeams.config.groundGlow.smoothGlowEffectRadius": "Smooth Glow Effect Radius",
+  "lootbeams.config.groundGlow.smoothGlowEffectRadius.description": "If the Ground Effect should change it's radius smooth.",
+
+  "lootbeams.config.groundGlow.smoothGlowEffectAlpha": "Smooth Glow Effect Alpha",
+  "lootbeams.config.groundGlow.smoothGlowEffectAlpha.description": "If the Ground Effect should change it's alpha smooth.",
+
+  "lootbeams.config.groundGlow.glowEffectTexture": "Glow Effect Texture",
+  "lootbeams.config.groundGlow.glowEffectTexture.description": "Glow Effect texture in format \"lootbeams:effect_id\" where effect_id is effect image file name without extension. (assets/lootbeams/textures/ground_glow_effects) - path to dir in resource pack.",
+
+  "lootbeams.config.groundGlow.glowEffectRadius": "Glow Effect Radius",
+  "lootbeams.config.groundGlow.glowEffectRadius.description": "The radius of the glow effect.",
+
+  "lootbeams.config.groundGlow.glowEffectAlpha": "Glow Effect Alpha",
+  "lootbeams.config.groundGlow.glowEffectAlpha.description": "Transparency of the glow effect.",
+
+  "lootbeams.config.groundGlow.pulseGlow": "Pulse Glow",
+  "lootbeams.config.groundGlow.pulseGlow.description": "If the glow effect should pulse.",
+
+  "lootbeams.config.groundGlow.pulseGlowSpeed": "Pulse Glow Speed",
+  "lootbeams.config.groundGlow.pulseGlowSpeed.description": "Speed of glow pulsation effect.",
+
+  "lootbeams.config.groundGlow.pulseGlowMinAlpha": "Pulse Glow Min Alpha",
+  "lootbeams.config.groundGlow.pulseGlowMinAlpha.description": "Minimal glow effect alpha when pulsating.",
+
+  "lootbeams.config.groundGlow.pulseGlowMaxAlpha": "Pulse Glow Max Alpha",
+  "lootbeams.config.groundGlow.pulseGlowMaxAlpha.description": "Maximal glow effect alpha when pulsating.",
+
+  "lootbeams.config.groundGlow.pulseGlowMinRadius": "Pulse Glow Min Radius",
+  "lootbeams.config.groundGlow.pulseGlowMinRadius.description": "Minimal radius of glow effect when pulsating.",
+
+  "lootbeams.config.groundGlow.pulseGlowMaxRadius": "Pulse Glow Max Radius",
+  "lootbeams.config.groundGlow.pulseGlowMaxRadius.description": "Maximal radius of glow effect when pulsating.",
+
+  "lootbeams.config.groundGlow.rotateGlow": "Rotate Glow",
+  "lootbeams.config.groundGlow.rotateGlow.description": "If the glow effect should rotate.",
+
+  "lootbeams.config.groundGlow.glowRotateClockwise": "Glow Rotate Clockwise",
+  "lootbeams.config.groundGlow.glowRotateClockwise.description": "If the glow effect should rotate clockwise.",
+
+  "lootbeams.config.groundGlow.glowRotationSpeed": "Glow Rotation Speed",
+  "lootbeams.config.groundGlow.glowRotationSpeed.description": "Glow effect rotation speed.",
+
+
+  "lootbeams.config.particles": "Particles",
+
+  "lootbeams.config.particles.particles": "Particles",
+  "lootbeams.config.particles.particles.description": "If particles should appear around the item.",
+
+  "lootbeams.config.particles.particleTexture": "Particle Texture",
+  "lootbeams.config.particles.particleTexture.description": "Particle texture in format \"lootbeams:particle_id\" where particle_id is particle image file name without extension. (assets/lootbeams/textures/particle) - path to dir in resource pack.",
+
+  "lootbeams.config.particles.particleColorMode": "Particle Color Mode",
+  "lootbeams.config.particles.particleColorMode.description": "What function particles should use when blending the beam color with the texture",
+
+  "lootbeams.config.particles.particleInheritsColor": "Particle Inherits Color",
+  "lootbeams.config.particles.particleInheritsColor.description": "Should the particles inherit color from the beam (\"false\" can be useful in cases where the particle texture is multicolored)",
+
+  "lootbeams.config.particles.tickPerParticleSpriteUpdate": "Particle sprite update delay",
+  "lootbeams.config.particles.tickPerParticleSpriteUpdate.description": "How many ticks pass before sprite update (only for splitted sprites)",
+
+  "lootbeams.config.particles.particleRandomY": "Particle Random Y",
+  "lootbeams.config.particles.particleRandomY.description": "Should particle have a small random Y offset when spawn.",
+
+  "lootbeams.config.particles.particleYOffset": "Particle Y Offset",
+  "lootbeams.config.particles.particleYOffset.description": "Particle spawn Y offset.",
+
+  "lootbeams.config.particles.particleSize": "Particle Size",
+  "lootbeams.config.particles.particleSize.description": "The size of the particles.",
+
+  "lootbeams.config.particles.particleRandomSize": "Particle Random Size",
+  "lootbeams.config.particles.particleRandomSize.description": "Should particle have a random size close to Particle Size.",
+
+  "lootbeams.config.particles.particleSpeed": "Particle Speed",
+  "lootbeams.config.particles.particleSpeed.description": "The speed of the particles.",
+
+  "lootbeams.config.particles.particleSpeedX": "Particle Speed X",
+  "lootbeams.config.particles.particleSpeedX.description": "The speed of the particles by X axis.",
+
+  "lootbeams.config.particles.particleSpeedY": "Particle Speed Y",
+  "lootbeams.config.particles.particleSpeedY.description": "The speed of the particles by Y axis.",
+
+  "lootbeams.config.particles.particleSpeedZ": "Particle Speed Z",
+  "lootbeams.config.particles.particleSpeedZ.description": "The speed of the particles by Z axis.",
+
+  "lootbeams.config.particles.particleUseConstantVerticalSpeed": "Particle Use Constant Speed",
+  "lootbeams.config.particles.particleUseConstantVerticalSpeed.description": "If particles should use constant axis speed.",
+
+  "lootbeams.config.particles.particleRadius": "Particle Radius",
+  "lootbeams.config.particles.particleRadius.description": "The radius of the particles.",
+
+  "lootbeams.config.particles.randomnessIntensity": "Randomness Intensity",
+  "lootbeams.config.particles.randomnessIntensity.description": "The intensity of the randomness of the particles.",
+
+  "lootbeams.config.particles.particleCount": "Particle Count",
+  "lootbeams.config.particles.particleCount.description": "The amount of particles to spawn per second.",
+
+  "lootbeams.config.particles.particleLifetime": "Particle Lifetime",
+  "lootbeams.config.particles.particleLifetime.description": "The lifetime of the particles in ticks.",
+
+  "lootbeams.config.particles.particleRareOnly": "Particle Rare Only",
+  "lootbeams.config.particles.particleRareOnly.description": "If particles should only appear on rare items.",
+
+  "lootbeams.config.particles.particleDirectionX": "Particle Direction X",
+  "lootbeams.config.particles.particleDirectionX.description": "The direction of the particles on the X axis.",
+
+  "lootbeams.config.particles.particleDirectionY": "Particle Direction Y",
+  "lootbeams.config.particles.particleDirectionY.description": "The direction of the particles on the Y axis.",
+
+  "lootbeams.config.particles.particleDirectionZ": "Particle Direction Z",
+  "lootbeams.config.particles.particleDirectionZ.description": "The direction of the particles on the Z axis.",
+
+  "lootbeams.config.particles.spinAroundBeam": "Spin Around Beam",
+  "lootbeams.config.particles.spinAroundBeam.description": "If the particles should spin around the beam.",
+
+  "lootbeams.config.particles.trails": "Trails",
+  "lootbeams.config.particles.trails.description": "If the particles should leave a trail.",
+
+  "lootbeams.config.particles.trailParticlesInvisible": "Trail Particles Invisible",
+  "lootbeams.config.particles.trailParticlesInvisible.description": "If the particles with a trail should be invisible.",
+
+  "lootbeams.config.particles.trailUseScale": "Trail Use Scale",
+  "lootbeams.config.particles.trailUseScale.description": "If the trails should use Y scaling.",
+
+  "lootbeams.config.particles.trailScaleHeightEqualsBeamHeight": "Trail Scale Height Equals Beam Height",
+  "lootbeams.config.particles.trailScaleHeightEqualsBeamHeight.description": "If the trail scale height should be equal to beam height.",
+
+  "lootbeams.config.particles.trailScaleHeight": "Trail Scale Height",
+  "lootbeams.config.particles.trailScaleHeight.description": "What height should be used if trail uses scale and it's not equal to beam height",
+
+  "lootbeams.config.particles.trailChance": "Trail Chance",
+  "lootbeams.config.particles.trailChance.description": "The chance of a particle leaving a trail.",
+
+  "lootbeams.config.particles.trailWidth": "Trail Width",
+  "lootbeams.config.particles.trailWidth.description": "The width of the trail.",
+
+  "lootbeams.config.particles.trailLength": "Trail Length",
+  "lootbeams.config.particles.trailLength.description": "The length of the trail.",
+
+  "lootbeams.config.particles.trailFrequency": "Trail Frequency",
+  "lootbeams.config.particles.trailFrequency.description": "The frequency of the trail. The maximum value this should be is the length. The lower the frequency, the smoother the trail.",
+
+
+  "lootbeams.config.items": "Items",
+
+  "lootbeams.config.items.itemsGlow": "Items Glow",
+  "lootbeams.config.items.itemsGlow.description": "If items should glow.",
+
+  "lootbeams.config.items.allItems": "All Items",
+  "lootbeams.config.items.allItems.description": "If all Items Loot Beams should be rendered.\n Has priority over only_equipment and only_rare.",
+
+  "lootbeams.config.items.onlyRare": "Only Rare",
+  "lootbeams.config.items.onlyRare.description": "If Loot Beams should only be rendered on items with rarity.",
+
+  "lootbeams.config.items.onlyEquipment": "Only Equipment",
+  "lootbeams.config.items.onlyEquipment.description": "If Loot Beams should only be rendered on equipment.\n (Equipment includes: Swords, Tools, Armor, Shields, Bows, Crossbows, Tridents, Arrows, and Fishing Rods)",
+
+  "lootbeams.config.items.whitelist": "Whitelist",
+  "lootbeams.config.items.whitelist.description": "Registry names of items that Loot Beams should render on.\n Example: \"minecraft:stone\", \"minecraft:iron_ingot\", \nYou can also specify modids for a whole mod's items",
+
+  "lootbeams.config.items.blacklist": "Blacklist",
+  "lootbeams.config.items.blacklist.description": "Registry names of items that Loot Beams should NOT render on. This has priority over everything.\n You can also specify modids for a whole mod's items.",
+
+  "lootbeams.config.items.colorOverrides": "Color Overrides",
+  "lootbeams.config.items.colorOverrides.description": "Overrides an item's beam color with hex color.\n Must follow the specific format: (registryname=hexcolor) Or (#tagname=hexcolor).\n Examples: \"minecraft:stone=#00FF00\", \"#minecraft:piglin_loved=gold\". This also accepts modids.",
+
+
+  "lootbeams.config.nametags": "Name Tags",
+
+  "lootbeams.config.nametags.advancedTooltips": "Advanced Tooltips",
+  "lootbeams.config.nametags.advancedTooltips.description": "If vanilla tooltips should be rendered on items in world.",
+
+  "lootbeams.config.nametags.itemFrameTooltips": "Item Frame Tooltips",
+  "lootbeams.config.nametags.itemFrameTooltips.description": "If vanilla tooltips should be rendered on item frames in world (only for items with custom name).",
+
+  "lootbeams.config.nametags.worldspaceTooltips": "World Space Tooltips",
+  "lootbeams.config.nametags.worldspaceTooltips.description": "If tooltips should be rendered in world.",
+
+  "lootbeams.config.nametags.renderTooltipsInThirdPersonView": "Render tooltips in 3rd person view",
+  "lootbeams.config.nametags.renderTooltipsInThirdPersonView.description": "If tooltips should be rendered in world when F5.",
+
+  "lootbeams.config.nametags.borders": "Borders",
+  "lootbeams.config.nametags.borders.description": "Render nametags as bordered. Set to false for flat nametag with background.",
+
+  "lootbeams.config.nametags.renderNametags": "Render Nametags",
+  "lootbeams.config.nametags.renderNametags.description": "If Item nametags should be rendered at all.",
+
+  "lootbeams.config.nametags.renderNametagsOnlook": "Render Nametags On Look",
+  "lootbeams.config.nametags.renderNametagsOnlook.description": "If Item nametags should be rendered when looking at items.",
+
+  "lootbeams.config.nametags.renderItemRarity": "Render Item Rarity",
+  "lootbeams.config.nametags.renderItemRarity.description": "If Item rarity should be rendered at all.",
+
+  "lootbeams.config.nametags.renderItemRarityInTooltip": "Render Item Rarity In Tooltip",
+  "lootbeams.config.nametags.renderItemRarityInTooltip.description": "If Item rarity should be rendered in item tooltip.",
+
+  "lootbeams.config.nametags.renderStackcount": "Render Stack Count",
+  "lootbeams.config.nametags.renderStackcount.description": "If the count of item's should also be shown in the nametag.",
+
+  "lootbeams.config.nametags.nametagLookSensitivity": "Nametag Look Sensitivity",
+  "lootbeams.config.nametags.nametagLookSensitivity.description": "How close the player has to look at the item to render the nametag.",
+
+  "lootbeams.config.nametags.nametagTextAlpha": "Nametag Text Alpha",
+  "lootbeams.config.nametags.nametagTextAlpha.description": "Transparency of the nametag text.",
+
+  "lootbeams.config.nametags.nametagBackgroundAlpha": "Nametag Background Alpha",
+  "lootbeams.config.nametags.nametagBackgroundAlpha.description": "Transparency of the nametag background/border.",
+
+  "lootbeams.config.nametags.nametagScale": "Nametag Scale",
+  "lootbeams.config.nametags.nametagScale.description": "Scale of the nametag.",
+
+  "lootbeams.config.nametags.nametagYOffset": "Nametag Y Offset",
+  "lootbeams.config.nametags.nametagYOffset.description": "The Y-offset of the nametag.",
+
+  "lootbeams.config.nametags.dmclootCompatRarity": "DMCLoot Compat Rarity",
+  "lootbeams.config.nametags.dmclootCompatRarity.description": "If a smaller tag should be rendered under with DMCLoot rarities.",
+
+  "lootbeams.config.nametags.customRarities": "Custom Rarities",
+  "lootbeams.config.nametags.customRarities.description": "Define what the smaller tag should render on. \nExample: \"Exotic\", \"Ancient\". \nThe string supplied has to be the tooltip line below the name. \nThis is really only used for modpacks.",
+
+  "lootbeams.config.nametags.alwaysDrawRaritiesOn": "Draw Lore",
+  "lootbeams.config.nametags.alwaysDrawRaritiesOn.description": "Define on which items smaller tag should render on. \nExample: \"#minecraft:music_discs\" will render song name as smaller tag. \nBe aware that text rendered is a tooltip line below the name so it wont work well with multiple enchantments (though 1 enchantment looks pretty good)",
+
+  "lootbeams.config.nametags.whiteRarities": "White Rarities",
+  "lootbeams.config.nametags.whiteRarities.description": "If rarities should ignore color and render as white \n(This is really only used for modpacks)",
+
+  "lootbeams.config.nametags.vanillaRarities": "Vanilla Rarities",
+  "lootbeams.config.nametags.vanillaRarities.description": "If vanilla rarities should be rendered.",
+
+  "lootbeams.config.nametags.screenTooltipsRequireCrouch": "Screen Tooltips Require Crouch",
+  "lootbeams.config.nametags.screenTooltipsRequireCrouch.description": "If the player should be crouching to see extended advanced tooltips.",
+
+  "lootbeams.config.nametags.combineNameAndRarity": "Combine Name and Rarity",
+  "lootbeams.config.nametags.combineNameAndRarity.description": "If the name and rarity should be combined into one tooltip.",
+
+
+  "lootbeams.screen.presets.title": "Loot Beams preset manager",
+  "lootbeams.screen.presets.presetNameTextField": "Preset name",
+  "lootbeams.screen.presets.button.save": "Save preset",
+  "lootbeams.screen.presets.button.load": "Load preset",
+  "lootbeams.screen.presets.button.cancel": "Cancel",
+
+
+  "lootbeams.notification.savePreset.text" : "Preset [%s] saved.",
+  "lootbeams.notification.savePreset.notEnteredPresetName" : "Preset name not entered.",
+  "lootbeams.notification.loadPreset.text" : "Preset [%s] loaded.",
+
+
+  "lootbeams.keybindings.savePreset": "Save preset",
+
+
+  "lootbeams.rarity.common": "Common",
+  "lootbeams.rarity.uncommon": "Uncommon",
+  "lootbeams.rarity.rare": "Rare",
+  "lootbeams.rarity.epic": "Epic"
+}
+

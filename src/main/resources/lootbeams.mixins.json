@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.lootbeams.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EntityMixin",
+    "ItemStackMixin"
+  ],
+  "client": [
+    "BufferBuilderMixin",
+    "DrawContextMixin",
+    "EntityRendererMixin",
+    "InGameHudMixin",
+    "ParticleManagerMixin",
+    "RenderTypeMixin",
+    "TextureAtlasAccessor",
+    "WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

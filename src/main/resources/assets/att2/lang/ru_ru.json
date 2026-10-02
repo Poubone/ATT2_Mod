@@ -1,0 +1,18 @@
+{
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "Переключить HUD",
+  "key.att2.stat_upgrade_menu": "Меню характеристик",
+  "key.att2.player_glow": "Подсветить игроков",
+  "key.att2.collect_items": "Подобрать предметы",
+  "key.att2.quest_main": "Книга квестов",
+  "key.att2.repair_menu": "Меню ремонта",
+  "key.att2.whistle": "Свистнуть коню",
+  "key.att2.hud_config": "Настроить HUD",
+  "key.att2.weapon_skill": "Навык оружия (контекстный)",
+  "key.att2.spell_level_menu": "Уровень заклинания (радиальное меню)",
+  "key.att2.broadcast": "Показать предмет в чате",
+  "key.att2.ping": "Пинг позиции",
+  "key.att2.compare_shop": "Сравнить товар в магазине",
+  "subtitles.att2.ui.book.open": "Книга открывается",
+  "subtitles.att2.ui.book.turn_page": "Страница переворачивается"
+}

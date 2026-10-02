@@ -1,0 +1,22 @@
+{
+  "att2.ui.rune_pouch": "Sac de runes",
+  "att2.ui.compare": "Maintenir %s pour comparer",
+  "att2.ui.equipped": "Équipement porté",
+  "att2.ui.unequipped": "Aucune armure équipée à cet emplacement",
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "Basculer le HUD",
+  "key.att2.stat_upgrade_menu": "Menu de stats",
+  "key.att2.player_glow": "Faire briller les joueurs",
+  "key.att2.collect_items": "Ramasser les objets",
+  "key.att2.quest_main": "Livre de quêtes",
+  "key.att2.repair_menu": "Menu de réparation",
+  "key.att2.whistle": "Siffler son cheval",
+  "key.att2.hud_config": "Configurer le HUD",
+  "key.att2.weapon_skill": "Compétence d'arme (contextuelle)",
+  "key.att2.spell_level_menu": "Niveau de sort (menu radial)",
+  "key.att2.broadcast": "Partager un objet dans le chat",
+  "key.att2.ping": "Pointer un endroit (ping)",
+  "key.att2.compare_shop": "Comparer l'objet du magasin",
+  "subtitles.att2.ui.book.open": "Livre ouvert",
+  "subtitles.att2.ui.book.turn_page": "Page tournée"
+}

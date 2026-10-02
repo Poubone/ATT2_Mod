@@ -1,0 +1,18 @@
+{
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "HUD चालू/बंद",
+  "key.att2.stat_upgrade_menu": "स्टैट्स मेनू",
+  "key.att2.player_glow": "खिलाड़ियों को चमकाएँ",
+  "key.att2.collect_items": "आइटम इकट्ठा करें",
+  "key.att2.quest_main": "क्वेस्ट किताब",
+  "key.att2.repair_menu": "मरम्मत मेनू",
+  "key.att2.whistle": "घोड़े को सीटी बजाएँ",
+  "key.att2.hud_config": "HUD कॉन्फ़िगर करें",
+  "key.att2.weapon_skill": "हथियार कौशल (संदर्भित)",
+  "key.att2.spell_level_menu": "स्पेल स्तर (रेडियल मेनू)",
+  "key.att2.broadcast": "चैट में आइटम दिखाएँ",
+  "key.att2.ping": "स्थान पिंग करें",
+  "key.att2.compare_shop": "दुकान वस्तु की तुलना",
+  "subtitles.att2.ui.book.open": "किताब खुलती है",
+  "subtitles.att2.ui.book.turn_page": "पन्ना पलटता है"
+}

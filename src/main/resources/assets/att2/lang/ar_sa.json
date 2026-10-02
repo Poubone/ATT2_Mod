@@ -1,0 +1,18 @@
+{
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "تبديل HUD",
+  "key.att2.stat_upgrade_menu": "قائمة السمات",
+  "key.att2.player_glow": "جعل اللاعبين يتوهجون",
+  "key.att2.collect_items": "جمع العناصر",
+  "key.att2.quest_main": "كتاب المهام",
+  "key.att2.repair_menu": "قائمة الإصلاح",
+  "key.att2.whistle": "صفير للحصان",
+  "key.att2.hud_config": "إعداد HUD",
+  "key.att2.weapon_skill": "مهارة السلاح (سياقية)",
+  "key.att2.spell_level_menu": "مستوى التعويذة (قائمة دائرية)",
+  "key.att2.broadcast": "مشاركة عنصر في الدردشة",
+  "key.att2.ping": "تحديد موقع (بينغ)",
+  "key.att2.compare_shop": "مقارنة عنصر المتجر",
+  "subtitles.att2.ui.book.open": "فتح كتاب",
+  "subtitles.att2.ui.book.turn_page": "تقليب صفحة"
+}

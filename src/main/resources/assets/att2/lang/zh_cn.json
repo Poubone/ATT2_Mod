@@ -1,0 +1,18 @@
+{
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "切换 HUD",
+  "key.att2.stat_upgrade_menu": "属性菜单",
+  "key.att2.player_glow": "使玩家发光",
+  "key.att2.collect_items": "拾取物品",
+  "key.att2.quest_main": "任务书",
+  "key.att2.repair_menu": "修理菜单",
+  "key.att2.whistle": "吹口哨召马",
+  "key.att2.hud_config": "配置 HUD",
+  "key.att2.weapon_skill": "武器技能（情境）",
+  "key.att2.spell_level_menu": "法术等级（环形菜单）",
+  "key.att2.broadcast": "在聊天中分享物品",
+  "key.att2.ping": "标记位置",
+  "key.att2.compare_shop": "对比商店物品",
+  "subtitles.att2.ui.book.open": "书本打开",
+  "subtitles.att2.ui.book.turn_page": "翻页"
+}

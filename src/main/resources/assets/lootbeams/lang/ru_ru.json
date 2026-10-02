@@ -1,0 +1,361 @@
+{
+  "modmenu.descriptionTranslation.lootbeams": "Высоконастраивымые лучи у выпавших предметов!",
+
+
+  "lootbeams.config.main": "Основное",
+
+  "lootbeams.config.main.renderNameColor": "Цвет от имени",
+  "lootbeams.config.main.renderNameColor.description": "Делает цвет лучей такой же как у имени предмета (исключая цвета редкости). \nОбладает приоритетом над render_rarity_color.",
+
+  "lootbeams.config.main.renderRarityColor": "Цвет от редкости",
+  "lootbeams.config.main.renderRarityColor.description": "Делает цвет лучей такой же как у редкости предмета.",
+
+  "lootbeams.config.main.renderBeam": "Луч",
+  "lootbeams.config.main.renderBeam.description": "Должен ли отображаться луч.",
+
+  "lootbeams.config.main.renderDroplightBeam": "Луч как Droplight",
+  "lootbeams.config.main.renderDroplightBeam.description": "Должен ли луч ренериться как Droplight.",
+
+  "lootbeams.config.main.animateDroplightBeam": "Анимировать Droplight луч",
+  "lootbeams.config.main.animateDroplightBeam.description": "Должен ли Droplight луч быть анимированным.",
+
+  "lootbeams.config.main.droplightBeamAnimationSpeed": "Скорость анимации Droplight луча",
+  "lootbeams.config.main.droplightBeamAnimationSpeed.description": "Как быстро должна протекать анимация луча.",
+
+  "lootbeams.config.main.beamGradientModifiers": "Модификаторы градиента луча",
+  "lootbeams.config.main.beamGradientModifiers.description": "Модификаторы, которые будут применены к первому цвету для получения второго.",
+
+  "lootbeams.config.main.smoothBeamSize": "Плавный размер луча",
+  "lootbeams.config.main.smoothBeamSize.description": "Должен ли луч плавно менять свой размер.",
+
+  "lootbeams.config.main.smoothDuration": "Длительность изменения",
+  "lootbeams.config.main.smoothDuration.description": "Время за которое плавно меняется размер.",
+
+  "lootbeams.config.main.beamRadius": "Радиус луча",
+  "lootbeams.config.main.beamRadius.description": "Регулирует радиус луча.",
+
+  "lootbeams.config.main.minBeamRadius": "Минимальный радиус луча",
+  "lootbeams.config.main.minBeamRadius.description": "Минимальное значение радиуса луча.",
+
+  "lootbeams.config.main.beamHeight": "Высота луча",
+  "lootbeams.config.main.beamHeight.description": "Регулирует высоту луча.",
+
+  "lootbeams.config.main.minBeamHeight": "Минимальная высота луча",
+  "lootbeams.config.main.minBeamHeight.description": "Минимальное значение высоты луча.",
+
+  "lootbeams.config.main.beamYOffset": "Отступы по Y луча",
+  "lootbeams.config.main.beamYOffset.description": "Регулирует отступ по Y у луча.",
+
+  "lootbeams.config.main.commonShorterBeam": "Короткий луч для обычных предметов",
+  "lootbeams.config.main.commonShorterBeam.description": "Должен ли луч быть коротким у обычных предметов",
+
+  "lootbeams.config.main.beamAlpha": "Прозрачность луча",
+  "lootbeams.config.main.beamAlpha.description": "Регулирует прозрачность у луча.",
+
+  "lootbeams.config.main.minBeamAlpha": "Минимальная прозрачность луча",
+  "lootbeams.config.main.minBeamAlpha.description": "Минимальное значение прозрачности луча.",
+
+  "lootbeams.config.main.solidBeam": "Цельный луч",
+  "lootbeams.config.main.solidBeam.description": "Использует ли луч цельную текстуру, или текстуру маяка",
+
+  "lootbeams.config.main.whiteCenter": "Белый центр",
+  "lootbeams.config.main.whiteCenter.description": "Имеет ли луч белый центр",
+
+  "lootbeams.config.main.glowingBeam": "Светящийся луч",
+  "lootbeams.config.main.glowingBeam.description": "Должен ли луч светиться",
+
+  "lootbeams.config.main.renderDistance": "Расстояние отображения",
+  "lootbeams.config.main.renderDistance.description": "Насколько близко должен быть игрок что бы видеть лучи.\n (заметка: эта опция переписывает дальность отображения предметов.)",
+
+  "lootbeams.config.main.changeDistance": "Расстояние изменения",
+  "lootbeams.config.main.changeDistance.description": "Насколько близко должен быть игрок что бы луч изменялся.\n (заметка: плавное сглаживание идет на протяжении 1 юнита)",
+
+  "lootbeams.config.main.changeOffset": "Отступ расстояния изменения",
+  "lootbeams.config.main.changeOffset.description": "Дистанция от луча (в блоках) после которой луч сможет меняться.",
+
+  "lootbeams.config.main.beamOpacityOnApproach": "Прозрачность луча при приближении",
+  "lootbeams.config.main.beamOpacityOnApproach.description": "Включает или отключает эффект затухания луча, когда к нему приближается игрок.",
+
+  "lootbeams.config.main.beamSizeOnApproach": "Размер луча при приближении",
+  "lootbeams.config.main.beamSizeOnApproach.description": "Включает или отключает эффект изменения размера луча, когда к нему приближается игрок.",
+
+  "lootbeams.config.main.requireOnGround": "Должен быть на земле",
+  "lootbeams.config.main.requireOnGround.description": "Должен ли предмет касаться земли для рендера луча",
+
+
+  "lootbeams.config.groundGlow": "Эффект свечения",
+
+  "lootbeams.config.groundGlow.glowEffect": "Эффект свечения",
+  "lootbeams.config.groundGlow.glowEffect.description": "Должен ли луч иметь эффект свечения под предметом",
+
+  "lootbeams.config.groundGlow.glowCustomShader": "Кастомный шейдер для эффекта",
+  "lootbeams.config.groundGlow.glowCustomShader.description": "Должен ли эффект свечения использовать кастомный шейдер.",
+
+  "lootbeams.config.groundGlow.useGlowGradient": "Использовать градиент",
+  "lootbeams.config.groundGlow.useGlowGradient.description": "Должен ли эффект свечения использовать градиентный цвет.",
+
+  "lootbeams.config.groundGlow.glowGradientModifiers": "Модификаторы градиента свечения",
+  "lootbeams.config.groundGlow.glowGradientModifiers.description": "Модификаторы, которые будут применены к первому цвету для получения второго.",
+
+  "lootbeams.config.groundGlow.glowGradientStart": "Старт градиента эффекта",
+  "lootbeams.config.groundGlow.glowGradientStart.description": "Позиция в процентах, где градиент должен начать переход цвета.",
+
+  "lootbeams.config.groundGlow.glowGradientEnd": "Конец градиента эффекта",
+  "lootbeams.config.groundGlow.glowGradientEnd.description": "Позиция в процентах, где градиент должен закончить переход цвета.",
+
+  "lootbeams.config.groundGlow.smoothGlowEffectRadius": "Плавное изменение радиуса",
+  "lootbeams.config.groundGlow.smoothGlowEffectRadius.description": "Должен ли эффект свечения плавно изменять свой радиус.",
+
+  "lootbeams.config.groundGlow.smoothGlowEffectAlpha": "Плавное изменение прозрачности",
+  "lootbeams.config.groundGlow.smoothGlowEffectAlpha.description": "Должен ли эффект свечения плавно изменять свою прозрачность.",
+
+  "lootbeams.config.groundGlow.glowEffectTexture": "Текстура эффекта свечения",
+  "lootbeams.config.groundGlow.glowEffectTexture.description": "Текстура свечения в формате \"lootbeams:effect_id\" где effect_id это имя изображения без расширения. (assets/lootbeams/textures/ground_glow_effects) - путь по которому должны лежать изображения в ресурс паке.",
+
+  "lootbeams.config.groundGlow.glowEffectRadius": "Радиус свечения",
+  "lootbeams.config.groundGlow.glowEffectRadius.description": "Радиус эффекта свечения под предметом",
+
+  "lootbeams.config.groundGlow.glowEffectAlpha": "Прозрачность свечения",
+  "lootbeams.config.groundGlow.glowEffectAlpha.description": "Регулирует прозрачность у свечения на земле.",
+
+  "lootbeams.config.groundGlow.pulseGlow": "Анимированное свечение",
+  "lootbeams.config.groundGlow.pulseGlow.description": "Должно ли свечение под предметом анимироваться",
+
+  "lootbeams.config.groundGlow.pulseGlowSpeed": "Скорость пульсации",
+  "lootbeams.config.groundGlow.pulseGlowSpeed.description": "Скорость с которой пульсирует эффект свечения.",
+
+  "lootbeams.config.groundGlow.pulseGlowMinAlpha": "Минимальная прозрачность",
+  "lootbeams.config.groundGlow.pulseGlowMinAlpha.description": "Минимальная прозрачность эффекта при пульсации",
+
+  "lootbeams.config.groundGlow.pulseGlowMaxAlpha": "Максимальная прозрачность",
+  "lootbeams.config.groundGlow.pulseGlowMaxAlpha.description": "Максимальная прозрачность эффекта при пульсации",
+
+  "lootbeams.config.groundGlow.pulseGlowMinRadius": "Минимальный радиус",
+  "lootbeams.config.groundGlow.pulseGlowMinRadius.description": "Минимальный радиус эффекта при пульсации",
+
+  "lootbeams.config.groundGlow.pulseGlowMaxRadius": "Максимальный радиус",
+  "lootbeams.config.groundGlow.pulseGlowMaxRadius.description": "Максимальный радиус эффекта при пульсации",
+
+  "lootbeams.config.groundGlow.rotateGlow": "Вращать эффект",
+  "lootbeams.config.groundGlow.rotateGlow.description": "Должен ли эффект вращаться",
+
+  "lootbeams.config.groundGlow.glowRotateClockwise": "Вращение по часовой стрелке",
+  "lootbeams.config.groundGlow.glowRotateClockwise.description": "Должен ли эффект вращаться по часовой стрелке, елси нет - против часовой",
+
+  "lootbeams.config.groundGlow.glowRotationSpeed": "Скорость вращения эффекта",
+  "lootbeams.config.groundGlow.glowRotationSpeed.description": "С какой скоростью должен вращаться эффект",
+
+
+  "lootbeams.config.particles": "Частицы",
+
+  "lootbeams.config.particles.particles": "Частицы",
+  "lootbeams.config.particles.particles.description": "Должны ли появляться частицы",
+
+  "lootbeams.config.particles.particleTexture": "Текстура частиц",
+  "lootbeams.config.particles.particleTexture.description": "Текстура частиц в формате \"lootbeams:particle_id\" где particle_id это имя изображения без расширения. (assets/lootbeams/textures/particle) - путь по которому должны лежать изображения в ресурс паке.",
+
+  "lootbeams.config.particles.particleColorMode": "Смешивание цвета частиц",
+  "lootbeams.config.particles.particleColorMode.description": "Какую функцию должны использовать частицы при смешивании цвета луча с текстурой",
+
+  "lootbeams.config.particles.particleInheritsColor": "Частицы наследуют цвет",
+  "lootbeams.config.particles.particleInheritsColor.description": "Должны ли частицы наследовать цвет от луча (\"false\" может быть полезно в тех случаях, когда текстура частицы многоцветная)",
+
+  "lootbeams.config.particles.tickPerParticleSpriteUpdate": "Задержка обновления спрайта",
+  "lootbeams.config.particles.tickPerParticleSpriteUpdate.description": "Раз во сколько тиков должен меняться спрайт (только для разделенных спрайтов)",
+
+  "lootbeams.config.particles.particleRandomY": "Случайное смещение по Y",
+  "lootbeams.config.particles.particleRandomY.description": "Должна ли частица немного случайно смещаться по оси Y при спавне.",
+
+  "lootbeams.config.particles.particleYOffset": "Смещение частицы по Y",
+  "lootbeams.config.particles.particleYOffset.description": "Смещение по оси Y, на какой высоте должна появляться частица.",
+
+  "lootbeams.config.particles.particleSize": "Размер частиц",
+  "lootbeams.config.particles.particleSize.description": "Размер частиц",
+
+  "lootbeams.config.particles.particleRandomSize": "Случайный размер частиц",
+  "lootbeams.config.particles.particleRandomSize.description": "Должна ли частица иметь случайный размер (близкий к указанному).",
+
+  "lootbeams.config.particles.particleSpeed": "Скорость частиц",
+  "lootbeams.config.particles.particleSpeed.description": "Скорость частиц",
+
+  "lootbeams.config.particles.particleSpeedX": "Скорость частиц по оси X",
+  "lootbeams.config.particles.particleSpeedX.description": "Скорость частиц по оси X.",
+
+  "lootbeams.config.particles.particleSpeedY": "Скорость частиц по оси Y",
+  "lootbeams.config.particles.particleSpeedY.description": "Скорость частиц по оси Y.",
+
+  "lootbeams.config.particles.particleSpeedZ": "Скорость частиц по оси Z",
+  "lootbeams.config.particles.particleSpeedZ.description": "Скорость частиц по оси Z.",
+
+  "lootbeams.config.particles.particleUseConstantVerticalSpeed": "Использовать фиксированную скорость",
+  "lootbeams.config.particles.particleUseConstantVerticalSpeed.description": "Должны ли частицы двигаться по осям с фиксированной скоростью.",
+
+  "lootbeams.config.particles.particleRadius": "Радиус частиц",
+  "lootbeams.config.particles.particleRadius.description": "Радиус частиц",
+
+  "lootbeams.config.particles.randomnessIntensity": "Интенсивность случайности",
+  "lootbeams.config.particles.randomnessIntensity.description": "Интенсивность случайности появления частиц.",
+
+  "lootbeams.config.particles.particleCount": "Количество частиц",
+  "lootbeams.config.particles.particleCount.description": "Кол-во частиц появляющихся в секунду",
+
+  "lootbeams.config.particles.particleLifetime": "Время жизни частицы",
+  "lootbeams.config.particles.particleLifetime.description": "Время жизни частицы в тиках",
+
+  "lootbeams.config.particles.particleRareOnly": "Частицы только на редких предметах",
+  "lootbeams.config.particles.particleRareOnly.description": "Должны ли частицы показываться только на редких предметах",
+
+  "lootbeams.config.particles.particleDirectionX": "Направление частицы по оси X",
+  "lootbeams.config.particles.particleDirectionX.description": "Направление частицы по оси X",
+
+  "lootbeams.config.particles.particleDirectionY": "Направление частицы по оси Y",
+  "lootbeams.config.particles.particleDirectionY.description": "Направление частицы по оси Y",
+
+  "lootbeams.config.particles.particleDirectionZ": "Направление частицы по оси Z",
+  "lootbeams.config.particles.particleDirectionZ.description": "Направление частицы по оси Z",
+
+  "lootbeams.config.particles.spinAroundBeam": "Закручивание вокруг луча",
+  "lootbeams.config.particles.spinAroundBeam.description": "Должны ли частицы крутиться вокруг луча.",
+
+  "lootbeams.config.particles.trails": "Путь луча",
+  "lootbeams.config.particles.trails.description": "Должны ли частицы оставлять за собой путь.",
+
+  "lootbeams.config.particles.trailParticlesInvisible": "Невидимые частицы с путями",
+  "lootbeams.config.particles.trailParticlesInvisible.description": "Должны ли частицы оставляющие путь быть невидимыми.",
+
+  "lootbeams.config.particles.trailUseScale": "Пути используют изменение размера",
+  "lootbeams.config.particles.trailUseScale.description": "Должны ли пути использовать изменение размера.",
+
+  "lootbeams.config.particles.trailScaleHeightEqualsBeamHeight": "Размер равен высоте луча",
+  "lootbeams.config.particles.trailScaleHeightEqualsBeamHeight.description": "Должен ли размер увеличения быть равен высоте луча.",
+
+  "lootbeams.config.particles.trailScaleHeight": "Высота размера пути",
+  "lootbeams.config.particles.trailScaleHeight.description": "Высота использующаяся путем если он должен менять размер, и этот размер не равен высоте луча",
+
+  "lootbeams.config.particles.trailChance": "Шанс появление пути",
+  "lootbeams.config.particles.trailChance.description": "Шанс частицы оставить за собой путь.",
+
+  "lootbeams.config.particles.trailWidth": "Ширина пути",
+  "lootbeams.config.particles.trailWidth.description": "Ширина пути частицы.",
+
+  "lootbeams.config.particles.trailLength": "Длинна пути",
+  "lootbeams.config.particles.trailLength.description": "Длинна пути частицы.",
+
+  "lootbeams.config.particles.trailFrequency": "Частота путей",
+  "lootbeams.config.particles.trailFrequency.description": "Частота путей. Максимальное значение должно быть не больше длинны пути. Чем ниже частота, тем более плавный будет путь.",
+
+
+  "lootbeams.config.items": "Предметы",
+
+  "lootbeams.config.items.itemsGlow": "Свечение предметов",
+  "lootbeams.config.items.itemsGlow.description": "Должны ли предметы светиться.",
+
+  "lootbeams.config.items.allItems": "Все предметы",
+  "lootbeams.config.items.allItems.description": "Должны ли все предметы иметь лучи.\n Обладает приоритетом над only_equipment и only_rare.",
+
+  "lootbeams.config.items.onlyRare": "Только Редкие",
+  "lootbeams.config.items.onlyRare.description": "Должны ли лучи отображаться только у предметов с редкостью.",
+
+  "lootbeams.config.items.onlyEquipment": "Только обмундирование",
+  "lootbeams.config.items.onlyEquipment.description": "Должны ли лучи отображаться только на обмудировании.\n (Сюда входят: Мечи, Интсрументы, Броня, Щиты, Луки, Арбалеты, Трезубцы, Стрелы, и Удочки)",
+
+  "lootbeams.config.items.whitelist": "Белый список",
+  "lootbeams.config.items.whitelist.description": "Имя в Регистре предметов на которых будут лучи всегда.\n Напимер: \"minecraft:stone\", \"minecraft:iron_ingot\", \nМожно так же указать Mod Id для включения всех предметов из мода.",
+
+  "lootbeams.config.items.blacklist": "Черный список",
+  "lootbeams.config.items.blacklist.description": "Имя в Регистре предметов на которых будут лучи НЕ БУДЕТ НИКОГДА. Обладает приоритетом вообще на все.\nМожно так же указать Mod Id для включения всех предметов из мода.",
+
+  "lootbeams.config.items.colorOverrides": "Переписывание цветов",
+  "lootbeams.config.items.colorOverrides.description": "Переписывает цвет луча предмета в HEX формате.\n Должен быть определенного формата: (registryname=hexcolor) или (#tagname=hexcolor).\n Примеры: \"minecraft:stone=#00FF00\", \"#minecraft:piglin_loved=gold\". Так же принимает mod IDs.",
+
+
+  "lootbeams.config.nametags": "Имена Предметов",
+
+  "lootbeams.config.nametags.advancedTooltips": "Улучшенные подсказки",
+  "lootbeams.config.nametags.advancedTooltips.description": "Должны ли над предметами показываться ванильные подсказки.",
+
+  "lootbeams.config.nametags.itemFrameTooltips": "Подсказки для предметных рамок",
+  "lootbeams.config.nametags.itemFrameTooltips.description": "Должны ли подсказки показываться у предметных рамок (только если у предмета кастомное имя).",
+
+  "lootbeams.config.nametags.worldspaceTooltips": "Подсказки в мировом пространстве",
+  "lootbeams.config.nametags.worldspaceTooltips.description": "Должны ли подсказки отображатиься в мировом пространстве.",
+
+  "lootbeams.config.nametags.renderTooltipsInThirdPersonView": "Подсказки при виде от 3 лица",
+  "lootbeams.config.nametags.renderTooltipsInThirdPersonView.description": "Должны ли подсказки показываться при F5.",
+
+  "lootbeams.config.nametags.borders": "Обводка",
+  "lootbeams.config.nametags.borders.description": "Отображать имена с обводкой. При отключении имена будут рисоваться сплошным фоном как имена игроков.",
+
+  "lootbeams.config.nametags.renderNametags": "Отображать Имена",
+  "lootbeams.config.nametags.renderNametags.description": "Отвечает за то стоит ли их отрисовывать.",
+
+  "lootbeams.config.nametags.renderNametagsOnlook": "Отображать Имена при взгляде",
+  "lootbeams.config.nametags.renderNametagsOnlook.description": "При включении имя будет появляться только при наведении на предмет.",
+
+  "lootbeams.config.nametags.renderItemRarity": "Отображать редкость предмета",
+  "lootbeams.config.nametags.renderItemRarity.description": "Нужно ли отрисовывать редкость предмета в тултипе и под именем предмета в мире",
+
+  "lootbeams.config.nametags.renderItemRarityInTooltip": "Отображать редкость предмета в тултипе",
+  "lootbeams.config.nametags.renderItemRarityInTooltip.description": "Нужно ли отрисовывать редкость предмета в тултипе.",
+
+  "lootbeams.config.nametags.renderStackcount": "Отображать Количество",
+  "lootbeams.config.nametags.renderStackcount.description": "Отображает количество выброшеного предмета в Имени предмета.",
+
+  "lootbeams.config.nametags.nametagLookSensitivity": "Чувствительность наведения",
+  "lootbeams.config.nametags.nametagLookSensitivity.description": "Как далеко может игрок отвести прицел и все еще видеть Имя предмета",
+
+  "lootbeams.config.nametags.nametagTextAlpha": "Альфа Текста",
+  "lootbeams.config.nametags.nametagTextAlpha.description": "Прозрачность текста у Имени",
+
+  "lootbeams.config.nametags.nametagBackgroundAlpha": "Альфа Фона",
+  "lootbeams.config.nametags.nametagBackgroundAlpha.description": "Прозрачность фона/обводки у Имени.",
+
+  "lootbeams.config.nametags.nametagScale": "Масштаб Имени",
+  "lootbeams.config.nametags.nametagScale.description": "Отвечает за размер Имени на экране.",
+
+  "lootbeams.config.nametags.nametagYOffset": "Отступ по Y у имени",
+  "lootbeams.config.nametags.nametagYOffset.description": "Отступ по Y у имени.",
+
+  "lootbeams.config.nametags.dmclootCompatRarity": "Поддержка редкостей DMCLoot",
+  "lootbeams.config.nametags.dmclootCompatRarity.description": "Отрисовывывать более мелкое имя редкости под преметами с редкостью DMCLoot.",
+
+  "lootbeams.config.nametags.customRarities": "Свои редкости",
+  "lootbeams.config.nametags.customRarities.description": "Можно указать какие редкости должны отображаться. \nПример: \"Экзотичный\", \"Древний\". \nЭти строки должны быть второй строчкой у предмета при наведении в инвентаре. \nВ основном используется в модпаках.",
+
+  "lootbeams.config.nametags.alwaysDrawRaritiesOn": "Отображать Лор",
+  "lootbeams.config.nametags.alwaysDrawRaritiesOn.description": "Можно указать предметы на которых редкости должны отображаться всегда. \nНапример: \"#minecraft:music_discs\" будет отображать маленьким тегом автора и имя трека. \nИмейте ввиду что этот текст является только второй строчкой линии под именем предмета, так что это не сработает с отображением всех зачарований. (но 1 зачарование выглядит хорошо)",
+
+  "lootbeams.config.nametags.whiteRarities": "Белые редкости",
+  "lootbeams.config.nametags.whiteRarities.description": "Должны ли редкости игнорировать свой цвет и отображаться белыми \n(В основном используется в модпаках)",
+
+  "lootbeams.config.nametags.vanillaRarities": "Ванильные редкости",
+  "lootbeams.config.nametags.vanillaRarities.description": "Редрерить ли редкости из ваниллы.",
+
+  "lootbeams.config.nametags.screenTooltipsRequireCrouch": "Экранные подсказки при скрытном передвижении",
+  "lootbeams.config.nametags.screenTooltipsRequireCrouch.description": "Должен ли игрок красться, что бы увидеть расширенные подсказки.",
+
+  "lootbeams.config.nametags.combineNameAndRarity": "Комбинировать имя и редкость",
+  "lootbeams.config.nametags.combineNameAndRarity.description": "Должны ли название предмета и редкость отображаться в одной подсказке.",
+
+
+  "lootbeams.screen.presets.title": "Loot Beams управление пресетами",
+  "lootbeams.screen.presets.presetNameTextField": "Имя пресета",
+  "lootbeams.screen.presets.button.save": "Сохранить пресет",
+  "lootbeams.screen.presets.button.load": "Применить пресет",
+  "lootbeams.screen.presets.button.cancel": "Отмена",
+
+
+  "lootbeams.notification.savePreset.text" : "Пресет [%s] сохранен.",
+  "lootbeams.notification.savePreset.notEnteredPresetName" : "Не введено имя пресета.",
+  "lootbeams.notification.loadPreset.text" : "Пресет [%s] загружен.",
+
+
+  "lootbeams.keybindings.savePreset": "Сохранить пресет",
+
+
+  "lootbeams.rarity.common": "Обычный",
+  "lootbeams.rarity.uncommon": "Необычный",
+  "lootbeams.rarity.rare": "Редкий",
+  "lootbeams.rarity.epic": "Эпический"
+}
+

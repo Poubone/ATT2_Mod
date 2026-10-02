@@ -1,0 +1,18 @@
+{
+  "key.category.att2.att2": "ATT2",
+  "key.att2.toggle_hud": "HUD 켜기/끄기",
+  "key.att2.stat_upgrade_menu": "스탯 메뉴",
+  "key.att2.player_glow": "플레이어 빛나게 하기",
+  "key.att2.collect_items": "아이템 줍기",
+  "key.att2.quest_main": "퀘스트 책",
+  "key.att2.repair_menu": "수리 메뉴",
+  "key.att2.whistle": "말 호각 불기",
+  "key.att2.hud_config": "HUD 설정",
+  "key.att2.weapon_skill": "무기 스킬 (상황별)",
+  "key.att2.spell_level_menu": "주문 레벨 (원형 메뉴)",
+  "key.att2.broadcast": "채팅에 아이템 공유",
+  "key.att2.ping": "위치 핑",
+  "key.att2.compare_shop": "상점 아이템 비교",
+  "subtitles.att2.ui.book.open": "책을 펼침",
+  "subtitles.att2.ui.book.turn_page": "페이지를 넘김"
+}

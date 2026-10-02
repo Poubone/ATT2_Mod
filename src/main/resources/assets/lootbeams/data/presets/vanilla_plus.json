@@ -1,0 +1,38 @@
+{
+  "LootBeams": {
+    "render_beam": false
+  },
+  "GroundGlow": {
+    "glow_effect": false
+  },
+  "Particles": {
+    "particles": false,
+    "trails": false
+  },
+  "Items": {
+    "items_glow": false,
+    "all_items": true,
+    "only_equipment": false,
+    "only_rare": false
+  },
+  "Nametags": {
+    "advanced_tooltips": true,
+    "worldspace_tooltips": true,
+    "item_frame_tooltips": true,
+    "render_tooltips_in_third_person_view": true,
+    "borders": false,
+    "render_nametags": true,
+    "render_nametags_onlook": true,
+    "render_item_rarity": true,
+    "render_stackcount": true,
+    "nametag_look_sensitivity": 0.018,
+    "nametag_text_alpha": 1.0,
+    "nametag_background_alpha": 0.5,
+    "nametag_scale": 1.0,
+    "nametag_y_offset": 0.75,
+    "white_rarities": false,
+    "vanilla_rarities": true,
+    "screen_tooltips_require_crouch": true,
+    "combine_name_and_rarity": false
+  }
+}

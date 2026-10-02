@@ -1,0 +1,9 @@
+{
+  "ui.ping": { "sounds": ["att2:ping"] },
+  "ui.book.open": {
+    "sounds": [{"name": "minecraft:item.book.page_turn", "type": "event"}]
+  },
+  "ui.book.turn_page": {
+    "sounds": [{"name": "minecraft:item.book.page_turn", "type": "event"}]
+  }
+}

@@ -1,0 +1,24 @@
+{
+	"blend": {
+		"func": "add",
+		"srcrgb": "srcalpha",
+		"dstrgb": "1-srcalpha"
+	},
+	"vertex": "lootbeams:core/custom/glow_overlay",
+	"fragment": "lootbeams:core/custom/glow_overlay",
+	"attributes": [
+		"Position",
+		"UV0",
+		"Color",
+		"Color1",
+		"CenterUV",
+		"SizeUV",
+		"GradientBounds"
+	],
+	"samplers": [
+		{ "name": "Sampler0" }
+	],
+	"uniforms": [
+		{ "name": "ColorModulator", "type": "float", "count": 4, "values": [ 1.0, 1.0, 1.0, 1.0 ] }
+	]
+}

@@ -1,0 +1,52 @@
+# Gradle
+.gradle/
+build/
+out/
+bin/
+
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Eclipse
+.project
+.classpath
+.cproject
+.settings/
+
+# VS Code
+.vscode/
+
+# Fabric
+run/
+remappedSrc/
+logs/
+cache/
+*.launch
+
+# Java
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.ear
+
+# OS-specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.tmp
+*.swp
+*.bak
+
+# Generated JSON config (if you save HUD settings or similar)
+config/att2_hud.json
+
+.worktrees/

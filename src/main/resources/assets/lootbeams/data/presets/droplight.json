@@ -1,0 +1,70 @@
+{
+  "LootBeams": {
+    "render_name_color": true,
+    "render_rarity_color": true,
+    "render_beam": true,
+    "render_droplight_beam": true,
+    "beam_gradient_modifiers": [
+      "-h50",
+      "+s35",
+      "-v50"
+    ],
+    "smooth_beam_size": true,
+    "smooth_duration": 3.0,
+    "beam_radius": 0.8,
+    "beam_height": 8.0,
+    "beam_y_offset": 0.0,
+    "beam_alpha": 0.75
+  },
+  "GroundGlow": {
+    "glow_effect": true,
+    "use_glow_gradient": true,
+    "glow_gradient_modifiers": [
+      "-h50",
+      "+s35",
+      "-v50"
+    ],
+    "glow_gradient_start": 0.0,
+    "glow_gradient_end": 100.0,
+    "smooth_glow_effect_radius": false,
+    "smooth_glow_effect_alpha": true,
+    "glow_effect_texture": "lootbeams:glow",
+    "glow_effect_radius": 1.5,
+    "glow_effect_alpha": 1.0,
+    "pulse_glow": false,
+    "rotate_glow": false
+  },
+  "Particles": {
+    "particles": true,
+    "particle_texture": "lootbeams:sparkle",
+    "particle_color_mode": "particle_overlay",
+    "particle_inherits_color": true,
+    "particle_count": 5.0,
+    "particle_lifetime": 80,
+    "particle_size": 1.0,
+    "particle_random_size": true,
+    "particle_radius": 0.2,
+    "particle_y_offset": 0.0,
+    "particle_random_y": true,
+    "particle_speed": 0.3,
+    "particle_speed_x": 0.2,
+    "particle_speed_y": 0.002,
+    "particle_speed_z": 0.2,
+    "particle_use_constant_vertical_speed": false,
+    "randomness_intensity": 0.05,
+    "particle_rare_only": true,
+    "particle_direction_x": 0.0,
+    "particle_direction_y": 1.0,
+    "particle_direction_z": 0.0,
+    "spin_around_beam": false,
+    "trails": false,
+    "trail_particles_invisible": true,
+    "trail_use_scale": false,
+    "trail_scale_height_equals_beam_height": false,
+    "trail_scale_height": 3.0,
+    "trail_chance": 0.4,
+    "trail_width": 0.2,
+    "trail_length": 30,
+    "trail_frequency": 1
+  }
+}
