@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import org.slf4j.LoggerFactory;
 
 import java.util.OptionalInt;
 
@@ -33,12 +34,24 @@ public final class GlobeShader {
                     .build()
     );
     private static final OptionalInt CLEAR_TRANSPARENT = OptionalInt.of(0);
+    private static Boolean available;
 
     private GlobeShader() {
     }
 
     /** Registers the pipeline during client init, so it's compiled with the other shaders on resource load. */
     public static void init() {
+    }
+
+    /** False when the shader failed to compile (e.g. a driver issue); the orbs then use the CPU path. */
+    static boolean isAvailable() {
+        if (available == null) {
+            available = RenderSystem.getDevice().precompilePipeline(PIPELINE).isValid();
+            if (!available) {
+                LoggerFactory.getLogger("att2").warn("Orb shader failed to compile, falling back to CPU orb rendering");
+            }
+        }
+        return available;
     }
 
     static void render(GpuTextureView target, GpuBuffer params) {
