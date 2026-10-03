@@ -17,7 +17,6 @@ import net.minecraft.util.Mth;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 /**
  * Dahäl globe following Allematic's Diablo-like UI orb compositing:
@@ -40,12 +39,6 @@ final class ManaGlobe {
     private int texSize;
     private double lastBakeTime = Double.NEGATIVE_INFINITY;
     private float lastRatio = -1;
-    private final int[] ROW_MIN = new int[256];
-    private final int[] ROW_MAX = new int[256];
-    private int rowsSize;
-    private float rowsCx = Float.NaN;
-    private float rowsCy = Float.NaN;
-    private float rowsR = Float.NaN;
 
     ManaGlobe(String name, int palette) {
         TEXTURE_ID = Identifier.fromNamespaceAndPath("att2", "dynamic/" + name);
@@ -74,7 +67,6 @@ final class ManaGlobe {
             texSize = 0;
             lastBakeTime = Double.NEGATIVE_INFINITY;
             lastRatio = -1;
-            rowsSize = 0;
         };
         if (!RenderSystem.isOnRenderThread()) {
             client.execute(close);
@@ -94,7 +86,6 @@ final class ManaGlobe {
         lastBakeTime = time;
         lastRatio = ratio;
         lastGpu = gpu;
-        updateRows(size, holeCx, holeCy, holeR);
         if (gpu) {
             writeParams(holeCx, holeCy, holeR, ratio, (float) time);
             GlobeShader.render(texture.getTextureView(), params);
@@ -117,31 +108,13 @@ final class ManaGlobe {
         return cpuPixels;
     }
 
-    /**
-     * Blit only the circular glass spans. Empty texels of a GPU-updated image render as an
-     * opaque black bowl in the HUD pass even when their alpha is 0.
-     */
+    /** Draws the whole liquid texture as one quad; texels outside the disc are fully transparent. */
     void blitLiquid(GuiGraphics gui, int destX, int destY, int destSize) {
         if (texture == null || texSize <= 0) {
             return;
         }
-        float scale = destSize / (float) texSize;
-        for (int row = 0; row < texSize; row++) {
-            int x0 = ROW_MIN[row];
-            int x1 = ROW_MAX[row];
-            if (x1 < x0) {
-                continue;
-            }
-            int srcW = x1 - x0 + 1;
-            int dx0 = destX + Math.round(x0 * scale);
-            int dy0 = destY + Math.round(row * scale);
-            int dx1 = destX + Math.round((x0 + srcW) * scale);
-            int dy1 = destY + Math.round((row + 1) * scale);
-            int dw = Math.max(1, dx1 - dx0);
-            int dh = Math.max(1, dy1 - dy0);
-            gui.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_ID,
-                    dx0, dy0, (float) x0, (float) row, dw, dh, srcW, 1, texSize, texSize);
-        }
+        gui.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_ID,
+                destX, destY, 0f, 0f, destSize, destSize, texSize, texSize, texSize, texSize);
     }
 
     int resolution() {
@@ -173,43 +146,6 @@ final class ManaGlobe {
                     .putVec4(ratio, time, palette, 0f)
                     .get();
             RenderSystem.getDevice().createCommandEncoder().writeToBuffer(params.slice(), data);
-        }
-    }
-
-    /**
-     * Texel spans with non-zero alpha, using the same edge test as the shader. They only depend on
-     * the hole geometry, so they're recomputed only when that changes.
-     */
-    private void updateRows(int size, float cx, float cy, float r) {
-        if (rowsSize == size && rowsCx == cx && rowsCy == cy && rowsR == r) {
-            return;
-        }
-        rowsSize = size;
-        rowsCx = cx;
-        rowsCy = cy;
-        rowsR = r;
-        Arrays.fill(ROW_MIN, 0, size, size);
-        Arrays.fill(ROW_MAX, 0, size, -1);
-        for (int y = 0; y < size; y++) {
-            float v = (y + 0.5f - cy) / r;
-            for (int x = 0; x < size; x++) {
-                float u = (x + 0.5f - cx) / r;
-                float d2 = u * u + v * v;
-                if (d2 >= 1f) {
-                    continue;
-                }
-                float radial = (float) Math.sqrt(d2);
-                float edge = smooth(1f - radial, 0f, 0.01f);
-                if (Mth.clamp((int) (edge * 255f), 0, 255) <= 0) {
-                    continue;
-                }
-                if (x < ROW_MIN[y]) {
-                    ROW_MIN[y] = x;
-                }
-                if (x > ROW_MAX[y]) {
-                    ROW_MAX[y] = x;
-                }
-            }
         }
     }
 

@@ -25,7 +25,7 @@ public class ArrowDisplay {
         context.pose().pushMatrix();
         context.pose().translate(box.x(), box.y());
         context.pose().scale(scale, scale);
-        context.renderItem(new ItemStack(Items.ARROW), 0, 0);
+        context.renderItem(HudDrawUtils.icon(Items.ARROW), 0, 0);
         context.drawString(client.font, Component.literal("x" + arrowCount), 20, 4, 0xFFFFFFFF, true);
         context.pose().popMatrix();
     }
