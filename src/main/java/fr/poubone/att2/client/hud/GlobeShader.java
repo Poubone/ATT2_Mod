@@ -34,7 +34,7 @@ public final class GlobeShader {
                     .build()
     );
     private static final OptionalInt CLEAR_TRANSPARENT = OptionalInt.of(0);
-    private static Boolean available;
+    private static boolean failureLogged;
 
     private GlobeShader() {
     }
@@ -45,12 +45,13 @@ public final class GlobeShader {
 
     /** False when the shader failed to compile (e.g. a driver issue); the orbs then use the CPU path. */
     static boolean isAvailable() {
-        if (available == null) {
-            available = RenderSystem.getDevice().precompilePipeline(PIPELINE).isValid();
-            if (!available) {
-                LoggerFactory.getLogger("att2").warn("Orb shader failed to compile, falling back to CPU orb rendering");
-            }
+        // The device caches compiled pipelines and clears that cache on resource reload.
+        // Query the current pipeline so a corrected or newly broken shader changes the fallback too.
+        boolean available = RenderSystem.getDevice().precompilePipeline(PIPELINE).isValid();
+        if (!available && !failureLogged) {
+            LoggerFactory.getLogger("att2").warn("Orb shader failed to compile, falling back to CPU orb rendering");
         }
+        failureLogged = !available;
         return available;
     }
 

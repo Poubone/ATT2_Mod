@@ -47,7 +47,7 @@ public class HUDConfigScreen extends Screen {
 
         int tabW = 112;
         int tabX = rtl ? width - tabW - 12 : 12;
-        int tabY = 36;
+        int tabY = HUDConfigLayout.tabTop(height, Category.values().length);
         for (Category cat : Category.values()) {
             Category picked = cat;
             Component label = ModLanguageManager.get("screen.hud_config.cat." + cat.name().toLowerCase());
@@ -58,7 +58,7 @@ public class HUDConfigScreen extends Screen {
                 category = picked;
                 init();
             }).bounds(tabX, tabY, tabW, 20).build());
-            tabY += 24;
+            tabY += HUDConfigLayout.tabStep(height, Category.values().length);
         }
 
         int contentX = rtl ? 16 : 140;
@@ -153,13 +153,14 @@ public class HUDConfigScreen extends Screen {
                 }
             }
             case PERFORMANCE -> {
-                contentY = addToggle(contentX, contentY, colW, "screen.hud_config.orb_gpu",
+                int performanceWidth = Math.max(1, Math.min(260, contentRight - contentX - 16));
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.orb_gpu",
                         config.orbGpuRendering, v -> {
                             config.orbGpuRendering = v;
                             init(); // an automatic orb rate follows the switch, so refresh the slider
                         }, "screen.hud_config.orb_gpu.tooltip");
                 contentY += 4;
-                addOrbFpsSlider(contentX, contentY, Math.min(colW, 260), config);
+                addOrbFpsSlider(contentX, contentY, performanceWidth, config);
             }
             case GENERAL -> {
                 addRenderableWidget(Button.builder(
@@ -205,12 +206,14 @@ public class HUDConfigScreen extends Screen {
                 .selected(selected)
                 .onValueChange((checkbox, value) -> onChange.accept(value));
         if (tooltipKey != null) {
+            builder.maxWidth(width);
             builder.tooltip(Tooltip.create(ModLanguageManager.get(tooltipKey)));
         }
         Checkbox box = builder.build();
         addRenderableWidget(box);
         // Eight HUD toggles must leave room for Arrange and Save at the minimum GUI height.
-        return y + (category == Category.HUD && height < 280 ? 18 : 22);
+        int spacing = category == Category.HUD && height < 280 ? 18 : 22;
+        return y + (tooltipKey == null ? spacing : Math.max(box.getHeight() + 2, spacing));
     }
 
     /** Orb redraw rate, snapping to {@link HUDConfig#ORB_FPS_STEPS}; the last step redraws every frame. */
@@ -272,12 +275,14 @@ public class HUDConfigScreen extends Screen {
         if (rtl) {
             context.drawString(font, title, width - 12 - font.width(title), 12, 0xFFE8C86A, false);
             context.drawString(font, cat, 16, 14, 0xFFC8B8A0, false);
-            int markY = 36 + category.ordinal() * 24;
+            int markY = HUDConfigLayout.tabTop(height, Category.values().length)
+                    + category.ordinal() * HUDConfigLayout.tabStep(height, Category.values().length);
             context.fill(width - 11, markY, width - 8, markY + 20, 0xFFE8C86A);
         } else {
             context.drawString(font, title, 12, 12, 0xFFE8C86A, false);
             context.drawString(font, cat, 140, 14, 0xFFC8B8A0, false);
-            int markY = 36 + category.ordinal() * 24;
+            int markY = HUDConfigLayout.tabTop(height, Category.values().length)
+                    + category.ordinal() * HUDConfigLayout.tabStep(height, Category.values().length);
             context.fill(8, markY, 11, markY + 20, 0xFFE8C86A);
         }
         super.render(context, mouseX, mouseY, delta);
