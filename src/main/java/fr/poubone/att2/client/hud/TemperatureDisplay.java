@@ -1,13 +1,18 @@
 package fr.poubone.att2.client.hud;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import fr.poubone.att2.client.data.TemperatureModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 
 /** Temperature globe using Dahal glass: warm or cold liquid and the exact signed TAB value. */
 public final class TemperatureDisplay {
     private static final ManaGlobe WARM = new ManaGlobe("temperature_warm", 1);
     private static final ManaGlobe COLD = new ManaGlobe("temperature_cold", 2);
+    private static final Identifier FRAME_ID = Identifier.fromNamespaceAndPath("att2", "dynamic/temperature_frame");
+    private static boolean frameRegistered;
 
     private TemperatureDisplay() {}
 
@@ -37,7 +42,8 @@ public final class TemperatureDisplay {
         float ratio = TemperatureModel.fillRatio(value);
         ManaGlobe globe = value < 0 ? COLD : WARM;
         // A centered glass aperture with its own compact, wingless steel bezel.
-        globe.bake(ratio, 0, seconds, 128, 64, 64, 55.5f);
+        // Slightly wider than the bezel opening, so the liquid reaches under the bezel and leaves no gap
+        globe.bake(ratio, 0, seconds, 128, 64, 64, 57.5f);
         globe.blitLiquid(graphics, 0, 0, 42);
         drawFrame(graphics);
         int color = stage == 0 ? 0xFFBCE7BC : value < 0 ? 0xFF8CDFFF : 0xFFFFAA55;
@@ -46,8 +52,17 @@ public final class TemperatureDisplay {
         graphics.pose().popMatrix();
     }
 
+    /** The bezel is painted once into a texture, so it's one quad per frame instead of one fill per pixel. */
+    static void drawFrame(GuiGraphics graphics) {
+        if (!frameRegistered) {
+            HudTexture.register(FRAME_ID, 42, 42, TemperatureDisplay::paintFrame);
+            frameRegistered = true;
+        }
+        graphics.blit(RenderPipelines.GUI_TEXTURED, FRAME_ID, 0, 0, 0f, 0f, 42, 42, 42, 42);
+    }
+
     /** Pixel-aligned concentric bevels; the upper-left highlight matches the glass lighting. */
-    private static void drawFrame(GuiGraphics graphics) {
+    private static void paintFrame(NativeImage image) {
         for (int y = 0; y < 42; y++) {
             for (int x = 0; x < 42; x++) {
                 float dx = x + 0.5f - 21;
@@ -59,7 +74,7 @@ public final class TemperatureDisplay {
                         : radius >= 19 ? (int) (130 + light * 65)
                         : (int) (65 - light * 25);
                 int color = 0xFF000000 | (grey << 16) | ((grey + 5) << 8) | (grey + 10);
-                graphics.fill(x, y, x + 1, y + 1, color);
+                image.setPixel(x, y, color);
             }
         }
     }

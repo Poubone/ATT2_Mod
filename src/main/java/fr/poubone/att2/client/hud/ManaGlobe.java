@@ -1,5 +1,7 @@
 package fr.poubone.att2.client.hud;
 
+import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.FilterMode;
@@ -12,8 +14,9 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import org.lwjgl.system.MemoryStack;
 
-import java.util.Arrays;
+import java.nio.ByteBuffer;
 
 /**
  * Dahäl globe following Allematic's Diablo-like UI orb compositing:
@@ -21,17 +24,21 @@ import java.util.Arrays;
  * A dark glass chamber stays visible above the blue liquid, including when empty.
  * The disc is shaded in the same 256×256 space as cadre_vide.png so it lines up
  * with the metal aperture (which is not the texture center).
+ * <p>
+ * The liquid is shaded either on the GPU by {@link GlobeShader} into a render-target texture, or by
+ * the original CPU path into a {@link NativeImage} that is then uploaded ({@link HUDConfig#orbGpuRendering}).
+ * Both produce the same image; the HUD draws the texture the same way either way.
  */
 final class ManaGlobe {
     private final Identifier TEXTURE_ID;
     private final int palette;
-    private static final int TRANSPARENT = ARGB.color(0, 0, 0, 0);
     private GlobeTexture texture;
+    private GpuBuffer params;
+    private NativeImage cpuPixels;
+    private boolean lastGpu;
     private int texSize;
     private double lastBakeTime = Double.NEGATIVE_INFINITY;
     private float lastRatio = -1;
-    private final int[] ROW_MIN = new int[256];
-    private final int[] ROW_MAX = new int[256];
 
     ManaGlobe(String name, int palette) {
         TEXTURE_ID = Identifier.fromNamespaceAndPath("att2", "dynamic/" + name);
@@ -49,6 +56,14 @@ final class ManaGlobe {
                 texture.close();
                 texture = null;
             }
+            if (params != null) {
+                params.close();
+                params = null;
+            }
+            if (cpuPixels != null) {
+                cpuPixels.close();
+                cpuPixels = null;
+            }
             texSize = 0;
             lastBakeTime = Double.NEGATIVE_INFINITY;
             lastRatio = -1;
@@ -61,109 +76,80 @@ final class ManaGlobe {
     }
 
     Identifier bake(float ratio, float danger, double time, int size, float holeCx, float holeCy, float holeR) {
-        if (texture != null && texSize == size && ratio == lastRatio
-                && time >= lastBakeTime && time - lastBakeTime < 1.0 / 30.0) return TEXTURE_ID;
-        NativeImage image = ensure(size);
+        HUDConfig config = HUDConfig.get();
+        boolean gpu = config.orbsOnGpu();
+        int fps = config.effectiveOrbFps();
+        double interval = fps > 0 ? 1.0 / fps : 0.0;
+        if (texture != null && texSize == size && ratio == lastRatio && gpu == lastGpu
+                && time >= lastBakeTime && time - lastBakeTime < interval) return TEXTURE_ID;
+        ensure(size);
         lastBakeTime = time;
         lastRatio = ratio;
-        image.fillRect(0, 0, size, size, TRANSPARENT);
-        Arrays.fill(ROW_MIN, 0, size, size);
-        Arrays.fill(ROW_MAX, 0, size, -1);
-        shade(image, size, ratio, danger, (float) time, holeCx, holeCy, holeR);
-        texture.upload();
+        lastGpu = gpu;
+        if (gpu) {
+            writeParams(holeCx, holeCy, holeR, ratio, (float) time);
+            GlobeShader.render(texture.getTextureView(), params);
+        } else {
+            NativeImage image = cpuImage(size);
+            image.fillRect(0, 0, size, size, 0);
+            shade(image, size, ratio, danger, (float) time, holeCx, holeCy, holeR);
+            RenderSystem.getDevice().createCommandEncoder().writeToTexture(texture.getTexture(), image);
+        }
         return TEXTURE_ID;
     }
 
-    /**
-     * Blit only the circular glass spans. Empty texels of a GPU-updated image render as an
-     * opaque black bowl in the HUD pass even when NativeImage alpha is 0.
-     */
+    private NativeImage cpuImage(int size) {
+        if (cpuPixels == null || cpuPixels.getWidth() != size) {
+            if (cpuPixels != null) {
+                cpuPixels.close();
+            }
+            cpuPixels = new NativeImage(size, size, true);
+        }
+        return cpuPixels;
+    }
+
+    /** Draws the whole liquid texture as one quad; texels outside the disc are fully transparent. */
     void blitLiquid(GuiGraphics gui, int destX, int destY, int destSize) {
         if (texture == null || texSize <= 0) {
             return;
         }
-        float scale = destSize / (float) texSize;
-        for (int row = 0; row < texSize; row++) {
-            int x0 = ROW_MIN[row];
-            int x1 = ROW_MAX[row];
-            if (x1 < x0) {
-                continue;
-            }
-            int srcW = x1 - x0 + 1;
-            int dx0 = destX + Math.round(x0 * scale);
-            int dy0 = destY + Math.round(row * scale);
-            int dx1 = destX + Math.round((x0 + srcW) * scale);
-            int dy1 = destY + Math.round((row + 1) * scale);
-            int dw = Math.max(1, dx1 - dx0);
-            int dh = Math.max(1, dy1 - dy0);
-            gui.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_ID,
-                    dx0, dy0, (float) x0, (float) row, dw, dh, srcW, 1, texSize, texSize);
-        }
+        gui.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_ID,
+                destX, destY, 0f, 0f, destSize, destSize, texSize, texSize, texSize, texSize);
     }
 
     int resolution() {
         return texSize;
     }
 
-    private NativeImage ensure(int size) {
-        Minecraft client = Minecraft.getInstance();
+    private void ensure(int size) {
         if (texture != null && texSize == size) {
-            return texture.pixels();
+            return;
         }
+        Minecraft client = Minecraft.getInstance();
         if (texture != null) {
             client.getTextureManager().release(TEXTURE_ID);
             texture.close();
         }
-        NativeImage image = new NativeImage(size, size, true);
-        texture = new GlobeTexture(image);
+        texture = new GlobeTexture(size);
         texSize = size;
         client.getTextureManager().register(TEXTURE_ID, texture);
-        return texture.pixels();
-    }
-
-    /**
-     * Same GPU setup as a GUI resource texture (clamp + linear). Vanilla
-     * {@code DynamicTexture} uses repeat/nearest, which turned empty (alpha 0)
-     * texels into an opaque black bowl in the HUD pass.
-     */
-    private static final class GlobeTexture extends AbstractTexture {
-        private NativeImage pixels;
-
-        private GlobeTexture(NativeImage image) {
-            this.pixels = image;
-            var device = RenderSystem.getDevice();
-            this.texture = device.createTexture(
-                    () -> "att2_dahal_globe",
-                    GpuTexture.USAGE_COPY_DST | GpuTexture.USAGE_TEXTURE_BINDING,
-                    TextureFormat.RGBA8,
-                    image.getWidth(),
-                    image.getHeight(),
-                    1,
-                    1);
-            this.sampler = RenderSystem.getSamplerCache().getClampToEdge(FilterMode.NEAREST);
-            this.textureView = device.createTextureView(this.texture);
-            upload();
-        }
-
-        private NativeImage pixels() {
-            return this.pixels;
-        }
-
-        private void upload() {
-            if (this.pixels != null && this.texture != null) {
-                RenderSystem.getDevice().createCommandEncoder().writeToTexture(this.texture, this.pixels);
-            }
-        }
-
-        @Override
-        public void close() {
-            if (this.pixels != null) {
-                this.pixels.close();
-                this.pixels = null;
-            }
-            super.close();
+        if (params == null) {
+            params = RenderSystem.getDevice().createBuffer(() -> "att2 globe params",
+                    GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_COPY_DST, GlobeShader.PARAMS_SIZE);
         }
     }
+
+    private void writeParams(float cx, float cy, float r, float ratio, float time) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            ByteBuffer data = Std140Builder.onStack(stack, GlobeShader.PARAMS_SIZE)
+                    .putVec4(cx, cy, r, 0f)
+                    .putVec4(ratio, time, palette, 0f)
+                    .get();
+            RenderSystem.getDevice().createCommandEncoder().writeToBuffer(params.slice(), data);
+        }
+    }
+
+    // CPU path: the original per-texel shading, kept for the CPU/GPU setting and as the fallback.
 
     private void shade(NativeImage image, int size, float ratio, float danger, float time,
                               float cx, float cy, float r) {
@@ -295,12 +281,6 @@ final class ManaGlobe {
                         Mth.clamp((int) cr, 0, 255),
                         Mth.clamp((int) cg, 0, 255),
                         Mth.clamp((int) cb, 0, 255)));
-                if (x < ROW_MIN[y]) {
-                    ROW_MIN[y] = x;
-                }
-                if (x > ROW_MAX[y]) {
-                    ROW_MAX[y] = x;
-                }
             }
         }
     }
@@ -334,12 +314,34 @@ final class ManaGlobe {
         return ((n ^ (n >> 16)) & 0x7fffffff) * (1f / 2147483647f);
     }
 
+    private static float lerp(float t, float a, float b) {
+        return a + (b - a) * t;
+    }
+
+
     private static float smooth(float v, float a, float b) {
         float t = Mth.clamp((v - a) / (b - a), 0f, 1f);
         return t * t * (3f - 2f * t);
     }
 
-    private static float lerp(float t, float a, float b) {
-        return a + (b - a) * t;
+    /**
+     * Same GPU setup as a GUI resource texture (clamp + nearest). It can be rendered into by
+     * {@link GlobeShader} or written from the CPU path's {@link NativeImage}.
+     */
+    private static final class GlobeTexture extends AbstractTexture {
+        private GlobeTexture(int size) {
+            var device = RenderSystem.getDevice();
+            this.texture = device.createTexture(
+                    () -> "att2_dahal_globe",
+                    GpuTexture.USAGE_RENDER_ATTACHMENT | GpuTexture.USAGE_COPY_DST
+                            | GpuTexture.USAGE_TEXTURE_BINDING | GpuTexture.USAGE_COPY_SRC,
+                    TextureFormat.RGBA8,
+                    size,
+                    size,
+                    1,
+                    1);
+            this.sampler = RenderSystem.getSamplerCache().getClampToEdge(FilterMode.NEAREST);
+            this.textureView = device.createTextureView(this.texture);
+        }
     }
 }

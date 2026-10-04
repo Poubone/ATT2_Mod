@@ -101,13 +101,14 @@ public final class ScoreCache {
 
         ReadOnlyScoreInfo info = scoreboard.getPlayerScoreInfo(player, objective);
         Integer direct = info == null ? null : info.value();
+        // The listed entries are only a fallback when the player's own score is missing; this runs every frame
         return ScoreboardLiveRead.read(
                 objectiveName,
                 player.getScoreboardName(),
                 objective.getName(),
                 listObjective == null ? null : listObjective.getName(),
                 direct,
-                listedEntries(scoreboard, objective)
+                direct != null ? List.of() : listedEntries(scoreboard, objective)
         );
     }
 

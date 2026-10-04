@@ -37,6 +37,13 @@ public class HUDConfig {
     public boolean showArmorDurability = true;
     public boolean showSpellBar = true;
     public boolean showTemperature = true;
+    /** Shade the Dahal and temperature orbs on the GPU; off uses the original CPU path. */
+    public boolean orbGpuRendering = true;
+    /**
+     * Orb liquid redraws per second, one of {@link #ORB_FPS_STEPS} (0 redraws every frame), or
+     * {@link #ORB_FPS_AUTO} until the slider is moved. See {@link #effectiveOrbFps()}.
+     */
+    public int orbFps = ORB_FPS_AUTO;
     /** Movable / resizable HUD boxes, keyed by {@link HudLayout} ids. */
     public Map<String, HudSlot> slots = new LinkedHashMap<>();
     /** Ask for a second key press before dropping an item whose custom_data.Rarity is listed here. */
@@ -175,6 +182,33 @@ public class HUDConfig {
         return INSTANCE;
     }
 
+    /** Orb animation rates offered by the settings slider; 0 means every frame. */
+    public static final int[] ORB_FPS_STEPS = {15, 30, 60, 120, 0};
+    /** No rate chosen yet: every frame on the GPU, 30 on the CPU. */
+    public static final int ORB_FPS_AUTO = -1;
+
+    /** True when the orbs actually render on the GPU: the setting is on and the shader compiled. */
+    public boolean orbsOnGpu() {
+        return orbGpuRendering && GlobeShader.isAvailable();
+    }
+
+    /**
+     * Redraw rate in use. Until a rate is chosen, every frame when the GPU draws the orbs (nearly free)
+     * and 30 a second on the CPU, where each redraw costs several milliseconds.
+     */
+    public int effectiveOrbFps() {
+        if (orbFps != ORB_FPS_AUTO) return orbFps;
+        return orbsOnGpu() ? 0 : 30;
+    }
+
+    public static boolean isValidOrbFps(int fps) {
+        if (fps == ORB_FPS_AUTO) return true;
+        for (int step : ORB_FPS_STEPS) {
+            if (step == fps) return true;
+        }
+        return false;
+    }
+
     public static void load() {
         try {
             if (FILE.exists()) {
@@ -222,6 +256,10 @@ public class HUDConfig {
         if (INSTANCE.discordLargeImage == null || INSTANCE.discordLargeImage.isBlank()) {
             INSTANCE.discordLargeImage = DEFAULT_DISCORD_LARGE_IMAGE;
         }
+        if (!isValidOrbFps(INSTANCE.orbFps)) {
+            INSTANCE.orbFps = ORB_FPS_AUTO;
+        }
+
         if (INSTANCE.partySyncUrl == null) {
             INSTANCE.partySyncUrl = "";
         }

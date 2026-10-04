@@ -24,6 +24,7 @@ import fr.poubone.att2.client.shop.ShopSellers;
 import fr.poubone.att2.client.hud.CityToast;
 import fr.poubone.att2.client.hud.ModToast;
 import fr.poubone.att2.client.hud.ChronotonDisplay;
+import fr.poubone.att2.client.hud.GlobeShader;
 import fr.poubone.att2.client.hud.HudFx;
 import fr.poubone.att2.client.hud.HudRenderer;
 import fr.poubone.att2.client.hud.ManaOrbDisplay;
@@ -65,6 +66,7 @@ public class ATT2_ProjectClient implements ClientModInitializer {
         new com.lootbeams.LootBeams().onInitializeClient();
 
         KeybindManager.register();
+        GlobeShader.init();
         HudElementRegistry.attachElementAfter(VanillaHudElements.HOTBAR, id("hud"), HudRenderer::render);
         HudElementRegistry.attachElementAfter(VanillaHudElements.CHAT, id("pings"), PingMarkers::renderHud);
 

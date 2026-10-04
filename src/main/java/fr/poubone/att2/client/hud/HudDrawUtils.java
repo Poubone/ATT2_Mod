@@ -5,12 +5,37 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Map;
+
 public class HudDrawUtils {
+    /** Icons are drawn every frame; one shared stack per item avoids allocating a new one each time. */
+    private static final Map<Item, ItemStack> ICONS = new IdentityHashMap<>();
+    /** Laid-out text per displayed string, so unchanged values aren't re-laid-out every frame. */
+    private static final Map<String, FormattedCharSequence> TEXT = new HashMap<>();
+    private static final int TEXT_CACHE_LIMIT = 256;
+    private static Language textLanguage;
+
+    static ItemStack icon(Item item) {
+        return ICONS.computeIfAbsent(item, ItemStack::new);
+    }
+
+    static FormattedCharSequence text(String display) {
+        // Visual order depends on the language (right-to-left), so start over when it changes
+        Language language = Language.getInstance();
+        if (language != textLanguage || TEXT.size() >= TEXT_CACHE_LIMIT) {
+            TEXT.clear();
+            textLanguage = language;
+        }
+        return TEXT.computeIfAbsent(display, key -> Component.literal(key).getVisualOrderText());
+    }
 
     public static void drawHUDValue(GuiGraphics context, int value, int animationTimer, int maxTicks,
                                     float x, float y, float scale, Item icon, int color, boolean animate) {
@@ -21,7 +46,7 @@ public class HudDrawUtils {
                                     float x, float y, float scale, Item icon, int color, boolean animate) {
         Minecraft client = Minecraft.getInstance();
         Font font = client.font;
-        FormattedCharSequence text = Component.literal(display).getVisualOrderText();
+        FormattedCharSequence text = text(display);
         int iconSize = 16;
         float drawScale = scale;
         if (animate && animationTimer > 0) {
@@ -32,7 +57,7 @@ public class HudDrawUtils {
         context.pose().pushMatrix();
         context.pose().translate(x, y);
         context.pose().scale(drawScale, drawScale);
-        context.renderItem(new ItemStack(icon), 0, 0);
+        context.renderItem(icon(icon), 0, 0);
         drawOutlinedText(context, font, text, iconSize + 2, 4, color);
         context.pose().popMatrix();
     }
@@ -40,7 +65,7 @@ public class HudDrawUtils {
     public static void drawXPHUDValue(GuiGraphics context, String display, float x, float y, float scale, int color) {
         Minecraft client = Minecraft.getInstance();
         Font font = client.font;
-        FormattedCharSequence text = Component.literal(display).getVisualOrderText();
+        FormattedCharSequence text = text(display);
 
         int ticks = (int) (System.currentTimeMillis() / 100) % 16;
         int frameX = (ticks % 4) * 16;

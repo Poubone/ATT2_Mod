@@ -6,8 +6,10 @@ import fr.poubone.att2.client.hud.HUDConfig;
 import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -15,10 +17,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Categorized settings: HUD widgets, menus, loot beams, then general / Discord.
+ * Categorized settings: HUD widgets, menus, loot beams, performance, then general / Discord.
  */
 public class HUDConfigScreen extends Screen {
-    private enum Category {HUD, MENUS, QUESTS, LOOT, GENERAL}
+    private enum Category {HUD, MENUS, QUESTS, LOOT, PERFORMANCE, GENERAL}
 
     private static final List<String> RARITY_KEYS = List.of(
             "com", "cur", "epi", "epi_set", "leg", "leg_armset",
@@ -150,6 +152,15 @@ public class HUDConfigScreen extends Screen {
                     }
                 }
             }
+            case PERFORMANCE -> {
+                contentY = addToggle(contentX, contentY, colW, "screen.hud_config.orb_gpu",
+                        config.orbGpuRendering, v -> {
+                            config.orbGpuRendering = v;
+                            init(); // an automatic orb rate follows the switch, so refresh the slider
+                        }, "screen.hud_config.orb_gpu.tooltip");
+                contentY += 4;
+                addOrbFpsSlider(contentX, contentY, Math.min(colW, 260), config);
+            }
             case GENERAL -> {
                 addRenderableWidget(Button.builder(
                         ModLanguageManager.get("screen.hud_config.language_button").copy()
@@ -185,14 +196,57 @@ public class HUDConfigScreen extends Screen {
     }
 
     private int addToggle(int x, int y, int width, String key, boolean selected, Consumer<Boolean> onChange) {
-        Checkbox box = Checkbox.builder(ModLanguageManager.get(key), font)
+        return addToggle(x, y, width, key, selected, onChange, null);
+    }
+
+    private int addToggle(int x, int y, int width, String key, boolean selected, Consumer<Boolean> onChange, String tooltipKey) {
+        Checkbox.Builder builder = Checkbox.builder(ModLanguageManager.get(key), font)
                 .pos(x, y)
                 .selected(selected)
-                .onValueChange((checkbox, value) -> onChange.accept(value))
-                .build();
+                .onValueChange((checkbox, value) -> onChange.accept(value));
+        if (tooltipKey != null) {
+            builder.tooltip(Tooltip.create(ModLanguageManager.get(tooltipKey)));
+        }
+        Checkbox box = builder.build();
         addRenderableWidget(box);
         // Eight HUD toggles must leave room for Arrange and Save at the minimum GUI height.
         return y + (category == Category.HUD && height < 280 ? 18 : 22);
+    }
+
+    /** Orb redraw rate, snapping to {@link HUDConfig#ORB_FPS_STEPS}; the last step redraws every frame. */
+    private void addOrbFpsSlider(int x, int y, int width, HUDConfig config) {
+        int[] steps = HUDConfig.ORB_FPS_STEPS;
+        // Opens on the rate in use; the automatic default only becomes a stored choice once moved
+        int current = config.effectiveOrbFps();
+        int index = 0;
+        for (int i = 0; i < steps.length; i++) {
+            if (steps[i] == current) index = i;
+        }
+        AbstractSliderButton slider = new AbstractSliderButton(x, y, width, 20, Component.empty(),
+                index / (double) (steps.length - 1)) {
+            {
+                updateMessage();
+            }
+
+            private int fps() {
+                return steps[(int) Math.round(this.value * (steps.length - 1))];
+            }
+
+            @Override
+            protected void updateMessage() {
+                int fps = fps();
+                setMessage(Component.literal(fps == 0
+                        ? ModLanguageManager.getString("screen.hud_config.orb_fps.every_frame")
+                        : ModLanguageManager.format("screen.hud_config.orb_fps", "fps", fps)));
+            }
+
+            @Override
+            protected void applyValue() {
+                config.orbFps = fps();
+            }
+        };
+        slider.setTooltip(Tooltip.create(ModLanguageManager.get("screen.hud_config.orb_fps.tooltip")));
+        addRenderableWidget(slider);
     }
 
     private void cycleLanguage() {
