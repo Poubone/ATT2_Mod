@@ -65,6 +65,16 @@ public abstract class BufferBuilderMixin implements LootbeamsBufferBuilder {
    }
 
    @Override
+   public LootbeamsBufferBuilder beamAlpha(float alpha) {
+      long l = this.lootbeams$beginElement(CustomVertexFormats.BEAM_ALPHA);
+      if (l != -1L) {
+         MemoryUtil.memPutFloat(l, alpha);
+      }
+
+      return this;
+   }
+
+   @Override
    public LootbeamsBufferBuilder longCustomData(float data0, float data1, float data2, float data3) {
       long l = this.lootbeams$beginElement(CustomVertexFormats.CUSTOM_DATA);
       if (l != -1L) {

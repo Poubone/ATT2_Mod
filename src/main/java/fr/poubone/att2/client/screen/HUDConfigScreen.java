@@ -10,6 +10,7 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -160,6 +161,7 @@ public class HUDConfigScreen extends Screen {
             }
             case PERFORMANCE -> {
                 int performanceWidth = Math.max(1, Math.min(260, contentRight - contentX - 16));
+                contentY = addHeading(contentX, contentY, "screen.hud_config.perf.hud");
                 contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.orb_gpu",
                         config.orbGpuRendering, v -> {
                             config.orbGpuRendering = v;
@@ -167,6 +169,52 @@ public class HUDConfigScreen extends Screen {
                         }, "screen.hud_config.orb_gpu.tooltip");
                 contentY += 4;
                 addOrbFpsSlider(contentX, contentY, performanceWidth, config);
+                contentY += 30;
+
+                contentY = addHeading(contentX, contentY, "screen.hud_config.perf.loot_beams");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.batch_loot_beams",
+                        config.batchLootBeams, v -> config.batchLootBeams = v, "screen.hud_config.batch_loot_beams.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.cull_loot_beams",
+                        config.cullLootBeams, v -> config.cullLootBeams = v, "screen.hud_config.cull_loot_beams.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.cache_loot_beam_config",
+                        config.cacheLootBeamConfig, v -> {
+                            config.cacheLootBeamConfig = v;
+                            com.lootbeams.features.CustomLootBeamsConfig.clearConfigCache();
+                        }, "screen.hud_config.cache_loot_beam_config.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.prune_beam_timers",
+                        config.pruneBeamTimersPerFrame, v -> config.pruneBeamTimersPerFrame = v,
+                        "screen.hud_config.prune_beam_timers.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.light_item_checks",
+                        config.lightItemChecks, v -> config.lightItemChecks = v, "screen.hud_config.light_item_checks.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.loot_piles",
+                        config.lootPiles, v -> config.lootPiles = v, "screen.hud_config.loot_piles.tooltip");
+                contentY += 2;
+                addStepSlider(contentX, contentY, performanceWidth, HUDConfig.LOOT_BEAM_LIMIT_STEPS, config.lootBeamLimit,
+                        limit -> limit == 0 ? ModLanguageManager.getString("screen.hud_config.loot_beam_limit.all")
+                                : ModLanguageManager.format("screen.hud_config.loot_beam_limit", "count", limit),
+                        limit -> config.lootBeamLimit = limit, "screen.hud_config.loot_beam_limit.tooltip");
+                contentY += 30;
+
+                contentY = addHeading(contentX, contentY, "screen.hud_config.perf.items");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.skip_hidden_faces",
+                        config.cullHiddenItemFaces, v -> config.cullHiddenItemFaces = v, "screen.hud_config.skip_hidden_faces.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.remember_item_bounds",
+                        config.cacheItemBounds, v -> config.cacheItemBounds = v, "screen.hud_config.remember_item_bounds.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.direct_item_outlines",
+                        config.directItemOutlines, v -> config.directItemOutlines = v, "screen.hud_config.direct_item_outlines.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.cache_name_tags",
+                        config.cacheNameTags, v -> config.cacheNameTags = v, "screen.hud_config.cache_name_tags.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.solid_items",
+                        config.solidItemEntities, v -> config.solidItemEntities = v, "screen.hud_config.solid_items.tooltip");
+                contentY = addToggle(contentX, contentY, performanceWidth, "screen.hud_config.dust_no_collisions",
+                        config.dustWithoutCollisions, v -> config.dustWithoutCollisions = v,
+                        "screen.hud_config.dust_no_collisions.tooltip");
+                contentY += 2;
+                addStepSlider(contentX, contentY, performanceWidth, HUDConfig.MAP_ITEM_PARTICLE_LIMIT_STEPS,
+                        config.mapItemParticleLimit,
+                        limit -> limit == 0 ? ModLanguageManager.getString("screen.hud_config.map_item_particles.all")
+                                : ModLanguageManager.format("screen.hud_config.map_item_particles", "count", limit),
+                        limit -> config.mapItemParticleLimit = limit, "screen.hud_config.map_item_particles.tooltip");
             }
             case GENERAL -> {
                 content(Button.builder(
@@ -237,6 +285,13 @@ public class HUDConfigScreen extends Screen {
             return true;
         }
         return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
+    }
+
+    /** A section title inside a category; part of the scrolling content. */
+    private int addHeading(int x, int y, String key) {
+        Component text = ModLanguageManager.get(key).withStyle(net.minecraft.ChatFormatting.GOLD);
+        content(new StringWidget(x, y, font.width(text), font.lineHeight, text, font));
+        return y + 13;
     }
 
     private int addToggle(int x, int y, int width, String key, boolean selected, Consumer<Boolean> onChange) {

@@ -2,6 +2,9 @@ package com.lootbeams.managers;
 
 import com.lootbeams.contexts.WorldRendererContext;
 import com.lootbeams.extensions.LootbeamsParticleManager;
+import com.lootbeams.render.BeamRender;
+import com.lootbeams.render.LootBeamBufferSource;
+import com.lootbeams.render.LootBeamPerf;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,7 @@ public class RenderManager {
                ? worldRendererContext.getTickCounter().getGameTimeDeltaPartialTick(false)
                : Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
          particleManager.renderCustomParticles(
-               worldRendererContext.getConsumers(), worldRendererContext.getCamera(), tickDelta);
+               LootBeamPerf.buffers(), worldRendererContext.getCamera(), tickDelta);
       }
    }
 
@@ -49,6 +52,8 @@ public class RenderManager {
       RENDER_AFTER_TRANSLUCENT.clear();
       RENDER_AFTER_WEATHER.clear();
       RENDER_BEFORE_END.clear();
+      BeamBudget.reset();
+      BeamRender.pruneGroundTimes();
    }
 
    public static void renderAfter(PoseStack stack, Vec3 cameraPos, BufferSource immediate, List<BiConsumer<PoseStack, BufferSource>> consumers) {
@@ -57,6 +62,7 @@ public class RenderManager {
          stack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
          consumers.forEach(consumer -> consumer.accept(stack, immediate));
          stack.popPose();
+         LootBeamBufferSource.get().endBatch();
          immediate.endBatch();
       }
    }

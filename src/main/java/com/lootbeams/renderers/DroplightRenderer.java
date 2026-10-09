@@ -8,8 +8,8 @@ import com.lootbeams.extensions.LootbeamsBufferBuilder;
 import com.lootbeams.helpers.ColorHelper;
 import com.lootbeams.helpers.NumberHelper;
 import com.lootbeams.helpers.RarityHelper;
+import com.lootbeams.render.LootBeamPerf;
 import com.lootbeams.render.LootBeamRenderLayers;
-import com.lootbeams.render.LootBeamShaderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
@@ -86,16 +86,9 @@ public class DroplightRenderer {
       }
 
       TextColor color2 = getSecondColor(color, itemConfig.beamGradientModifiers);
-      int color2Rgb = color2.getValue();
-      // Official 1.21.4: RenderSystem.setShaderColor(1, 1, 1, beamAlpha).
-      // 1.21.11 writes ColorModulator through DynamicUniforms; rgb carries Color1
-      // because a second vertex colour is not a first-class attribute anymore.
-      LootBeamShaderState.setColorModulator(
-            (color2Rgb >> 16 & 0xFF) / 255.0F,
-            (color2Rgb >> 8 & 0xFF) / 255.0F,
-            (color2Rgb >> 0 & 0xFF) / 255.0F,
-            beamAlpha);
-      try {
+      // Official 1.21.4: RenderSystem.setShaderColor(1, 1, 1, beamAlpha). Here the beam alpha is written
+      // into each vertex instead, so beams with different fades batch into one draw.
+      {
          matrixStack.pushPose();
          matrixStack.translate(0.0, 0.015, 0.0);
          matrixStack.pushPose();
@@ -129,8 +122,6 @@ public class DroplightRenderer {
                yOffset);
          matrixStack.popPose();
          matrixStack.popPose();
-      } finally {
-         LootBeamShaderState.clear();
       }
    }
 
@@ -165,8 +156,9 @@ public class DroplightRenderer {
             1.0F,
             0.5F,
             true,
-            SHADERS_LOADED);
-      buffer.endBatch();
+            SHADERS_LOADED,
+            beamAlpha);
+      LootBeamPerf.flushIfOriginal(buffer);
       if (beamHeight <= 0.0F) {
          return;
       }
@@ -193,8 +185,9 @@ public class DroplightRenderer {
                1.0F,
                true,
                animationSpeed,
-               itemAgeInSeconds);
-         buffer.endBatch();
+               itemAgeInSeconds,
+               beamAlpha);
+         LootBeamPerf.flushIfOriginal(buffer);
          builder = buffer.getBuffer(DROPLIGHT_BASE_LAYER);
          renderQuad(
                builder,
@@ -213,8 +206,9 @@ public class DroplightRenderer {
                1.0F,
                2.0F,
                false,
-               SHADERS_LOADED);
-         buffer.endBatch();
+               SHADERS_LOADED,
+               beamAlpha);
+         LootBeamPerf.flushIfOriginal(buffer);
       } else {
          builder = buffer.getBuffer(DROPLIGHT_LAYER);
          renderQuad(
@@ -234,8 +228,9 @@ public class DroplightRenderer {
                1.0F,
                2.0F,
                true,
-               SHADERS_LOADED);
-         buffer.endBatch();
+               SHADERS_LOADED,
+               beamAlpha);
+         LootBeamPerf.flushIfOriginal(buffer);
       }
    }
 
@@ -272,7 +267,8 @@ public class DroplightRenderer {
          float v2,
          float alphaMultiplier,
          boolean fade,
-         boolean shadersLoaded) {
+         boolean shadersLoaded,
+         float beamAlpha) {
       Pose stack = matrixStack.last();
       Matrix4f positionMatrix = stack.pose();
       float alpha2 = fade ? 0.0F : alpha;
@@ -283,6 +279,13 @@ public class DroplightRenderer {
       int green2 = color2 >> 8 & 0xFF;
       int blue2 = color2 >> 0 & 0xFF;
       if (shadersLoaded) {
+         // Shader packs draw this as a vanilla emissive entity layer, which used to be tinted and faded by the
+         // colour modulator (second colour, beam alpha); bake that into the vertex colour instead.
+         red *= red2 / 255.0F;
+         green *= green2 / 255.0F;
+         blue *= blue2 / 255.0F;
+         alpha *= beamAlpha;
+         alpha2 *= beamAlpha;
          builder.addVertex(positionMatrix, x - w / 2.0F, y, z)
                .setUv(u, v2)
                .setColor(red, green, blue, alpha)
@@ -310,16 +313,20 @@ public class DroplightRenderer {
       } else {
          ((LootbeamsBufferBuilder) builder.addVertex(positionMatrix, x - w / 2.0F, y, z).setUv(u, v2).setColor(red, green, blue, alpha))
                .color1(red2, green2, blue2, (int) (alpha * 255.0F))
-               .longCustomData(alphaMultiplier, red2 / 255.0F, green2 / 255.0F, blue2 / 255.0F);
+               .longCustomData(alphaMultiplier, red2 / 255.0F, green2 / 255.0F, blue2 / 255.0F)
+               .beamAlpha(beamAlpha);
          ((LootbeamsBufferBuilder) builder.addVertex(positionMatrix, x + w / 2.0F, y, z).setUv(u2, v2).setColor(red, green, blue, alpha))
                .color1(red2, green2, blue2, (int) (alpha * 255.0F))
-               .longCustomData(alphaMultiplier, red2 / 255.0F, green2 / 255.0F, blue2 / 255.0F);
+               .longCustomData(alphaMultiplier, red2 / 255.0F, green2 / 255.0F, blue2 / 255.0F)
+               .beamAlpha(beamAlpha);
          ((LootbeamsBufferBuilder) builder.addVertex(positionMatrix, x + w / 2.0F, y + h, z).setUv(u2, v).setColor(red, green, blue, alpha2))
                .color1(red2, green2, blue2, (int) (alpha2 * 255.0F))
-               .longCustomData(alphaMultiplier, red2 / 255.0F, green2 / 255.0F, blue2 / 255.0F);
+               .longCustomData(alphaMultiplier, red2 / 255.0F, green2 / 255.0F, blue2 / 255.0F)
+               .beamAlpha(beamAlpha);
          ((LootbeamsBufferBuilder) builder.addVertex(positionMatrix, x - w / 2.0F, y + h, z).setUv(u, v).setColor(red, green, blue, alpha2))
                .color1(red2, green2, blue2, (int) (alpha2 * 255.0F))
-               .longCustomData(alphaMultiplier, red2 / 255.0F, green2 / 255.0F, blue2 / 255.0F);
+               .longCustomData(alphaMultiplier, red2 / 255.0F, green2 / 255.0F, blue2 / 255.0F)
+               .beamAlpha(beamAlpha);
       }
    }
 
@@ -340,7 +347,8 @@ public class DroplightRenderer {
          float v2,
          boolean fade,
          float animationSpeed,
-         float itemAge) {
+         float itemAge,
+         float beamAlpha) {
       Matrix4f positionMatrix = matrixStack.last().pose();
       float alpha2 = fade ? 0.0F : alpha;
       float red = (color >> 16 & 0xFF) / 255.0F;
@@ -351,15 +359,19 @@ public class DroplightRenderer {
       int blue2 = color2 >> 0 & 0xFF;
       ((LootbeamsBufferBuilder) builder.addVertex(positionMatrix, x - w / 2.0F, y, z).setUv(u, v2).setColor(red, green, blue, alpha))
             .color1(red2, green2, blue2, (int) (alpha * 255.0F))
-            .longCustomData(w, h, animationSpeed, itemAge);
+            .longCustomData(w, h, animationSpeed, itemAge)
+            .beamAlpha(beamAlpha);
       ((LootbeamsBufferBuilder) builder.addVertex(positionMatrix, x + w / 2.0F, y, z).setUv(u2, v2).setColor(red, green, blue, alpha))
             .color1(red2, green2, blue2, (int) (alpha * 255.0F))
-            .longCustomData(w, h, animationSpeed, itemAge);
+            .longCustomData(w, h, animationSpeed, itemAge)
+            .beamAlpha(beamAlpha);
       ((LootbeamsBufferBuilder) builder.addVertex(positionMatrix, x + w / 2.0F, y + h, z).setUv(u2, v).setColor(red, green, blue, alpha2))
             .color1(red2, green2, blue2, (int) (alpha2 * 255.0F))
-            .longCustomData(w, h, animationSpeed, itemAge);
+            .longCustomData(w, h, animationSpeed, itemAge)
+            .beamAlpha(beamAlpha);
       ((LootbeamsBufferBuilder) builder.addVertex(positionMatrix, x - w / 2.0F, y + h, z).setUv(u, v).setColor(red, green, blue, alpha2))
             .color1(red2, green2, blue2, (int) (alpha2 * 255.0F))
-            .longCustomData(w, h, animationSpeed, itemAge);
+            .longCustomData(w, h, animationSpeed, itemAge)
+            .beamAlpha(beamAlpha);
    }
 }

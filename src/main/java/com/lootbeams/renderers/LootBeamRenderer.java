@@ -5,6 +5,7 @@ import com.lootbeams.config.Configuration;
 import com.lootbeams.helpers.ColorHelper;
 import com.lootbeams.helpers.NumberHelper;
 import com.lootbeams.helpers.RarityHelper;
+import com.lootbeams.render.LootBeamPerf;
 import com.lootbeams.render.LootBeamRenderLayers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -118,7 +119,7 @@ public class LootBeamRenderer {
             itemConfig.solidBeam,
             yOffset
          );
-         buffer.endBatch();
+         LootBeamPerf.flushIfOriginal(buffer);
          if (itemConfig.whiteCenter) {
             renderBeamLayer(
                matrixStack,
@@ -138,7 +139,7 @@ public class LootBeamRenderer {
                itemConfig.solidBeam,
                yOffset
             );
-            buffer.endBatch();
+            LootBeamPerf.flushIfOriginal(buffer);
          }
       }
    }

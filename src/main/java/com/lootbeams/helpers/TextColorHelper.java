@@ -50,7 +50,7 @@ public class TextColorHelper {
                if (itemStack.getComponents().has(DataComponents.CUSTOM_DATA)) {
                   CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
                   if (data != null) {
-                     CompoundTag value = data.copyTag();
+                     CompoundTag value = fr.poubone.att2.client.data.CustomDataView.read(data);
                      if (value.contains(NBT_ANIMATED_COLOR_KEY) && PrismCompat.isPrismLoaded()) {
                         if (DC_MAP.containsKey(itemStack)) {
                            return TextColor.fromRgb(DC_MAP.get(itemStack).getValue());

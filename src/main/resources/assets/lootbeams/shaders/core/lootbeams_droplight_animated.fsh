@@ -8,6 +8,7 @@ uniform sampler2D Sampler0;
 in vec2 texCoord0;
 in vec4 vertexColor0;
 in vec4 vertexColor1;
+in float beamAlpha;
 in float beamWidth;
 in float beamHeight;
 in float animationSpeed;
@@ -132,14 +133,10 @@ void renderNewBeam()
 	float alphaBlend = color.a * powerNoise;
 	color = mix(color, vec4(alphaBlend), dissolveAmount);
 
-	// Official 1.21.4 mix. ColorModulator.a is beamAlpha; rgb is Color1 fallback.
+	// Official 1.21.4 mix, with the beam alpha from a vertex attribute instead of ColorModulator.a.
 	vec3 second = vertexColor1.rgb;
 	float secondAlpha = vertexColor1.a;
-	if (dot(second, second) < 0.0001) {
-		second = ColorModulator.rgb;
-		secondAlpha = vertexColor0.a;
-	}
-	color.a *= ColorModulator.a;
+	color.a *= beamAlpha;
 	color.rgb = (color.a * vertexColor0.rgb) + (1.0 - color.a) * second;
 	color.a *= vertexColor0.a * secondAlpha;
 

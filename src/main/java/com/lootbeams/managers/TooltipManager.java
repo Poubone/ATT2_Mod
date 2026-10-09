@@ -28,7 +28,8 @@ public class TooltipManager {
    }
 
    public static void onEntityRender(ItemStack itemStack) {
-      if (itemStack == null || itemStack.isEmpty()) {
+      // getTooltipFromCache builds it when a tag first needs it; building every item's tooltip every frame is costly.
+      if (itemStack == null || itemStack.isEmpty() || fr.poubone.att2.client.hud.HUDConfig.get().lightItemChecks) {
          return;
       }
       if (!TOOLTIP_CACHE.containsKey(itemStack)) {

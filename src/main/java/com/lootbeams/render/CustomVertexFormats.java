@@ -13,6 +13,8 @@ public class CustomVertexFormats {
    public static VertexFormatElement UV_CENTER;
    public static VertexFormatElement UV_SIZE;
    public static VertexFormatElement CUSTOM_DATA;
+   /** Droplight beam alpha per vertex, so beams with different fades share one draw. */
+   public static VertexFormatElement BEAM_ALPHA;
    public static VertexFormat POSITION_TEX_COLOR0_COLOR1_CUSTOM;
    public static VertexFormat POSITION_TEX_COLOR0_COLOR1_CENTER;
    private static final List<Integer> EMPTY_INDEXES = new ArrayList<>();
@@ -37,12 +39,14 @@ public class CustomVertexFormats {
       UV_CENTER = VertexFormatElement.register(getAvailableIndex(), 0, Type.FLOAT, Usage.UV, 2);
       UV_SIZE = VertexFormatElement.register(getAvailableIndex(), 0, Type.FLOAT, Usage.UV, 2);
       CUSTOM_DATA = VertexFormatElement.register(getAvailableIndex(), 0, Type.FLOAT, Usage.GENERIC, 4);
+      BEAM_ALPHA = VertexFormatElement.register(getAvailableIndex(), 0, Type.FLOAT, Usage.GENERIC, 1);
       POSITION_TEX_COLOR0_COLOR1_CUSTOM = VertexFormat.builder()
             .add("Position", VertexFormatElement.POSITION)
             .add("UV0", VertexFormatElement.UV0)
             .add("Color", VertexFormatElement.COLOR)
             .add("Color1", COLOR1)
             .add("CustomData", CUSTOM_DATA)
+            .add("BeamAlpha", BEAM_ALPHA)
             .build();
       POSITION_TEX_COLOR0_COLOR1_CENTER = VertexFormat.builder()
             .add("Position", VertexFormatElement.POSITION)

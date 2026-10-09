@@ -44,6 +44,33 @@ public class HUDConfig {
      * {@link #ORB_FPS_AUTO} until the slider is moved. See {@link #effectiveOrbFps()}.
      */
     public int orbFps = ORB_FPS_AUTO;
+    /*
+     * Dropped-item performance switches, each on its own so its effect can be measured (Performance tab).
+     * Off restores the original behaviour of that one part; see LootBeamPerf, ItemPiles, ItemParticleBudget.
+     */
+    /** Loot beams, glows and their particles drawn together, one draw per layer, with cached layers. */
+    public boolean batchLootBeams = true;
+    /** Items within the beam range are still frustum-culled, instead of drawn even behind the camera. */
+    public boolean cullLootBeams = true;
+    /** The default loot beam settings are remembered per item instead of looked up (copying its NBT) each time. */
+    public boolean cacheLootBeamConfig = true;
+    /** Beam grow-in timers are tidied once per frame instead of after every beam. */
+    public boolean pruneBeamTimersPerFrame = true;
+    /** The map's dust above dropped items spawns without block collisions. */
+    public boolean dustWithoutCollisions = true;
+    /** Faces of dropped items turned away from the camera are skipped before drawing; the GPU discards them anyway. */
+    public boolean cullHiddenItemFaces = true;
+    /** Dropped items' model bounds are remembered per model instead of worked out from every vertex each frame. */
+    public boolean cacheItemBounds = true;
+    /** A glowing dropped item's outline is written straight into the outline buffer instead of converted per quad. */
+    public boolean directItemOutlines = true;
+    /** Dropped items' name tags are built, measured and laid out once, then reused while they stay the same. */
+    public boolean cacheNameTags = true;
+    /**
+     * Item data is read in place instead of copied, and loot beam colours and item tooltips are only worked out for the
+     * tags that show, instead of for every dropped item every frame.
+     */
+    public boolean lightItemChecks = true;
     /** Movable / resizable HUD boxes, keyed by {@link HudLayout} ids. */
     public Map<String, HudSlot> slots = new LinkedHashMap<>();
     /** Ask for a second key press before dropping an item whose custom_data.Rarity is listed here. */
@@ -103,6 +130,18 @@ public class HUDConfig {
     public float beamHeight = 1;
     public float beamYOffset = 0;
     public float beamAlpha = 0.85f;
+    /** Most items given a loot beam per frame, the nearest on screen; 0 draws every beam. */
+    public int lootBeamLimit = 0;
+    /** Loot beam limit choices; 0 means no limit. */
+    public static final int[] LOOT_BEAM_LIMIT_STEPS = {16, 32, 64, 128, 0};
+    /** The map's rarity dust is kept on this many nearest dropped items; 0 keeps it on all. */
+    public int mapItemParticleLimit = 0;
+    /** Map item particle limit choices; 0 means no limit. */
+    public static final int[] MAP_ITEM_PARTICLE_LIMIT_STEPS = {8, 16, 32, 64, 0};
+    /** Items in one block share one beam and one set of map dust per rarity, see {@code ItemPiles}. */
+    public boolean lootPiles = true;
+    /** Dropped items drawn as cutout instead of translucent, skipping a per-frame sort. */
+    public boolean solidItemEntities = false;
     public float renderDistance = 24.0f;
     public float fadeDistance = 2.0f;
 
@@ -259,6 +298,12 @@ public class HUDConfig {
         if (!isValidOrbFps(INSTANCE.orbFps)) {
             INSTANCE.orbFps = ORB_FPS_AUTO;
         }
+        if (java.util.Arrays.stream(LOOT_BEAM_LIMIT_STEPS).noneMatch(step -> step == INSTANCE.lootBeamLimit)) {
+            INSTANCE.lootBeamLimit = 0;
+        }
+        if (java.util.Arrays.stream(MAP_ITEM_PARTICLE_LIMIT_STEPS).noneMatch(step -> step == INSTANCE.mapItemParticleLimit)) {
+            INSTANCE.mapItemParticleLimit = 0;
+        }
 
         if (INSTANCE.partySyncUrl == null) {
             INSTANCE.partySyncUrl = "";
@@ -358,8 +403,9 @@ public class HUDConfig {
         if (data == null || data.isEmpty()) {
             return null;
         }
-        String coin = data.copyTag().getString("Coin").orElse("");
-        return coin.equals("esc") ? coin : data.copyTag().getString("Rarity").orElse(null);
+        net.minecraft.nbt.CompoundTag tag = fr.poubone.att2.client.data.CustomDataView.read(data);
+        String coin = tag.getString("Coin").orElse("");
+        return coin.equals("esc") ? coin : tag.getString("Rarity").orElse(null);
     }
 
     private static boolean matchesAnyList(List<String> entries, Item item) {

@@ -103,7 +103,7 @@ public class CustomRarity {
       if (itemStack.getComponents().has(DataComponents.CUSTOM_DATA)) {
          CustomData itemCustomData = (CustomData)itemStack.get(DataComponents.CUSTOM_DATA);
          if (itemCustomData != null) {
-            CompoundTag customDataNbt = itemCustomData.copyTag();
+            CompoundTag customDataNbt = fr.poubone.att2.client.data.CustomDataView.read(itemCustomData);
             if (!customDataNbt.isEmpty()) {
                CompoundTag customRarity = customDataNbt.getCompoundOrEmpty("custom_rarity");
                if (!customRarity.isEmpty()) {
