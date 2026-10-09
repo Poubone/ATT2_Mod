@@ -13,6 +13,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,13 @@ public class ShopScreen extends Screen {
     private boolean chromeRepair;
     private ShopActionButton prevNav;
     private ShopActionButton nextNav;
+    /** The buy-hint setting the cards were laid out for, and whether they actually draw it. */
+    private boolean hintSetting, cardsHaveHint;
+    /** Purchase confirmation: the selected card, and until when it stays selected. */
+    private static final long CONFIRM_WINDOW_MS = 3000;
+    private static final int META_TINT = 0x2E8B6A3C, META_ACCENT = 0xFFB0803F;
+    private String armedKey;
+    private long armedUntil;
 
     private boolean comparisonHeld() {
         return ShopComparison.isHeld(minecraft.getWindow().handle(), KeybindManager.compareKeyCode());
@@ -56,6 +64,7 @@ public class ShopScreen extends Screen {
         scale = ShopViewport.fit(width, height, 640, 392, HUDConfig.get().menuSize).scale() * (640f / 1440f);
         offsetX = (width - size(1440)) / 2;
         offsetY = (height - size(880)) / 2;
+        ShopBuyHint.requestPlayTime(minecraft);
         rebuild();
     }
 
@@ -65,7 +74,8 @@ public class ShopScreen extends Screen {
     private float textScale() { return scale * 2.7f; }
 
     @Override public void tick() {
-        if (ShopModel.get().version() != lastVersion) rebuild();
+        // The hint can switch itself off when the play-time statistic arrives, which changes the card shape.
+        if (ShopModel.get().version() != lastVersion || ShopBuyHint.isShown(minecraft) != hintSetting) rebuild();
     }
 
     @Override public void removed() {
@@ -102,8 +112,14 @@ public class ShopScreen extends Screen {
         }
         List<ShopOffer> offers = model.isRepairView() ? model.repairOffers() : catalog.offers().stream()
                 .filter(o -> categoryFilter.isEmpty() || categoryFilter.equals(o.category())).toList();
-        ShopGrid grid = ShopGrid.fitting(HUDConfig.get().shopColumns,
-                scale * (float) minecraft.getWindow().getGuiScale());
+        if (HUDConfig.get().shopSortByTier) offers = ShopOrdering.byTier(offers);
+        float pixelsPerUnit = scale * (float) minecraft.getWindow().getGuiScale();
+        hintSetting = ShopBuyHint.isShown(minecraft);
+        ShopGrid grid = ShopGrid.fitting(HUDConfig.get().shopColumns, pixelsPerUnit, hintSetting);
+        if (grid.hint() && !grid.hintReadable(pixelsPerUnit)) {
+            grid = ShopGrid.fitting(HUDConfig.get().shopColumns, pixelsPerUnit, false);
+        }
+        cardsHaveHint = grid.hint();
         int perPage = grid.perPage();
         pages = Math.max(1, (offers.size() + perPage - 1) / perPage);
         page = Math.max(0, Math.min(page, pages - 1));
@@ -112,7 +128,7 @@ public class ShopScreen extends Screen {
             ShopOffer offer = offers.get(i);
             addRenderableWidget(new ShopSlotButton(x(grid.cardX(local)), y(grid.cardY(local)),
                     size(Math.round(grid.cardWidth())), size(Math.round(grid.cardHeight())),
-                    offer, () -> ShopModel.get().buy(offer), type));
+                    offer, () -> press(offer), type, grid.hint(), () -> isArmed(offer)));
         }
         if (!keepChrome) {
             addChrome(model, catalog);
@@ -162,6 +178,57 @@ public class ShopScreen extends Screen {
         nextNav.active = page + 1 < pages;
         button(1350, 51, 42, 42, new ShopAction(-1, ModLanguageManager.get("ui.close"), null, ShopAction.Kind.OTHER),
                 ShopActionButton.Chrome.CLOSE, () -> false, this::onClose);
+    }
+
+    /**
+     * With confirmation on, the first click selects the card and a second click on it buys. The selection
+     * then stays for {@link #CONFIRM_WINDOW_MS} after each purchase, so buying the same item again is one click.
+     */
+    private void press(ShopOffer offer) {
+        if (HUDConfig.get().shopConfirmPurchase) {
+            boolean confirmed = isArmed(offer);
+            armedKey = armKey(offer);
+            armedUntil = Util.getMillis() + CONFIRM_WINDOW_MS;
+            if (!confirmed) return;
+        }
+        ShopModel.get().buy(offer);
+    }
+
+    private boolean isArmed(ShopOffer offer) {
+        return armKey(offer).equals(armedKey) && Util.getMillis() < armedUntil;
+    }
+
+    private static String armKey(ShopOffer offer) {
+        return offer.trigger() + "|" + offer.name().getString();
+    }
+
+    /**
+     * The discount / powder-stock line on a flat tinted strip with an accent bar, so it reads on the
+     * parchment without looking clickable.
+     *
+     * @return the right edge of the strip
+     */
+    private int drawMetaLabel(GuiGraphics graphics, Component meta) {
+        float scaleText = textScale();
+        int left = x(364), top = y(164);
+        int width = Math.min(Math.round(font.width(meta) * scaleText) + 1, size(725));
+        int padX = size(12), padY = size(7);
+        int bottom = top + Math.round(8 * scaleText) + padY;
+        graphics.fill(left - padX, top - padY, left + width + padX, bottom, META_TINT);
+        graphics.fill(left - padX, top - padY, left - padX + Math.max(1, size(5)), bottom, META_ACCENT);
+        ShopTheme.text(graphics, meta, left, top, width, scaleText, 0xFF5A4630, false);
+        return left + width + padX;
+    }
+
+    /** Without the per-card hint, one line on the header row says how to buy, left of the page arrows. */
+    private void drawBuyPrompt(GuiGraphics graphics, int left) {
+        Component prompt = ModLanguageManager.get("shop.click_to_buy");
+        float scaleText = textScale();
+        int right = x(1104);
+        int textWidth = Math.round(font.width(prompt) * scaleText) + 1;
+        int width = Math.min(right - left, textWidth);
+        if (width < size(80)) return;
+        ShopTheme.text(graphics, prompt, right - width, y(164), width, scaleText, 0xFF705E47, false);
     }
 
     private static ShopAction navigation(String label) {
@@ -232,7 +299,10 @@ public class ShopScreen extends Screen {
         ShopTheme.text(graphics, Component.literal((page + 1) + " / " + pages), x(1171), y(166), size(116),
                 textScale(), 0xFF705E47, true);
         Component meta = catalog.discount() != null ? catalog.discount() : catalog.powderStock();
-        if (meta != null) ShopTheme.text(graphics, meta, x(364), y(164), size(725), textScale(), 0xFF705E47, false);
+        int metaRight = meta == null ? x(364) : drawMetaLabel(graphics, meta);
+        if (!cardsHaveHint && children().stream().anyMatch(ShopSlotButton.class::isInstance)) {
+            drawBuyPrompt(graphics, meta == null ? metaRight : metaRight + size(24));
+        }
         if (catalog.remaining() != null && !ShopTellraws.isForceResetAction(catalog.remaining().getString())) {
             ShopTheme.text(graphics, catalog.remaining(), x(137), y(109), size(880),
                     textScale(), 0xFFD9C59E, false);

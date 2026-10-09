@@ -47,7 +47,10 @@ public final class ShopPreview {
         button(g, offsetX, offsetY, scale, 1122, 158, 42, 38, edge, partTint);
         button(g, offsetX, offsetY, scale, 1294, 158, 42, 38, edge, partTint);
 
-        ShopGrid grid = ShopGrid.fitting(columns, scale * (float) client.getWindow().getGuiScale());
+        float pixelsPerUnit = scale * (float) client.getWindow().getGuiScale();
+        boolean hint = ShopBuyHint.isShown(client);
+        ShopGrid grid = ShopGrid.fitting(columns, pixelsPerUnit, hint);
+        if (grid.hint() && !grid.hintReadable(pixelsPerUnit)) grid = ShopGrid.fitting(columns, pixelsPerUnit, false);
         int cardW = size(Math.round(grid.cardWidth()), scale), cardH = size(Math.round(grid.cardHeight()), scale);
         float s = cardW / (float) ShopSlotButton.CARD_WIDTH;
         int cardEdge = Math.max(1, Math.min(6, Math.min(cardW, cardH) / 3));
@@ -59,7 +62,7 @@ public final class ShopPreview {
                     ARGB.color(ARGB.alpha(textColor) / 2, 0x70, 0x5E, 0x47));
             int lineW = Math.round(180 * s), lineY = y + Math.round(146 * s);
             g.fill(x + (cardW - lineW) / 2, lineY, x + (cardW + lineW) / 2, lineY + Math.max(1, Math.round(10 * s)), textColor);
-            int buyY = y + Math.round(202 * s);
+            int buyY = y + Math.round((grid.hint() ? 202 : 168) * s);
             QuestBookSkin.panel(g, "button", x + Math.round(18 * s), buyY, Math.round(276 * s), Math.round(38 * s),
                     190, 49, cardEdge, partTint);
         }

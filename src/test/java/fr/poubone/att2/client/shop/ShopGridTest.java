@@ -58,6 +58,24 @@ class ShopGridTest {
         assertEquals(3, ShopGrid.fitting(3, 0.1f).columns());
     }
 
+    @Test void withoutTheHintCardsAreShorterAndNeverFewerPerPage() {
+        for (int columns = ShopGrid.MIN_COLUMNS; columns <= ShopGrid.MAX_COLUMNS; columns++) {
+            ShopGrid full = ShopGrid.of(columns, true);
+            ShopGrid compact = ShopGrid.of(columns, false);
+            assertEquals(312f / 218f, compact.cardWidth() / compact.cardHeight(), 0.001);
+            assertTrue(compact.perPage() >= full.perPage(), "columns " + columns);
+            int last = compact.perPage() - 1;
+            assertTrue(compact.cardX(last) + compact.cardWidth() <= 1336.5f, "columns " + columns);
+            assertTrue(compact.cardY(last) + compact.cardHeight() <= 733.5f, "columns " + columns);
+        }
+    }
+
+    @Test void hintReadabilityFollowsCardSizeAndScreenPixels() {
+        assertTrue(ShopGrid.of(3).hintReadable(1.0f));
+        assertFalse(ShopGrid.of(3).hintReadable(0.4f));
+        assertFalse(ShopGrid.of(3, false).hintReadable(10f));
+    }
+
     @Test void outOfRangeChoicesAreClamped() {
         assertEquals(ShopGrid.MIN_COLUMNS, ShopGrid.of(0).columns());
         assertEquals(ShopGrid.MAX_COLUMNS, ShopGrid.of(99).columns());
