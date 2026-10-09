@@ -7,14 +7,18 @@ import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
+import java.util.function.IntFunction;
 
 /**
  * Categorized settings: HUD widgets, menus, loot beams, performance, then general / Discord.
@@ -26,8 +30,19 @@ public class HUDConfigScreen extends Screen {
             "com", "cur", "epi", "epi_set", "leg", "leg_armset",
             "misc", "myt", "que", "rar", "spe", "ult", "unc", "unk", "epi_esc", "esc");
 
+    /** Category content starts below the title; it scrolls between {@link #VIEW_TOP} and the Save button. */
+    private static final int CONTENT_TOP = 40;
+    private static final int VIEW_TOP = 36;
+
+    private record ContentWidget(AbstractWidget widget, int baseY) {
+    }
+
     private Category category = Category.HUD;
     private int langIndex;
+    private final List<ContentWidget> content = new ArrayList<>();
+    private int scroll;
+    private int maxScroll;
+    private int scrollbarX;
 
     public HUDConfigScreen() {
         super(ModLanguageManager.get("screen.hud_config.title"));
@@ -56,15 +71,18 @@ public class HUDConfigScreen extends Screen {
             }
             addRenderableWidget(Button.builder(label, b -> {
                 category = picked;
+                scroll = 0;
                 init();
             }).bounds(tabX, tabY, tabW, 20).build());
             tabY += HUDConfigLayout.tabStep(height, Category.values().length);
         }
 
+        content.clear();
         int contentX = rtl ? 16 : 140;
-        int contentY = 40;
+        int contentY = CONTENT_TOP;
         int contentRight = rtl ? width - 140 : width;
-        int colW = Math.min(360, Math.max(220, contentRight - contentX - 24));
+        int available = contentRight - contentX - 12;
+        int colW = Math.min(360, Math.max(120, available));
 
         switch (category) {
             case HUD -> {
@@ -84,7 +102,7 @@ public class HUDConfigScreen extends Screen {
                         config.showSpellBar, v -> config.showSpellBar = v);
                 contentY = addToggle(contentX, contentY, colW, "screen.hud_config.show_temperature",
                         config.showTemperature, v -> config.showTemperature = v);
-                addRenderableWidget(Button.builder(ModLanguageManager.get("screen.hud_config.arrange"),
+                content(Button.builder(ModLanguageManager.get("screen.hud_config.arrange"),
                         b -> Minecraft.getInstance().setScreen(new HudLayoutScreen(this)))
                         .bounds(contentX, contentY + 8, 200, 20).build());
             }
@@ -107,20 +125,14 @@ public class HUDConfigScreen extends Screen {
                         config.minerMenuEnabled, v -> config.minerMenuEnabled = v);
                 contentY = addToggle(contentX, contentY, colW, "screen.hud_config.charles_auto_open",
                         config.charlesAutoOpen, v -> config.charlesAutoOpen = v);
-                int shopX = contentX;
-                int shopY = contentY;
+                int stallColumns = Math.max(1, Math.min(2, (available + 10) / 180));
                 int shopIndex = 0;
                 for (String shopId : HUDConfig.SHOP_MENU_IDS) {
                     String id = shopId;
-                    addToggle(shopX, shopY, 170, "shop.type." + id,
+                    addToggle(contentX + shopIndex % stallColumns * 180, contentY + shopIndex / stallColumns * 22,
+                            170, "shop.type." + id,
                             config.isShopMenuEnabled(id), selected -> config.setShopMenuEnabled(id, selected));
                     shopIndex++;
-                    if (shopIndex % 2 == 0) {
-                        shopX = contentX;
-                        shopY += 22;
-                    } else {
-                        shopX += 180;
-                    }
                 }
             }
             case LOOT -> {
@@ -131,12 +143,12 @@ public class HUDConfigScreen extends Screen {
                 contentY = addToggle(contentX, contentY, colW, "screen.hud_config.render_stackcount",
                         config.renderStackcount, v -> config.renderStackcount = v);
                 contentY += 6;
-                int rx = contentX;
-                int ry = contentY;
+                int rarityColumns = Math.max(1, Math.min(3, (available + 10) / 160));
                 int i = 0;
                 for (String rarity : RARITY_KEYS) {
                     boolean on = config.renderRarities.contains(rarity);
-                    addToggle(rx, ry, 150, "screen.hud_config.render_rarity." + rarity, on, selected -> {
+                    addToggle(contentX + i % rarityColumns * 160, contentY + i / rarityColumns * 22, 150,
+                            "screen.hud_config.render_rarity." + rarity, on, selected -> {
                         if (selected) {
                             if (!config.renderRarities.contains(rarity)) config.renderRarities.add(rarity);
                         } else {
@@ -144,12 +156,6 @@ public class HUDConfigScreen extends Screen {
                         }
                     });
                     i++;
-                    if (i % 3 == 0) {
-                        rx = contentX;
-                        ry += 22;
-                    } else {
-                        rx += 160;
-                    }
                 }
             }
             case PERFORMANCE -> {
@@ -163,7 +169,7 @@ public class HUDConfigScreen extends Screen {
                 addOrbFpsSlider(contentX, contentY, performanceWidth, config);
             }
             case GENERAL -> {
-                addRenderableWidget(Button.builder(
+                content(Button.builder(
                         ModLanguageManager.get("screen.hud_config.language_button").copy()
                                 .append(Component.literal(" : " + ModLanguageManager.nativeName(config.modLanguage))),
                         b -> cycleLanguage()
@@ -194,6 +200,43 @@ public class HUDConfigScreen extends Screen {
             DiscordPresence.onConfigChanged();
             Minecraft.getInstance().setScreen(null);
         }).bounds(width / 2 - 100, height - 28, 200, 20).build());
+        scrollbarX = contentRight - 6;
+        placeContent();
+    }
+
+    /** Adds a widget that belongs to the scrolling category content. */
+    private <T extends AbstractWidget> T content(T widget) {
+        content.add(new ContentWidget(widget, widget.getY()));
+        return addRenderableWidget(widget);
+    }
+
+    /** Offsets the content by the scroll position and hides what falls outside the view. */
+    private void placeContent() {
+        int bottom = CONTENT_TOP;
+        for (ContentWidget entry : content) {
+            bottom = Math.max(bottom, entry.baseY() + entry.widget().getHeight());
+        }
+        maxScroll = Math.max(0, bottom + 2 - viewBottom());
+        scroll = Math.max(0, Math.min(scroll, maxScroll));
+        for (ContentWidget entry : content) {
+            AbstractWidget widget = entry.widget();
+            widget.setY(entry.baseY() - scroll);
+            widget.visible = widget.getY() >= VIEW_TOP && widget.getBottom() <= viewBottom();
+        }
+    }
+
+    private int viewBottom() {
+        return height - 32;
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
+        if (maxScroll > 0 && deltaY != 0) {
+            scroll -= (int) Math.signum(deltaY) * 22;
+            placeContent();
+            return true;
+        }
+        return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
     }
 
     private int addToggle(int x, int y, int width, String key, boolean selected, Consumer<Boolean> onChange) {
@@ -210,7 +253,7 @@ public class HUDConfigScreen extends Screen {
             builder.tooltip(Tooltip.create(ModLanguageManager.get(tooltipKey)));
         }
         Checkbox box = builder.build();
-        addRenderableWidget(box);
+        content(box);
         // Eight HUD toggles must leave room for Arrange and Save at the minimum GUI height.
         int spacing = category == Category.HUD && height < 280 ? 18 : 22;
         return y + (tooltipKey == null ? spacing : Math.max(box.getHeight() + 2, spacing));
@@ -218,9 +261,17 @@ public class HUDConfigScreen extends Screen {
 
     /** Orb redraw rate, snapping to {@link HUDConfig#ORB_FPS_STEPS}; the last step redraws every frame. */
     private void addOrbFpsSlider(int x, int y, int width, HUDConfig config) {
-        int[] steps = HUDConfig.ORB_FPS_STEPS;
         // Opens on the rate in use; the automatic default only becomes a stored choice once moved
-        int current = config.effectiveOrbFps();
+        addStepSlider(x, y, width, HUDConfig.ORB_FPS_STEPS, config.effectiveOrbFps(),
+                fps -> fps == 0
+                        ? ModLanguageManager.getString("screen.hud_config.orb_fps.every_frame")
+                        : ModLanguageManager.format("screen.hud_config.orb_fps", "fps", fps),
+                fps -> config.orbFps = fps, "screen.hud_config.orb_fps.tooltip");
+    }
+
+    /** A slider that snaps to {@code steps}, opening on {@code current} (or the first step when absent). */
+    private void addStepSlider(int x, int y, int width, int[] steps, int current, IntFunction<String> label,
+                               IntConsumer apply, String tooltipKey) {
         int index = 0;
         for (int i = 0; i < steps.length; i++) {
             if (steps[i] == current) index = i;
@@ -231,25 +282,22 @@ public class HUDConfigScreen extends Screen {
                 updateMessage();
             }
 
-            private int fps() {
+            private int step() {
                 return steps[(int) Math.round(this.value * (steps.length - 1))];
             }
 
             @Override
             protected void updateMessage() {
-                int fps = fps();
-                setMessage(Component.literal(fps == 0
-                        ? ModLanguageManager.getString("screen.hud_config.orb_fps.every_frame")
-                        : ModLanguageManager.format("screen.hud_config.orb_fps", "fps", fps)));
+                setMessage(Component.literal(label.apply(step())));
             }
 
             @Override
             protected void applyValue() {
-                config.orbFps = fps();
+                apply.accept(step());
             }
         };
-        slider.setTooltip(Tooltip.create(ModLanguageManager.get("screen.hud_config.orb_fps.tooltip")));
-        addRenderableWidget(slider);
+        slider.setTooltip(Tooltip.create(ModLanguageManager.get(tooltipKey)));
+        content(slider);
     }
 
     private void cycleLanguage() {
@@ -284,6 +332,14 @@ public class HUDConfigScreen extends Screen {
             int markY = HUDConfigLayout.tabTop(height, Category.values().length)
                     + category.ordinal() * HUDConfigLayout.tabStep(height, Category.values().length);
             context.fill(8, markY, 11, markY + 20, 0xFFE8C86A);
+        }
+        if (maxScroll > 0) {
+            int trackTop = VIEW_TOP;
+            int trackHeight = viewBottom() - VIEW_TOP;
+            int thumbHeight = Math.max(12, trackHeight * trackHeight / (trackHeight + maxScroll));
+            int thumbTop = trackTop + (trackHeight - thumbHeight) * scroll / maxScroll;
+            context.fill(scrollbarX, trackTop, scrollbarX + 3, trackTop + trackHeight, 0x40FFFFFF);
+            context.fill(scrollbarX, thumbTop, scrollbarX + 3, thumbTop + thumbHeight, 0xFFE8C86A);
         }
         super.render(context, mouseX, mouseY, delta);
     }
