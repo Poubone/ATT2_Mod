@@ -18,6 +18,15 @@ import java.util.List;
 
 /** Item preview + price. Hover shows the map item's lore / stats. */
 public class ShopSlotButton extends AbstractWidget {
+    /** Text sizes per card unit (a card is 312 units wide). */
+    static final float NAME_TEXT_SCALE = 2.7f;
+    static final float HINT_TEXT_SCALE = 1.8f;
+    static final float PRICE_TEXT_SCALE = 2.3f;
+    /** Below this many physical pixels per font pixel, text is no longer legible. */
+    static final float MIN_READABLE_PIXELS = 0.8f;
+    /** Card width in card units. */
+    static final int CARD_WIDTH = 312;
+
     private final ShopOffer offer;
     private final Runnable onPress;
     private final ShopType theme;
@@ -85,12 +94,16 @@ public class ShopSlotButton extends AbstractWidget {
             graphics.renderItem(launcher, 0, 0);
             graphics.pose().popMatrix();
         }
-        float textScale = s * 2.7f;
+        float textScale = s * NAME_TEXT_SCALE;
         ShopTheme.text(graphics, plainCardText(displayName()), getX() + Math.round(14 * s), getY() + Math.round(141 * s),
                 width - Math.round(28 * s), textScale, 0xFF382B21, true);
-        ShopTheme.text(graphics, Component.translatable("att2.shop.hover_event.buy"),
-                getX() + Math.round(14 * s), getY() + Math.round(175 * s), width - Math.round(28 * s),
-                s * 1.8f, 0xFF705E47, true);
+        // The hint repeats what the price button says; it is dropped once too small to read.
+        float guiScale = (float) Minecraft.getInstance().getWindow().getGuiScale();
+        if (s * HINT_TEXT_SCALE * guiScale >= MIN_READABLE_PIXELS) {
+            ShopTheme.text(graphics, Component.translatable("att2.shop.hover_event.buy"),
+                    getX() + Math.round(14 * s), getY() + Math.round(175 * s), width - Math.round(28 * s),
+                    s * HINT_TEXT_SCALE, 0xFF705E47, true);
+        }
         int buyX = getX() + Math.round(18 * s);
         int buyY = getY() + Math.round(202 * s);
         int buyW = Math.round(276 * s), buyH = Math.round(38 * s);
@@ -99,7 +112,7 @@ public class ShopSlotButton extends AbstractWidget {
         // Preserve the full price, including its currency or exchange components.
         Component price = offer.price() == null ? Component.literal("?")
                 : plainCardText(offer.price());
-        float priceScale = s * 2.3f;
+        float priceScale = s * PRICE_TEXT_SCALE;
         ShopTheme.text(graphics, price, buyX + 2, buyY + Math.max(1, (int) ((buyH - 8 * priceScale) / 2)),
                 buyW - 4, priceScale, hover ? 0xFFF5EAD0 : 0xFF382B21, true);
     }

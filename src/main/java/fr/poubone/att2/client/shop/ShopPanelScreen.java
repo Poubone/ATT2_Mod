@@ -1,5 +1,6 @@
 package fr.poubone.att2.client.shop;
 
+import fr.poubone.att2.client.hud.HUDConfig;
 import fr.poubone.att2.client.hud.ModToast;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -19,9 +20,12 @@ public abstract class ShopPanelScreen extends Screen {
         this.panelWidth = panelWidth;
         this.panelHeight = panelHeight;
     }
-    protected final void initViewport() { viewport = ShopViewport.fit(width, height, panelWidth, panelHeight); }
+    protected final void initViewport() {
+        viewport = ShopViewport.fit(width, height, panelWidth, panelHeight, HUDConfig.get().menuSize);
+    }
 
     @Override public final void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        if (!HUDConfig.get().menuBackground) return;
         graphics.blurBeforeThisStratum();
         graphics.fillGradient(0, 0, width, height, 0xB0182024, 0xDB080C10);
     }

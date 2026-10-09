@@ -13,6 +13,20 @@ class ShopViewportTest {
         assertTrue(largeGui.scale() < 1f);
     }
 
+    @Test void sizeScalesThePanelUntilItNeedsToShrink() {
+        assertEquals(0.5f, ShopViewport.fit(1920, 1080, 640, 392, 50).scale());
+        assertEquals(1.5f, ShopViewport.fit(1920, 1080, 640, 392, 150).scale());
+        var tooBig = ShopViewport.fit(640, 360, 640, 392, 150);
+        assertEquals(ShopViewport.fit(640, 360, 640, 392).scale(), tooBig.scale());
+        assertEquals(1.5f, ShopViewport.fit(1920, 1080, 640, 392, 999).scale());
+    }
+
+    @Test void smallerPanelsStayCentered() {
+        var viewport = ShopViewport.fit(640, 360, 640, 392, 60);
+        assertEquals(640 - viewport.screenX(640), viewport.screenX(0), 1);
+        assertEquals(360 - viewport.screenY(392), viewport.screenY(0), 1);
+    }
+
     @Test void allSupportedGuiScalesKeepPanelsAndClickableCornersOnScreen() {
         for (int gui = 1; gui <= 8; gui++) {
             int width = (1920 + gui - 1) / gui, height = (1080 + gui - 1) / gui;

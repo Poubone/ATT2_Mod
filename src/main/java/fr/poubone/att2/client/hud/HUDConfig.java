@@ -128,6 +128,12 @@ public class HUDConfig {
     public boolean runeMenuEnabled = true;
     public boolean minerMenuEnabled = true;
     public boolean questMenuEnabled = true;
+    /** Blur and darken the game behind the shop-style menus. */
+    public boolean menuBackground = false;
+    /** Merchant cards per row, see {@link fr.poubone.att2.client.shop.ShopGrid}. */
+    public int shopColumns = fr.poubone.att2.client.shop.ShopGrid.DEFAULT_COLUMNS;
+    /** Preferred size of the shop-style menus, in percent; they still shrink to fit the window. */
+    public int menuSize = fr.poubone.att2.client.shop.ShopViewport.DEFAULT_SIZE_PERCENT;
     /**
      * Legacy master switch. When {@link #shopMenus} is absent from the config file,
      * {@code false} turns every stall off; otherwise each stall starts enabled.
@@ -231,6 +237,8 @@ public class HUDConfig {
         }
         if (INSTANCE.whitelist == null) INSTANCE.whitelist = new ArrayList<>();
         if (INSTANCE.blacklist == null) INSTANCE.blacklist = new ArrayList<>();
+        INSTANCE.shopColumns = fr.poubone.att2.client.shop.ShopGrid.clampColumns(INSTANCE.shopColumns);
+        INSTANCE.menuSize = fr.poubone.att2.client.shop.ShopViewport.clampSizePercent(INSTANCE.menuSize);
         if (INSTANCE.slots == null) INSTANCE.slots = new LinkedHashMap<>();
         if (INSTANCE.slots != null) {
             for (HudSlot slot : INSTANCE.slots.values()) {

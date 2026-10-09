@@ -3,6 +3,9 @@ package fr.poubone.att2.client.screen;
 import fr.poubone.att2.client.discord.DiscordPresence;
 import fr.poubone.att2.client.sync.PartySync;
 import fr.poubone.att2.client.hud.HUDConfig;
+import fr.poubone.att2.client.shop.ShopGrid;
+import fr.poubone.att2.client.shop.ShopPreview;
+import fr.poubone.att2.client.shop.ShopViewport;
 import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,6 +16,7 @@ import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,8 @@ public class HUDConfigScreen extends Screen {
     private static final List<String> RARITY_KEYS = List.of(
             "com", "cur", "epi", "epi_set", "leg", "leg_armset",
             "misc", "myt", "que", "rar", "spe", "ult", "unc", "unk", "epi_esc", "esc");
+    private static final int[] SHOP_COLUMN_STEPS = steps(ShopGrid.MIN_COLUMNS, ShopGrid.MAX_COLUMNS, 1);
+    private static final int[] MENU_SIZE_STEPS = steps(ShopViewport.MIN_SIZE_PERCENT, ShopViewport.MAX_SIZE_PERCENT, 5);
 
     /** Category content starts below the title; it scrolls between {@link #VIEW_TOP} and the Save button. */
     private static final int CONTENT_TOP = 40;
@@ -43,6 +49,9 @@ public class HUDConfigScreen extends Screen {
     private int scroll;
     private int maxScroll;
     private int scrollbarX;
+    /** The shop mock-up shows while the size or items-per-row slider moves, then fades out. */
+    private static final long PREVIEW_LINGER_MS = 1500, PREVIEW_FADE_MS = 400;
+    private long previewUntil;
 
     public HUDConfigScreen() {
         super(ModLanguageManager.get("screen.hud_config.title"));
@@ -134,6 +143,25 @@ public class HUDConfigScreen extends Screen {
                             config.isShopMenuEnabled(id), selected -> config.setShopMenuEnabled(id, selected));
                     shopIndex++;
                 }
+                contentY += (shopIndex + stallColumns - 1) / stallColumns * 22 + 4;
+                contentY = addToggle(contentX, contentY, colW, "screen.hud_config.menu_background",
+                        config.menuBackground, v -> config.menuBackground = v,
+                        "screen.hud_config.menu_background.tooltip");
+                boolean sideBySide = available >= 350;
+                int sliderW = sideBySide ? 170 : Math.min(200, available);
+                addStepSlider(contentX, contentY, sliderW, SHOP_COLUMN_STEPS, config.shopColumns,
+                        columns -> ModLanguageManager.format("screen.hud_config.shop_columns", "count", columns),
+                        columns -> {
+                            config.shopColumns = columns;
+                            showShopPreview();
+                        }, "screen.hud_config.shop_columns.tooltip");
+                addStepSlider(sideBySide ? contentX + 180 : contentX, sideBySide ? contentY : contentY + 24,
+                        sliderW, MENU_SIZE_STEPS, config.menuSize,
+                        percent -> ModLanguageManager.format("screen.hud_config.menu_size", "percent", percent),
+                        percent -> {
+                            config.menuSize = percent;
+                            showShopPreview();
+                        }, "screen.hud_config.menu_size.tooltip");
             }
             case LOOT -> {
                 contentY = addToggle(contentX, contentY, colW, "screen.hud_config.render_allItems",
@@ -202,6 +230,10 @@ public class HUDConfigScreen extends Screen {
         }).bounds(width / 2 - 100, height - 28, 200, 20).build());
         scrollbarX = contentRight - 6;
         placeContent();
+    }
+
+    private void showShopPreview() {
+        previewUntil = Util.getMillis() + PREVIEW_LINGER_MS;
     }
 
     /** Adds a widget that belongs to the scrolling category content. */
@@ -300,6 +332,14 @@ public class HUDConfigScreen extends Screen {
         content(slider);
     }
 
+    private static int[] steps(int min, int max, int step) {
+        int[] values = new int[(max - min) / step + 1];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = min + i * step;
+        }
+        return values;
+    }
+
     private void cycleLanguage() {
         langIndex = (langIndex + 1) % ModLanguageManager.CODES.size();
         String newLang = ModLanguageManager.CODES.get(langIndex);
@@ -342,5 +382,11 @@ public class HUDConfigScreen extends Screen {
             context.fill(scrollbarX, thumbTop, scrollbarX + 3, thumbTop + thumbHeight, 0xFFE8C86A);
         }
         super.render(context, mouseX, mouseY, delta);
+        long left = previewUntil - Util.getMillis();
+        if (left > 0) {
+            HUDConfig config = HUDConfig.get();
+            ShopPreview.render(context, width, height, config.shopColumns, config.menuSize,
+                    Math.min(1f, left / (float) PREVIEW_FADE_MS));
+        }
     }
 }
