@@ -196,6 +196,8 @@
   "charles.grid.reset.tip": "Start a new grid of the same size (paid)",
   "charles.grid.menu.tip": "Back to the grid selection",
   "screen.hud_config.charles_auto_open": "Charles menu",
+  "screen.hud_config.sneak_skips_menus": "Sneak skips menus",
+  "screen.hud_config.sneak_skips_menus.tooltip": "Hold Sneak while talking to an NPC to get the map's chat menu instead of the mod's window.",
   "screen.hud_config.shop_auto_open": "Shop menus",
   "shop.title": "Shop",
   "shop.balance": "Chronotons: {n}",

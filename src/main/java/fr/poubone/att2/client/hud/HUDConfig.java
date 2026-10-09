@@ -125,6 +125,8 @@ public class HUDConfig {
     public boolean questBookShowDaily = true;
     /** Open Charles' counter automatically when the NPC offers his games in the chat. */
     public boolean charlesAutoOpen = true;
+    /** Holding Sneak while talking to an NPC keeps the map's chat menu instead of opening the mod's window. */
+    public boolean sneakSkipsMenus = true;
     public boolean runeMenuEnabled = true;
     public boolean minerMenuEnabled = true;
     public boolean questMenuEnabled = true;

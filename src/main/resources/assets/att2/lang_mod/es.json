@@ -179,6 +179,8 @@
   "charles.grid.reset.tip": "Empezar una cuadrícula del mismo tamaño (de pago)",
   "charles.grid.menu.tip": "Volver a la selección de cuadrículas",
   "screen.hud_config.charles_auto_open": "Abrir el mostrador de Charles automáticamente",
+  "screen.hud_config.sneak_skips_menus": "Agacharse omite los menús",
+  "screen.hud_config.sneak_skips_menus.tooltip": "Mantén Agacharse mientras hablas con un PNJ para ver el menú de chat del mapa en lugar de la ventana del mod.",
   "screen.hud_config.shop_auto_open": "Abrir los menús de tienda",
   "shop.title": "Tienda",
   "shop.balance": "Chronotons: {n}",

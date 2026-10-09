@@ -196,6 +196,8 @@
   "charles.grid.reset.tip": "Recommencer une grille de la même taille (payante)",
   "charles.grid.menu.tip": "Revenir au choix des grilles",
   "screen.hud_config.charles_auto_open": "Menu de Charles",
+  "screen.hud_config.sneak_skips_menus": "S'accroupir ignore les menus",
+  "screen.hud_config.sneak_skips_menus.tooltip": "Maintenez S'accroupir en parlant à un PNJ pour afficher le menu de la carte dans le chat au lieu de la fenêtre du mod.",
   "screen.hud_config.shop_auto_open": "Menus des boutiques",
   "shop.title": "Boutique",
   "shop.balance": "Chronotons : {n}",

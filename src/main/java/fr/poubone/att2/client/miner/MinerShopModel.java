@@ -4,6 +4,7 @@ import fr.poubone.att2.client.compat.FlashbackCompat;
 import fr.poubone.att2.client.data.Att2Triggers;
 import fr.poubone.att2.client.data.CurrencyModel;
 import fr.poubone.att2.client.hud.HUDConfig;
+import fr.poubone.att2.client.input.SneakMenuBypass;
 import fr.poubone.att2.client.shop.ShopSellers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.ClickEvent;
@@ -107,6 +108,7 @@ public final class MinerShopModel {
     public void openFromNpc() {
         if (FlashbackCompat.isInReplay()) return;
         if (!HUDConfig.get().minerMenuEnabled) return;
+        if (SneakMenuBypass.isActive()) return;
         long now = System.currentTimeMillis();
         if (now - lastNpcOpenMs < 400) return;
         lastNpcOpenMs = now;

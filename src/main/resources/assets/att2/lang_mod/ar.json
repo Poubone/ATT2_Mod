@@ -179,6 +179,8 @@
   "charles.grid.reset.tip": "بدء شبكة جديدة بالحجم نفسه (مدفوعة)",
   "charles.grid.menu.tip": "العودة إلى اختيار الشبكات",
   "screen.hud_config.charles_auto_open": "فتح منضدة Charles تلقائياً",
+  "screen.hud_config.sneak_skips_menus": "التسلل يتخطى القوائم",
+  "screen.hud_config.sneak_skips_menus.tooltip": "اضغط مطولًا على زر التسلل أثناء التحدث إلى شخصية غير لاعبة لعرض قائمة الخريطة في الدردشة بدلًا من نافذة التعديل.",
   "screen.hud_config.shop_auto_open": "فتح قوائم المتجر",
   "shop.title": "المتجر",
   "shop.balance": "Chronotons: {n}",
