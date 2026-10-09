@@ -1,6 +1,7 @@
 package fr.poubone.att2.client.hud;
 
 import fr.poubone.att2.client.data.ScoreCache;
+import fr.poubone.att2.client.util.LoadingText;
 import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,7 +32,7 @@ public class XPDisplay {
         OptionalInt requiredXpOpt = ScoreCache.get("LVL_UPGRADE_REQ");
         OptionalInt currentLvlOpt = ScoreCache.get("GAMELEVEL");
         OptionalInt masterLvlOpt = ScoreCache.get("LEVELMASTER");
-        String requiredXp = requiredXpOpt.isPresent() ? Integer.toString(requiredXpOpt.getAsInt()) : "null";
+        String requiredXp = LoadingText.of(requiredXpOpt);
         Integer currentLvl = currentLvlOpt.isPresent() ? currentLvlOpt.getAsInt() : null;
         Integer masterLvl = masterLvlOpt.isPresent() ? masterLvlOpt.getAsInt() : null;
         int currentXp = client.player.experienceLevel;
@@ -52,7 +53,7 @@ public class XPDisplay {
         }
 
         String display = ModLanguageManager.get("level.label").getString() + " "
-                + (currentLvl == null ? "null" : currentLvl) + " : " + currentXp + "/" + requiredXp;
+                + LoadingText.of(currentLvl) + " : " + currentXp + "/" + requiredXp;
         if (masterLvl != null && masterLvl > 0) {
             display += "  " + ModLanguageManager.format("level.master", "n", masterLvl);
         }

@@ -4,6 +4,7 @@ import fr.poubone.att2.client.compat.FlashbackCompat;
 import fr.poubone.att2.client.data.CurrencyModel;
 import fr.poubone.att2.client.data.ScoreCache;
 import fr.poubone.att2.client.input.KeybindManager;
+import fr.poubone.att2.client.util.LoadingText;
 import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -212,7 +213,7 @@ public class ShopScreen extends Screen {
         ShopTheme.text(graphics, title, x(137), y(61), size(900), scale * 4.5f, 0xFFF0E3CC, false);
         boolean esc = catalog.usesEsc();
         var balanceValue = ScoreCache.get(esc ? "ESC" : "CHRONOTON");
-        Component balance = Component.literal(balanceValue.isPresent() ? Integer.toString(balanceValue.getAsInt()) : "null");
+        Component balance = Component.literal(LoadingText.of(balanceValue));
         ShopTheme.text(graphics, Component.literal(esc ? "ESC" : "Chronotons"), x(1110), y(47), size(200),
                 scale * 1.8f, type.titleColor, false);
         int icon = size(26);

@@ -1,6 +1,7 @@
 package fr.poubone.att2.client.hud;
 
 import fr.poubone.att2.client.data.ScoreCache;
+import fr.poubone.att2.client.util.LoadingText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -34,7 +35,7 @@ public class ChronotonDisplay {
             lastScore = Integer.MIN_VALUE;
             displayedValue = 0;
             animationTimer = 0;
-            HudDrawUtils.drawHUDValue(context, "null", 0, MAX_TICKS,
+            HudDrawUtils.drawHUDValue(context, LoadingText.PLACEHOLDER, 0, MAX_TICKS,
                     box.x(), box.y(), scale, Items.GOLD_NUGGET, 0xFFFFD54A, false);
             return;
         }

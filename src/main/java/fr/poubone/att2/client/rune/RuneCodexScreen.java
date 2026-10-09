@@ -9,6 +9,7 @@ import fr.poubone.att2.client.shop.ShopPaging;
 import fr.poubone.att2.client.shop.ShopType;
 import fr.poubone.att2.client.shop.ShopTheme;
 import fr.poubone.att2.client.shop.ShopPanelScreen;
+import fr.poubone.att2.client.util.LoadingText;
 import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -593,7 +594,7 @@ public class RuneCodexScreen extends ShopPanelScreen {
 
     private Component labeledCost(String key, int have, OptionalInt need) {
         String shown = ModLanguageManager.format("rune_codex.inv", "have", have,
-                "need", need.isPresent() ? need.getAsInt() : "null");
+                "need", LoadingText.of(need));
         ChatFormatting color = need.isPresent() ? stockColor(have, need.getAsInt(), OptionalInt.of(0)) : ChatFormatting.RED;
         return Component.literal(ModLanguageManager.format(key, "n", shown)).withStyle(color);
     }
