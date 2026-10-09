@@ -12,6 +12,7 @@
     "ClientCommonPacketListenerMixin",
     "ClientPacketListenerMixin",
     "HideBroadcastItemMixin",
+    "InventoryComparisonMixin",
     "PingProjectionMixin",
     "input.ContainerScreenDropMixin",
     "input.ForcedSneakMixin",
