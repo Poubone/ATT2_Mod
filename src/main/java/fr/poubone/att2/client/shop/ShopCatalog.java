@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ public final class ShopCatalog {
     private final List<ShopOffer> offers = new ArrayList<>();
     private final List<ShopAction> actions = new ArrayList<>();
     private final LinkedHashSet<String> categories = new LinkedHashSet<>();
+    private final Set<Integer> ownedTriggers = new HashSet<>();
     private Component discount;
     private Component remaining;
     private Component powderStock;
@@ -27,6 +29,16 @@ public final class ShopCatalog {
             categories.add(offer.category());
         }
         lastUsesEsc = computeUsesEsc();
+    }
+
+    /** Offers whose line carried the map's "already owned" marker, see {@link ShopTellraws#hasOwnedMarker}. */
+    void setOwned(int trigger, boolean owned) {
+        if (owned) ownedTriggers.add(trigger);
+        else ownedTriggers.remove(trigger);
+    }
+
+    public boolean isMarkedOwned(int trigger) {
+        return ownedTriggers.contains(trigger);
     }
 
     void addAction(ShopAction action) {
@@ -68,10 +80,12 @@ public final class ShopCatalog {
 
     void clearOffers() {
         offers.clear();
+        ownedTriggers.clear();
     }
 
     void clear() {
         offers.clear();
+        ownedTriggers.clear();
         actions.clear();
         categories.clear();
         discount = null;

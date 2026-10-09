@@ -3,6 +3,7 @@ package fr.poubone.att2.client.shop;
 import fr.poubone.att2.client.compat.FlashbackCompat;
 import fr.poubone.att2.client.data.CurrencyModel;
 import fr.poubone.att2.client.data.ScoreCache;
+import fr.poubone.att2.client.hud.HUDConfig;
 import fr.poubone.att2.client.input.KeybindManager;
 import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ import net.minecraft.sounds.SoundEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /** The map owns the catalog and actions; this screen only lays out their presentation. */
 public class ShopScreen extends Screen {
@@ -28,6 +30,10 @@ public class ShopScreen extends Screen {
     private List<String> chromeCategories = List.of();
     private ShopType chromeType;
     private boolean chromeRepair;
+    /** Spell stalls: whether the chrome has the "hide owned spells" toggle, the carried spells, and what is hidden. */
+    private boolean chromeSpells;
+    private Set<Integer> carriedSpells = Set.of();
+    private boolean allOwnedHidden;
     private ShopActionButton prevNav;
     private ShopActionButton nextNav;
 
@@ -64,7 +70,20 @@ public class ShopScreen extends Screen {
     private float textScale() { return scale * 2.7f; }
 
     @Override public void tick() {
-        if (ShopModel.get().version() != lastVersion) rebuild();
+        if (ShopModel.get().version() != lastVersion) {
+            rebuild();
+        } else if (chromeSpells && !ShopOwnedSpells.carried(minecraft.player).equals(carriedSpells)) {
+            rebuild(); // a spell book was just bought or dropped
+        }
+    }
+
+    private static boolean sellsSpells(ShopCatalog catalog) {
+        return catalog.offers().stream().anyMatch(offer -> ShopIcons.spellId(offer) > 0);
+    }
+
+    private boolean isOwnedSpell(ShopCatalog catalog, ShopOffer offer) {
+        return ShopOwnedSpells.isOwned(offer.trigger(), ShopIcons.spellId(offer),
+                catalog.isMarkedOwned(offer.trigger()), carriedSpells);
     }
 
     @Override public void removed() {
@@ -87,8 +106,9 @@ public class ShopScreen extends Screen {
                     .anyMatch(o -> c.equals(o.category()))).toList();
         }
         if (!categories.contains(categoryFilter)) categoryFilter = "";
+        boolean spells = !model.isRepairView() && sellsSpells(catalog);
         boolean keepChrome = chromeType == type && chromeRepair == model.isRepairView()
-                && chromeCategories.equals(categories) && !children().isEmpty();
+                && chromeCategories.equals(categories) && chromeSpells == spells && !children().isEmpty();
         if (keepChrome) {
             for (var child : List.copyOf(children())) {
                 if (child instanceof ShopSlotButton slot) removeWidget(slot);
@@ -98,9 +118,17 @@ public class ShopScreen extends Screen {
             chromeCategories = List.copyOf(categories);
             chromeType = type;
             chromeRepair = model.isRepairView();
+            chromeSpells = spells;
         }
         List<ShopOffer> offers = model.isRepairView() ? model.repairOffers() : catalog.offers().stream()
                 .filter(o -> categoryFilter.isEmpty() || categoryFilter.equals(o.category())).toList();
+        carriedSpells = spells ? ShopOwnedSpells.carried(minecraft.player) : Set.of();
+        allOwnedHidden = false;
+        if (spells && HUDConfig.get().shopHideOwnedSpells) {
+            List<ShopOffer> unowned = offers.stream().filter(o -> !isOwnedSpell(catalog, o)).toList();
+            allOwnedHidden = unowned.isEmpty() && !offers.isEmpty();
+            offers = unowned;
+        }
         pages = Math.max(1, (offers.size() + 5) / 6);
         page = Math.max(0, Math.min(page, pages - 1));
         for (int i = page * 6; i < Math.min(offers.size(), page * 6 + 6); i++) {
@@ -142,12 +170,25 @@ public class ShopScreen extends Screen {
         if (model.hasReset()) addIfMissing(canonical, ShopModel.TRIGGER_RESET, "shop.action.reset", ShopAction.Kind.RESET);
         if (model.isRepairView()) addIfMissing(canonical, -2, "shop.action.back", ShopAction.Kind.BACK);
         List<ShopAction> actions = ShopFooterActions.merge(canonical, catalog.actions());
-        int columns = Math.min(3, Math.max(1, actions.size()));
-        int rows = Math.max(1, (actions.size() + columns - 1) / columns);
+        int count = actions.size() + (chromeSpells ? 1 : 0);
+        int columns = Math.min(3, Math.max(1, count));
+        int rows = Math.max(1, (count + columns - 1) / columns);
         for (int i = 0; i < actions.size(); i++) {
             ShopAction action = actions.get(i);
             button(48 + i % columns * 438, 774 + i / columns * (82 / rows), 420, Math.min(50, 76 / rows),
                     action, ShopActionButton.Chrome.ACTION, () -> false, () -> ShopModel.get().run(action));
+        }
+        if (chromeSpells) {
+            int i = actions.size();
+            button(48 + i % columns * 438, 774 + i / columns * (82 / rows), 420, Math.min(50, 76 / rows),
+                    new ShopAction(-1, ModLanguageManager.get("shop.hide_owned"), ModLanguageManager.get("shop.hide_owned.tip"),
+                            ShopAction.Kind.OTHER),
+                    ShopActionButton.Chrome.CHECK, () -> HUDConfig.get().shopHideOwnedSpells, () -> {
+                        HUDConfig config = HUDConfig.get();
+                        config.shopHideOwnedSpells = !config.shopHideOwnedSpells;
+                        HUDConfig.save();
+                        rebuild();
+                    });
         }
         prevNav = button(1122, 158, 42, 38, navigation("‹"), ShopActionButton.Chrome.NAV,
                 () -> false, () -> { page--; rebuild(); });
@@ -244,6 +285,9 @@ public class ShopScreen extends Screen {
             }
         } else if (catalog.offers().isEmpty()) {
             ShopTheme.text(graphics, ModLanguageManager.get(model.isCollecting() ? "shop.loading" : "shop.empty"),
+                    x(364), y(400), size(972), textScale(), 0xFF705E47, true);
+        } else if (allOwnedHidden) {
+            ShopTheme.text(graphics, ModLanguageManager.get("shop.all_owned"),
                     x(364), y(400), size(972), textScale(), 0xFF705E47, true);
         }
         ShopSlotButton hoveredSlot = null;
