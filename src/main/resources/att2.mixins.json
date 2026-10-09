@@ -16,6 +16,7 @@
     "input.ContainerScreenDropMixin",
     "input.ForcedSneakMixin",
     "input.LocalPlayerDropMixin",
+    "teleport.BeaconRendererMixin",
     "teleport.BlindnessFogMixin",
     "teleport.CameraAccessor",
     "teleport.CameraMixin",
