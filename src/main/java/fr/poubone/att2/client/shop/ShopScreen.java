@@ -47,7 +47,7 @@ public class ShopScreen extends Screen {
 
     public static void open() {
         if (FlashbackCompat.isInReplay()) return;
-        if (!fr.poubone.att2.client.hud.HUDConfig.get().isShopMenuEnabled(ShopModel.get().menuTypeId())) return;
+        if (!HUDConfig.get().isShopMenuEnabled(ShopModel.get().menuTypeId())) return;
         Minecraft client = Minecraft.getInstance();
         if (client.screen instanceof ShopScreen open) { open.rebuild(); return; }
         if (client.screen != null && !(client.screen instanceof net.minecraft.client.gui.screens.ChatScreen)) return;
@@ -60,7 +60,7 @@ public class ShopScreen extends Screen {
 
     @Override protected void init() {
         chromeType = null; // Every control must be repositioned after a GUI-scale change or resize.
-        scale = ShopViewport.fit(width, height, 640, 392).scale() * (640f / 1440f);
+        scale = ShopViewport.fit(width, height, 640, 392, HUDConfig.get().menuSize).scale() * (640f / 1440f);
         offsetX = (width - size(1440)) / 2;
         offsetY = (height - size(880)) / 2;
         rebuild();
@@ -131,13 +131,17 @@ public class ShopScreen extends Screen {
             allOwnedHidden = unowned.isEmpty() && !offers.isEmpty();
             offers = unowned;
         }
-        pages = Math.max(1, (offers.size() + 5) / 6);
+        ShopGrid grid = ShopGrid.fitting(HUDConfig.get().shopColumns,
+                scale * (float) minecraft.getWindow().getGuiScale());
+        int perPage = grid.perPage();
+        pages = Math.max(1, (offers.size() + perPage - 1) / perPage);
         page = Math.max(0, Math.min(page, pages - 1));
-        for (int i = page * 6; i < Math.min(offers.size(), page * 6 + 6); i++) {
-            int local = i - page * 6;
+        for (int i = page * perPage; i < Math.min(offers.size(), page * perPage + perPage); i++) {
+            int local = i - page * perPage;
             ShopOffer offer = offers.get(i);
-            addRenderableWidget(new ShopSlotButton(x(364 + local % 3 * 330), y(211 + local / 3 * 270),
-                    size(312), size(252), offer, () -> ShopModel.get().buy(offer), type));
+            addRenderableWidget(new ShopSlotButton(x(grid.cardX(local)), y(grid.cardY(local)),
+                    size(Math.round(grid.cardWidth())), size(Math.round(grid.cardHeight())),
+                    offer, () -> ShopModel.get().buy(offer), type));
         }
         if (!keepChrome) {
             addChrome(model, catalog);
@@ -228,8 +232,10 @@ public class ShopScreen extends Screen {
     }
 
     @Override public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        graphics.blurBeforeThisStratum();
-        graphics.fillGradient(0, 0, width, height, 0xB0182024, 0xDB080C10);
+        if (HUDConfig.get().menuBackground) {
+            graphics.blurBeforeThisStratum();
+            graphics.fillGradient(0, 0, width, height, 0xB0182024, 0xDB080C10);
+        }
         asset(graphics, "panel_main", 0, 0, 1440, 880, 1440, 880);
         asset(graphics, "emblem", 48, 48, 67, 67, 128, 128);
         asset(graphics, "wallet", 1094, 38, 232, 70, 232, 70);

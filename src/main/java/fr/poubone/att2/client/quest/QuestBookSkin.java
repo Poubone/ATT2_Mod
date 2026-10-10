@@ -53,6 +53,11 @@ public final class QuestBookSkin {
     }
 
     public static void panel(GuiGraphics g, String name, int x, int y, int w, int h, int sw, int sh, int edge) {
+        panel(g, name, x, y, w, h, sw, sh, edge, 0xFFFFFFFF);
+    }
+
+    /** Nine-slice panel; {@code color} tints it, and its alpha fades it. */
+    public static void panel(GuiGraphics g, String name, int x, int y, int w, int h, int sw, int sh, int edge, int color) {
         int[] dx = {x, x + edge, x + w - edge}, dy = {y, y + edge, y + h - edge};
         int[] dw = {edge, w - 2 * edge, edge}, dh = {edge, h - 2 * edge, edge};
         int[] sx = {0, edge, sw - edge}, sy = {0, edge, sh - edge};
@@ -60,7 +65,7 @@ public final class QuestBookSkin {
         for (int row = 0; row < 3; row++) for (int col = 0; col < 3; col++) {
             if (dw[col] > 0 && dh[row] > 0)
                 g.blit(RenderPipelines.GUI_TEXTURED, texture(name), dx[col], dy[row], (float) sx[col], (float) sy[row],
-                        dw[col], dh[row], rw[col], rh[row], sw, sh);
+                        dw[col], dh[row], rw[col], rh[row], sw, sh, color);
         }
     }
 }
