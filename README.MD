@@ -11,7 +11,8 @@ The project makes the map's systems easier to read and use through a custom HUD,
 - Menus for attribute upgrades, repairs, shops and crafting recipes.
 - Cinematic teleportation, loot beams and contextual controls.
 - Optional party pings, item sharing and Discord Rich Presence.
-- French and English in-game translations.
+- Equipment comparison in shops and the inventory, configurable shop layouts and dropped-item performance options.
+- In-game translations and changelogs in eleven languages.
 
 This mod is designed specifically for Across The Time II. Some interfaces only become available once the map has initialized its systems.
 
@@ -57,13 +58,20 @@ On Linux or macOS:
 
 The build runs the automated tests and produces the mod JAR in `build/libs/`. Use the regular JAR for installation, rather than the sources JAR.
 
+To run the optional integration test in a disposable Minecraft world, use `./gradlew -PprGameTest runClientGameTest` (or `.\gradlew.bat` on Windows). It checks dropped-item rendering, inventory and settings screens, translations and name-tag caching.
+
 ## Contribute
 
 Bug reports and pull requests are welcome. For a bug report, include the mod version, Minecraft and Fabric versions, steps to reproduce, and relevant logs or screenshots. Avoid including personal information in logs.
 
-For a code change, fork this repository, create a branch and explain the problem and the resulting behavior in your pull request. Run `build` and test affected interfaces in the adventure map when applicable. Keep changes focused and update French and English translations when adding visible text.
+For a code change, fork this repository, create a branch and explain the problem and the resulting behavior in your pull request. Run `build` and test affected interfaces in the adventure map when applicable. Keep changes focused and update all eleven files in `src/main/resources/assets/att2/lang_mod/` when adding visible text.
 
 The main mod sources are in `src/main/`, and automated tests are in `src/test/`. Translated mod descriptions and release notes are available in `desc_mod/` and `changelog_mod/`.
+
+## Contributors
+
+- Poubone
+- Simuciokas
 
 ## License
 
