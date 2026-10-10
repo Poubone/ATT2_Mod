@@ -1,5 +1,6 @@
 package fr.poubone.att2.client.shop;
 
+import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -138,7 +139,7 @@ public final class ShopComparison {
             ItemStack worn = player.getItemBySlot(kind.slot);
             if (isHovered(worn, hovered)) return targets;
             if (kind == Kind.SHIELD && kind(worn) != Kind.SHIELD) worn = ItemStack.EMPTY;
-            targets.add(new Target(Component.translatable("att2.ui.equipped"), worn,
+            targets.add(new Target(ModLanguageManager.shared("att2.ui.equipped"), worn,
                     kind == Kind.SHIELD ? "att2.ui.unequipped_shield" : "att2.ui.unequipped"));
             return targets;
         }
@@ -147,12 +148,12 @@ public final class ShopComparison {
         for (int slot : hotbarOrder(selected)) {
             ItemStack stack = inventory.getItem(slot);
             if (isHovered(stack, hovered) || kind(stack) != kind) continue;
-            Component header = slot == selected ? Component.translatable("att2.ui.in_hand")
-                    : Component.translatable("att2.ui.hotbar_slot", slot + 1);
+            Component header = slot == selected ? ModLanguageManager.shared("att2.ui.in_hand")
+                    : ModLanguageManager.shared("att2.ui.hotbar_slot", "slot", slot + 1);
             targets.add(new Target(header, stack, "att2.ui.unequipped_weapon"));
         }
         if (targets.isEmpty()) {
-            targets.add(new Target(Component.translatable("att2.ui.in_hand"), ItemStack.EMPTY, "att2.ui.unequipped_weapon"));
+            targets.add(new Target(ModLanguageManager.shared("att2.ui.in_hand"), ItemStack.EMPTY, "att2.ui.unequipped_weapon"));
         }
         return targets;
     }
@@ -182,7 +183,7 @@ public final class ShopComparison {
         List<Component> lines = new ArrayList<>();
         lines.add(header.copy().withStyle(ChatFormatting.GOLD));
         if (tooltip == null || tooltip.isEmpty()) {
-            lines.add(Component.translatable(emptyKey));
+            lines.add(ModLanguageManager.shared(emptyKey));
         } else {
             lines.addAll(tooltip);
         }
@@ -190,7 +191,7 @@ public final class ShopComparison {
     }
 
     static List<Component> wornLines(List<Component> equippedTooltip) {
-        return targetLines(Component.translatable("att2.ui.equipped"), equippedTooltip, "att2.ui.unequipped");
+        return targetLines(ModLanguageManager.shared("att2.ui.equipped"), equippedTooltip, "att2.ui.unequipped");
     }
 
     /**
@@ -237,7 +238,7 @@ public final class ShopComparison {
             List<Component> lines = targetLines.get(i);
             if (i == shown - 1 && shown < targets.size()) {
                 lines = new ArrayList<>(lines);
-                lines.add(Component.translatable("att2.ui.compare_more", targets.size() - shown)
+                lines.add(ModLanguageManager.shared("att2.ui.compare_more", "count", targets.size() - shown)
                         .withStyle(ChatFormatting.GRAY));
             }
             stack.add(split(lines, column));

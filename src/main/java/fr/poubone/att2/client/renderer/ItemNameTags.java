@@ -60,6 +60,12 @@ public final class ItemNameTags {
     }
 
     public static void remember(ItemEntity item, Component tag) {
+        Name current = NAMES.get(item);
+        if (current != null && current.tag == tag) {
+            // A cancelled HEAD injection also runs RETURN: preserve the prepared glyphs on cache hits.
+            LAYOUTS.computeIfAbsent(tag, ignored -> new Layout());
+            return;
+        }
         PlayerTeam team = item.getTeam();
         Name old = NAMES.put(item, new Name(item.getCustomName(), item.getItem(), team, team == null ? null : team.getColor(),
                 team == null ? null : team.getPlayerPrefix(), team == null ? null : team.getPlayerSuffix(), tag));

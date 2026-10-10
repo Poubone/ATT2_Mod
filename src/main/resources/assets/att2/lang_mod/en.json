@@ -360,5 +360,13 @@
   "screen.stat_upgrade.source.potion": "Potion: {0}",
   "screen.stat_upgrade.source.environment": "Environment: {0}",
   "screen.stat_upgrade.source.food": "Food: {0}",
-  "screen.stat_upgrade.source.legendary": "Mythical: {0}"
+  "screen.stat_upgrade.source.legendary": "Mythical: {0}",
+  "att2.ui.compare": "Hold {key} to compare",
+  "att2.ui.equipped": "Currently equipped",
+  "att2.ui.unequipped": "No armor equipped in this slot",
+  "att2.ui.unequipped_shield": "No shield in your offhand",
+  "att2.ui.unequipped_weapon": "No weapon of this kind in your hotbar",
+  "att2.ui.in_hand": "In your hand",
+  "att2.ui.hotbar_slot": "Hotbar slot {slot}",
+  "att2.ui.compare_more": "+{count} more in your hotbar"
 }

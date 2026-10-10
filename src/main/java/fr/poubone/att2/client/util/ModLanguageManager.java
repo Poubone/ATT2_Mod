@@ -96,6 +96,17 @@ public class ModLanguageManager {
         return translations.getOrDefault(key, "\u00a7c?" + key);
     }
 
+    /** Mod language for shared inventory/shop labels; Minecraft fallback before resources are loaded. */
+    public static MutableComponent shared(String key) {
+        return translations.containsKey(key) ? get(key) : Component.translatable(key);
+    }
+
+    public static MutableComponent shared(String key, String placeholder, Object value) {
+        Object text = value instanceof Component component ? component.getString() : value;
+        return translations.containsKey(key) ? Component.literal(format(key, placeholder, text))
+                : Component.translatable(key, value);
+    }
+
     /** Replaces {placeholders} in a translated string. */
     public static String format(String key, Object... pairs) {
         String value = getString(key);

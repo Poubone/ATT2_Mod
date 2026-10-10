@@ -1,5 +1,6 @@
 package fr.poubone.att2.mixin;
 
+import fr.poubone.att2.client.util.ModLanguageManager;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import fr.poubone.att2.client.input.KeybindManager;
 import fr.poubone.att2.client.shop.ShopComparison;
@@ -48,7 +49,7 @@ public abstract class InventoryComparisonMixin extends Screen {
     private List<Component> att2$addCompareHint(List<Component> lines, ItemStack stack) {
         if (stack != comparableHoveredStack() || compareHeld()) return lines;
         List<Component> withHint = new ArrayList<>(lines);
-        withHint.add(Component.translatable("att2.ui.compare", KeybindManager.compareKeyLabel())
+        withHint.add(ModLanguageManager.shared("att2.ui.compare", "key", KeybindManager.compareKeyLabel())
                 .withStyle(ChatFormatting.GRAY));
         return withHint;
     }

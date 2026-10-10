@@ -333,5 +333,13 @@
   "screen.stat_upgrade.source.potion": "Potion: {0}",
   "screen.stat_upgrade.source.environment": "Environment: {0}",
   "screen.stat_upgrade.source.food": "Food: {0}",
-  "screen.stat_upgrade.source.legendary": "Mythical: {0}"
+  "screen.stat_upgrade.source.legendary": "Mythical: {0}",
+  "att2.ui.compare": "按住 {key} 进行比较",
+  "att2.ui.equipped": "当前装备",
+  "att2.ui.unequipped": "此栏位未装备护甲",
+  "att2.ui.unequipped_shield": "副手没有盾牌",
+  "att2.ui.unequipped_weapon": "快捷栏中没有此类武器",
+  "att2.ui.in_hand": "手持物品",
+  "att2.ui.hotbar_slot": "快捷栏第 {slot} 格",
+  "att2.ui.compare_more": "快捷栏中还有 {count} 件"
 }

@@ -42,10 +42,8 @@ public class ShopScreen extends Screen {
     /** The buy-hint setting the cards were laid out for, and whether they actually draw it. */
     private boolean hintSetting, cardsHaveHint;
     /** Purchase confirmation: the selected card, and until when it stays selected. */
-    private static final long CONFIRM_WINDOW_MS = 3000;
     private static final int META_TINT = 0x2E8B6A3C, META_ACCENT = 0xFFB0803F;
-    private String armedKey;
-    private long armedUntil;
+    private final ShopPurchaseConfirmation confirmation = new ShopPurchaseConfirmation();
 
     private boolean comparisonHeld() {
         return ShopComparison.isHeld(minecraft.getWindow().handle(), KeybindManager.compareKeyCode());
@@ -67,6 +65,7 @@ public class ShopScreen extends Screen {
     @Override public boolean isPauseScreen() { return false; }
 
     @Override protected void init() {
+        confirmation.clear();
         chromeType = null; // Every control must be repositioned after a GUI-scale change or resize.
         scale = ShopViewport.fit(width, height, 640, 392, HUDConfig.get().menuSize).scale() * (640f / 1440f);
         offsetX = (width - size(1440)) / 2;
@@ -106,6 +105,7 @@ public class ShopScreen extends Screen {
         ShopModel model = ShopModel.get();
         ShopCatalog catalog = model.catalog();
         catalog.inferType();
+        if (lastVersion != model.version()) confirmation.clear();
         if (type != catalog.type()) { categoryFilter = ""; page = 0; }
         type = catalog.type();
         lastVersion = model.version();
@@ -223,24 +223,21 @@ public class ShopScreen extends Screen {
 
     /**
      * With confirmation on, the first click selects the card and a second click on it buys. The selection
-     * then stays for {@link #CONFIRM_WINDOW_MS} after each purchase, so buying the same item again is one click.
+     * then stays briefly after each purchase, so buying the same unchanged item again is one click.
      */
     private void press(ShopOffer offer) {
+        if (ShopModel.get().version() != lastVersion) {
+            rebuild();
+            return; // A packet may have changed the offer before the next screen tick.
+        }
         if (HUDConfig.get().shopConfirmPurchase) {
-            boolean confirmed = isArmed(offer);
-            armedKey = armKey(offer);
-            armedUntil = Util.getMillis() + CONFIRM_WINDOW_MS;
-            if (!confirmed) return;
+            if (!confirmation.press(offer, Util.getMillis())) return;
         }
         ShopModel.get().buy(offer);
     }
 
     private boolean isArmed(ShopOffer offer) {
-        return armKey(offer).equals(armedKey) && Util.getMillis() < armedUntil;
-    }
-
-    private static String armKey(ShopOffer offer) {
-        return offer.trigger() + "|" + offer.name().getString();
+        return confirmation.isArmed(offer, Util.getMillis());
     }
 
     /**
@@ -386,7 +383,7 @@ public class ShopScreen extends Screen {
                 ShopComparison.render(graphics, lines, minecraft.player, kind, ItemStack.EMPTY, mouseX, mouseY, width, height);
             } else {
                 if (ShopComparison.shouldShowHint(kind, held)) {
-                    lines.add(Component.translatable("att2.ui.compare", KeybindManager.compareKeyLabel())
+                    lines.add(ModLanguageManager.shared("att2.ui.compare", "key", KeybindManager.compareKeyLabel())
                             .withStyle(net.minecraft.ChatFormatting.GRAY));
                 }
                 graphics.setTooltipForNextFrame(font, lines, Optional.empty(), mouseX, mouseY);

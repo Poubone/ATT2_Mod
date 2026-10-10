@@ -1,5 +1,8 @@
 package fr.poubone.att2.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+
 import fr.poubone.att2.client.gambling.GamblingModel;
 import fr.poubone.att2.client.hud.CityToast;
 import fr.poubone.att2.client.data.SpellXpRefresh;
@@ -54,20 +57,21 @@ public abstract class ClientPacketListenerMixin {
         GamblingModel.get().onSound(packet.getSound().value().location(), packet.getSource());
     }
 
-    @Inject(method = "handleParticleEvent", at = @At("HEAD"), cancellable = true)
-    private void att2$thinItemParticles(ClientboundLevelParticlesPacket packet, CallbackInfo ci) {
-        if (!Minecraft.getInstance().isSameThread()) return;
-        switch (ItemParticleBudget.classify(packet)) {
-            case HIDE -> ci.cancel();
-            case SHOW -> ItemParticleBudget.setSpawningItemDust(true);
-            case NOT_ITEM_DUST -> {
-            }
+    @WrapMethod(method = "handleParticleEvent")
+    private void att2$thinItemParticles(ClientboundLevelParticlesPacket packet, Operation<Void> original) {
+        if (!Minecraft.getInstance().isSameThread()) {
+            original.call(packet);
+            return;
         }
-    }
-
-    @Inject(method = "handleParticleEvent", at = @At("RETURN"))
-    private void att2$endItemParticles(ClientboundLevelParticlesPacket packet, CallbackInfo ci) {
-        ItemParticleBudget.setSpawningItemDust(false);
+        ItemParticleBudget.Verdict verdict = ItemParticleBudget.classify(packet);
+        if (verdict == ItemParticleBudget.Verdict.HIDE) return;
+        boolean previous = ItemParticleBudget.isSpawningItemDust();
+        ItemParticleBudget.setSpawningItemDust(verdict == ItemParticleBudget.Verdict.SHOW);
+        try {
+            original.call(packet);
+        } finally {
+            ItemParticleBudget.setSpawningItemDust(previous);
+        }
     }
 
     @Inject(method = "setTitleText", at = @At("HEAD"), cancellable = true)

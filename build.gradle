@@ -58,6 +58,16 @@ base {
     archivesName = project.archives_base_name
 }
 
+// Optional integration tests run in their own client and world; never packaged in the release JAR.
+if (providers.gradleProperty('prGameTest').isPresent()) {
+    fabricApi.configureTests {
+        createSourceSet = true
+        modId = 'att2-integration-test'
+        enableGameTests = false
+        enableClientGameTests = true
+    }
+}
+
 jar {
     from("LICENSE") {
         rename { "${it}_${project.base.archivesName.get()}" }

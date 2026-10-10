@@ -124,7 +124,7 @@ public class ShopSlotButton extends AbstractWidget {
         ShopTheme.text(graphics, plainCardText(displayName()), getX() + Math.round(14 * s), getY() + Math.round(141 * s),
                 width - Math.round(28 * s), textScale, 0xFF382B21, true);
         if (hint) {
-            ShopTheme.text(graphics, Component.translatable("att2.shop.hover_event.buy"),
+            ShopTheme.text(graphics, ModLanguageManager.get("shop.click_to_buy"),
                     getX() + Math.round(14 * s), getY() + Math.round(175 * s), width - Math.round(28 * s),
                     s * HINT_TEXT_SCALE, 0xFF705E47, true);
         }

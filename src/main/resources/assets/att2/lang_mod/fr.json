@@ -360,5 +360,13 @@
   "screen.stat_upgrade.source.potion": "Potion : {0}",
   "screen.stat_upgrade.source.environment": "Environnement : {0}",
   "screen.stat_upgrade.source.food": "Nourriture : {0}",
-  "screen.stat_upgrade.source.legendary": "Mythique : {0}"
+  "screen.stat_upgrade.source.legendary": "Mythique : {0}",
+  "att2.ui.compare": "Maintenir {key} pour comparer",
+  "att2.ui.equipped": "Équipement actuel",
+  "att2.ui.unequipped": "Aucune armure équipée dans cet emplacement",
+  "att2.ui.unequipped_shield": "Aucun bouclier en main secondaire",
+  "att2.ui.unequipped_weapon": "Aucune arme de ce type dans la barre rapide",
+  "att2.ui.in_hand": "En main",
+  "att2.ui.hotbar_slot": "Emplacement {slot} de la barre rapide",
+  "att2.ui.compare_more": "+{count} autres dans la barre rapide"
 }
