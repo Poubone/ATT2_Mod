@@ -179,6 +179,8 @@
   "charles.grid.reset.tip": "Начать новую сетку того же размера (платно)",
   "charles.grid.menu.tip": "Вернуться к выбору сеток",
   "screen.hud_config.charles_auto_open": "Автоматически открывать прилавок Charles",
+  "screen.hud_config.sneak_skips_menus": "Красться — без меню",
+  "screen.hud_config.sneak_skips_menus.tooltip": "Удерживайте «Красться» во время разговора с NPC, чтобы получить меню карты в чате вместо окна мода.",
   "screen.hud_config.shop_auto_open": "Открывать меню магазинов",
   "shop.title": "Магазин",
   "shop.balance": "Chronotons: {n}",

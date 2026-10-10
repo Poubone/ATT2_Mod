@@ -179,6 +179,8 @@
   "charles.grid.reset.tip": "重新开始同样大小的寻宝格（需付费）",
   "charles.grid.menu.tip": "返回寻宝格选择",
   "screen.hud_config.charles_auto_open": "自动打开 Charles 的柜台",
+  "screen.hud_config.sneak_skips_menus": "潜行时不打开菜单",
+  "screen.hud_config.sneak_skips_menus.tooltip": "与 NPC 交谈时按住潜行键，将显示地图的聊天菜单，而不是模组窗口。",
   "screen.hud_config.shop_auto_open": "打开商店菜单",
   "shop.title": "商店",
   "shop.balance": "Chronotons：{n}",

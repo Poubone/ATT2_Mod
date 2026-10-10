@@ -179,6 +179,8 @@
   "charles.grid.reset.tip": "같은 크기의 그리드를 새로 시작 (유료)",
   "charles.grid.menu.tip": "그리드 선택으로 돌아가기",
   "screen.hud_config.charles_auto_open": "Charles 카운터 자동 열기",
+  "screen.hud_config.sneak_skips_menus": "웅크리기로 메뉴 건너뛰기",
+  "screen.hud_config.sneak_skips_menus.tooltip": "NPC와 대화할 때 웅크리기를 누르고 있으면 모드 창 대신 맵의 채팅 메뉴가 표시됩니다.",
   "screen.hud_config.shop_auto_open": "상점 메뉴 열기",
   "shop.title": "상점",
   "shop.balance": "Chronotons: {n}",

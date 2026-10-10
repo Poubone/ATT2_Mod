@@ -32,6 +32,7 @@ import fr.poubone.att2.client.hud.StatIconsDisplay;
 import fr.poubone.att2.client.hud.XPDisplay;
 import fr.poubone.att2.client.input.InputSequencer;
 import fr.poubone.att2.client.input.KeybindManager;
+import fr.poubone.att2.client.input.SneakMenuBypass;
 import fr.poubone.att2.client.sync.PartySync;
 import fr.poubone.att2.client.sync.PingMarkers;
 import fr.poubone.att2.client.quest.QuestModel;
@@ -88,6 +89,7 @@ public class ATT2_ProjectClient implements ClientModInitializer {
 
         // pnj_talk often skips UseEntityCallback; edge-detect use on Eldric crosshair.
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
+            SneakMenuBypass.tick(client);
             if (!FlashbackCompat.isInReplay()) MinerShopModel.get().pollNpcUse(client);
         });
 
@@ -118,10 +120,11 @@ public class ATT2_ProjectClient implements ClientModInitializer {
 
         ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
             if (FlashbackCompat.isInReplay()) return true;
-            if (!overlay && GamblingModel.get().onSystemMessage(message)) return false;
-            if (!overlay && RuneCodexModel.get().onSystemMessage(message)) return false;
-            if (!overlay && MinerShopModel.get().onSystemMessage(message)) return false;
-            if (!overlay && ShopModel.get().onSystemMessage(message)) return false;
+            boolean menus = !overlay && !SneakMenuBypass.isActive();
+            if (menus && GamblingModel.get().onSystemMessage(message)) return false;
+            if (menus && RuneCodexModel.get().onSystemMessage(message)) return false;
+            if (menus && MinerShopModel.get().onSystemMessage(message)) return false;
+            if (menus && ShopModel.get().onSystemMessage(message)) return false;
             return QuestModel.get().onSystemMessage(message, overlay);
         });
 

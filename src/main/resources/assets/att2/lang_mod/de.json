@@ -179,6 +179,8 @@
   "charles.grid.reset.tip": "Ein Gitter derselben Größe neu starten (kostenpflichtig)",
   "charles.grid.menu.tip": "Zurück zur Gitterauswahl",
   "screen.hud_config.charles_auto_open": "Theke von Charles automatisch öffnen",
+  "screen.hud_config.sneak_skips_menus": "Schleichen überspringt Menüs",
+  "screen.hud_config.sneak_skips_menus.tooltip": "Halte Schleichen gedrückt, während du mit einem NPC sprichst, um das Chat-Menü der Karte statt des Mod-Fensters zu erhalten.",
   "screen.hud_config.shop_auto_open": "Shop-Menüs öffnen",
   "shop.title": "Laden",
   "shop.balance": "Chronotons: {n}",

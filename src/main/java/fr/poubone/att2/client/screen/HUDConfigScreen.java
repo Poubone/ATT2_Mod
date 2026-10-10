@@ -117,6 +117,9 @@ public class HUDConfigScreen extends Screen {
                         config.questBookShowDaily, v -> config.questBookShowDaily = v);
             }
             case MENUS -> {
+                contentY = addToggle(contentX, contentY, colW, "screen.hud_config.sneak_skips_menus",
+                        config.sneakSkipsMenus, v -> config.sneakSkipsMenus = v,
+                        "screen.hud_config.sneak_skips_menus.tooltip");
                 contentY = addToggle(contentX, contentY, colW, "screen.hud_config.quest_menu",
                         config.questMenuEnabled, v -> config.questMenuEnabled = v);
                 contentY = addToggle(contentX, contentY, colW, "screen.hud_config.rune_menu",

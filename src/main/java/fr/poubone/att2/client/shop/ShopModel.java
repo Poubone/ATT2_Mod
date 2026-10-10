@@ -6,6 +6,7 @@ import fr.poubone.att2.client.data.CurrencyModel;
 import fr.poubone.att2.client.gambling.CharlesScreen;
 import fr.poubone.att2.client.gambling.GamblingModel;
 import fr.poubone.att2.client.hud.HUDConfig;
+import fr.poubone.att2.client.input.SneakMenuBypass;
 import fr.poubone.att2.client.miner.MinerCatalog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
@@ -762,6 +763,7 @@ public final class ShopModel {
         if (FlashbackCompat.isInReplay()) return;
         if (target == null) return;
         if (!(target.gambling() ? HUDConfig.get().charlesAutoOpen : menuEnabled(target.type()))) return;
+        if (SneakMenuBypass.isActive()) return;
         long now = System.currentTimeMillis();
         if (now - lastNpcOpenMs < 400) return;
         lastNpcOpenMs = now;

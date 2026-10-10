@@ -179,6 +179,8 @@
   "charles.grid.reset.tip": "समान आकार की नई ग्रिड शुरू करें (शुल्क लगेगा)",
   "charles.grid.menu.tip": "ग्रिड चयन पर वापस जाएँ",
   "screen.hud_config.charles_auto_open": "Charles का काउंटर अपने आप खोलें",
+  "screen.hud_config.sneak_skips_menus": "झुकने पर मेनू न खोलें",
+  "screen.hud_config.sneak_skips_menus.tooltip": "किसी NPC से बात करते समय झुकने की कुंजी दबाए रखें, ताकि मॉड की विंडो की जगह मैप का चैट मेनू दिखे।",
   "screen.hud_config.shop_auto_open": "दुकान मेनू खोलें",
   "shop.title": "दुकान",
   "shop.balance": "Chronotons: {n}",
