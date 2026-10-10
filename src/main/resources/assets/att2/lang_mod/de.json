@@ -222,7 +222,7 @@
   "screen.hud_config.shop_buy_hint": "Kaufhinweis auf Gegenständen anzeigen",
   "screen.hud_config.shop_buy_hint.tooltip": "Die Zeile unter dem Namen jedes Gegenstands, die zum Kaufen per Klick auffordert. Sie schaltet sich nach 10 Stunden Spielzeit von selbst ab; du kannst sie wieder einschalten.",
   "screen.hud_config.shop_confirm": "Käufe bestätigen",
-  "screen.hud_config.shop_confirm.tooltip": "Der erste Klick auf einen Gegenstand wählt ihn aus, der zweite kauft ihn. Nach einem Kauf kaufen weitere Klicks auf denselben Gegenstand sofort, bis du 3 Sekunden pausierst.",
+  "screen.hud_config.shop_confirm.tooltip": "Die Kaufbestätigung ist optional, standardmäßig deaktiviert und unter HUD-Einstellungen → Menüs → Käufe bestätigen aktivierbar. Der erste Klick auf einen Gegenstand wählt ihn aus, der zweite kauft ihn. Nach einem Kauf kaufen weitere Klicks auf denselben Gegenstand sofort, bis du 3 Sekunden pausierst.",
   "screen.hud_config.shop_columns": "Gegenstände pro Reihe: {count}",
   "screen.hud_config.shop_columns.tooltip": "Wie viele Gegenstände jede Reihe am Stand eines Händlers zeigt. Reihen werden ergänzt, um das Fenster zu füllen; wäre der Text zu klein zum Lesen, passen weniger in eine Reihe.",
   "screen.hud_config.menu_size": "Menügröße: {percent} %",

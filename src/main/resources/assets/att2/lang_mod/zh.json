@@ -222,7 +222,7 @@
   "screen.hud_config.shop_buy_hint": "在物品上显示购买提示",
   "screen.hud_config.shop_buy_hint.tooltip": "每个物品名称下方提示点击购买的那一行。游戏时间达到 10 小时后会自动关闭；你可以重新打开。",
   "screen.hud_config.shop_confirm": "确认购买",
-  "screen.hud_config.shop_confirm.tooltip": "第一次点击物品会选中它，第二次点击才会购买。购买后，在停顿 3 秒之前再次点击同一物品会立即购买。",
+  "screen.hud_config.shop_confirm.tooltip": "购买确认为可选功能，默认关闭，可在 HUD 设置 → 菜单 → 确认购买中开启。 第一次点击物品会选中它，第二次点击才会购买。购买后，在停顿 3 秒之前再次点击同一物品会立即购买。",
   "screen.hud_config.shop_columns": "每行物品数：{count}",
   "screen.hud_config.shop_columns.tooltip": "商人摊位每行显示的物品数量。会增加行数以填满窗口；如果文字小到无法阅读，每行显示的物品会减少。",
   "screen.hud_config.menu_size": "菜单大小：{percent}%",

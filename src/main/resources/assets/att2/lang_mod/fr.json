@@ -239,7 +239,7 @@
   "screen.hud_config.shop_buy_hint": "Afficher l'aide d'achat sur les objets",
   "screen.hud_config.shop_buy_hint.tooltip": "La ligne sous le nom de chaque objet qui indique de cliquer pour acheter. Elle se désactive d'elle-même après 10 heures de jeu ; vous pouvez la réactiver.",
   "screen.hud_config.shop_confirm": "Confirmer les achats",
-  "screen.hud_config.shop_confirm.tooltip": "Le premier clic sur un objet le sélectionne, le second l'achète. Après un achat, les clics suivants sur le même objet achètent directement jusqu'à une pause de 3 secondes.",
+  "screen.hud_config.shop_confirm.tooltip": "Confirmation d’achat facultative, désactivée par défaut et activable dans Configuration du HUD → Menus → Confirmer les achats. Le premier clic sur un objet le sélectionne, le second l'achète. Après un achat, les clics suivants sur le même objet achètent directement jusqu'à une pause de 3 secondes.",
   "screen.hud_config.shop_columns": "Objets par ligne : {count}",
   "screen.hud_config.shop_columns.tooltip": "Nombre d'objets sur chaque ligne de l'étal d'un marchand. Des lignes sont ajoutées pour remplir la fenêtre, et moins d'objets tiennent par ligne quand le texte deviendrait illisible.",
   "screen.hud_config.menu_size": "Taille des menus : {percent} %",

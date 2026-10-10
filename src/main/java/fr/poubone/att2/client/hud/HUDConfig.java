@@ -183,8 +183,8 @@ public class HUDConfig {
      * once the player has 10 hours of play, see {@link fr.poubone.att2.client.shop.ShopBuyHint}.
      */
     public Boolean shopBuyHint = null;
-    /** The first click on a merchant card selects it; the purchase needs a second click on the same card. */
-    public boolean shopConfirmPurchase = true;
+    /** Optional two-click purchase confirmation, disabled by default and enabled in the Menus settings. */
+    public boolean shopConfirmPurchase = false;
     /** Merchant cards per row, see {@link fr.poubone.att2.client.shop.ShopGrid}. */
     public int shopColumns = fr.poubone.att2.client.shop.ShopGrid.DEFAULT_COLUMNS;
     /** Preferred size of the shop-style menus, in percent; they still shrink to fit the window. */

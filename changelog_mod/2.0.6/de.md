@@ -7,3 +7,4 @@
 - Neue Leistungsoptionen: Gruppierung und Grenzen für Gegenstandsstrahlen und Partikel, Ausblenden außerhalb des Sichtfelds, Render-, Größen- und Namensschild-Caches, direkte Umrisse und Partikel ohne Kollisionen. Undurchsichtige Gegenstände bleiben optional und standardmäßig aus.
 - Namensschild-Cache und Kaufbestätigung nach Katalogänderungen korrigiert. Neue Texte und Changelog in allen elf Sprachen. Beiträge von Simuciokas (PR #2–#10), Integration und Korrekturen von Poubone.
 - Update-Benachrichtigung: Eine Prüfung im Hintergrund vom Hauptmenü aus zeigt ein Fenster, wenn eine neuere kompatible Version verfügbar ist. Die Downloadseite öffnen, später erinnern lassen oder diese Version ignorieren; die Prüfung lässt sich in den Einstellungen deaktivieren.
+- Die Kaufbestätigung ist optional, standardmäßig deaktiviert und unter HUD-Einstellungen → Menüs → Käufe bestätigen aktivierbar.

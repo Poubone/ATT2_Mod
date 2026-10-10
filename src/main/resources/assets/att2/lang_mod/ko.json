@@ -222,7 +222,7 @@
   "screen.hud_config.shop_buy_hint": "아이템에 구매 안내 표시",
   "screen.hud_config.shop_buy_hint.tooltip": "각 아이템 이름 아래에 클릭하여 구매하라고 알려 주는 줄입니다. 플레이 시간이 10시간이 되면 자동으로 꺼지며, 다시 켤 수 있습니다.",
   "screen.hud_config.shop_confirm": "구매 확인",
-  "screen.hud_config.shop_confirm.tooltip": "아이템을 처음 클릭하면 선택되고, 다시 클릭하면 구매합니다. 구매 후에는 3초 동안 멈출 때까지 같은 아이템을 클릭하면 바로 구매합니다.",
+  "screen.hud_config.shop_confirm.tooltip": "구매 확인은 선택 사항이며 기본적으로 꺼져 있습니다. HUD 설정 → 메뉴 → 구매 확인에서 켤 수 있습니다. 아이템을 처음 클릭하면 선택되고, 다시 클릭하면 구매합니다. 구매 후에는 3초 동안 멈출 때까지 같은 아이템을 클릭하면 바로 구매합니다.",
   "screen.hud_config.shop_columns": "한 줄당 아이템: {count}",
   "screen.hud_config.shop_columns.tooltip": "상인 가판대의 각 줄에 표시할 아이템 수입니다. 창을 채우도록 줄이 추가되며, 글자가 너무 작아 읽을 수 없으면 한 줄에 들어가는 수가 줄어듭니다.",
   "screen.hud_config.menu_size": "메뉴 크기: {percent}%",

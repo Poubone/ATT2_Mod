@@ -7,3 +7,4 @@
 - New performance controls: grouping and limits for item beams and particles, off-screen culling, rendering, bounds and name-tag caches, direct outlines and particles without collisions. Solid item rendering remains optional and off by default.
 - Fixed name-tag caching and purchase confirmation after catalog updates. New mod text and this changelog are available in all eleven languages. Contributions by Simuciokas (PR #2–#10), integration and fixes by Poubone.
 - Update notification: a background check from the main menu shows a popup when a newer compatible version is available. Open the download page, remind me later or ignore that version; update checks can be disabled in the settings.
+- Purchase confirmation is optional, off by default, and can be enabled in HUD settings → Menus → Confirm purchases.

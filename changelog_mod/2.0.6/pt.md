@@ -7,3 +7,4 @@
 - Novas opções de desempenho: agrupamento e limites de feixes e partículas de itens, descarte fora da visão, caches de renderização, dimensões e etiquetas, contornos diretos e partículas sem colisões. A renderização opaca permanece opcional e desativada por padrão.
 - Corrigidos o cache de etiquetas e a confirmação após mudanças no catálogo. Novos textos e changelog nos onze idiomas. Contribuições de Simuciokas (PR #2–#10), integração e correções por Poubone.
 - Aviso de atualização: uma verificação em segundo plano no menu principal mostra uma janela quando uma nova versão compatível está disponível. É possível abrir a página de download, adiar o aviso ou ignorar essa versão; a verificação pode ser desativada nas configurações.
+- A confirmação de compra é opcional, vem desativada por padrão e pode ser ativada nas configurações do HUD → Menus → Confirmar compras.

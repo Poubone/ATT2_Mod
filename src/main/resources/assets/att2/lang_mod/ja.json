@@ -222,7 +222,7 @@
   "screen.hud_config.shop_buy_hint": "アイテムに購入のヒントを表示",
   "screen.hud_config.shop_buy_hint.tooltip": "各アイテム名の下にある、クリックで購入できることを示す行です。プレイ時間が10時間に達すると自動でオフになります。再びオンにもできます。",
   "screen.hud_config.shop_confirm": "購入を確認する",
-  "screen.hud_config.shop_confirm.tooltip": "アイテムを1回クリックすると選択され、もう1回で購入します。購入後は、3秒間操作を止めるまで同じアイテムをクリックするとすぐに購入します。",
+  "screen.hud_config.shop_confirm.tooltip": "購入確認は任意の機能で、初期設定では無効です。HUD設定 → メニュー → 購入を確認する、で有効にできます。 アイテムを1回クリックすると選択され、もう1回で購入します。購入後は、3秒間操作を止めるまで同じアイテムをクリックするとすぐに購入します。",
   "screen.hud_config.shop_columns": "1行のアイテム数：{count}",
   "screen.hud_config.shop_columns.tooltip": "商人の店の各行に表示するアイテムの数。ウィンドウを埋めるように行が追加され、文字が小さすぎて読めない場合は1行の数が減ります。",
   "screen.hud_config.menu_size": "メニューのサイズ：{percent}%",

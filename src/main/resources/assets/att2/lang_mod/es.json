@@ -222,7 +222,7 @@
   "screen.hud_config.shop_buy_hint": "Mostrar la ayuda de compra en los objetos",
   "screen.hud_config.shop_buy_hint.tooltip": "La línea bajo el nombre de cada objeto que indica hacer clic para comprar. Se desactiva sola tras 10 horas de juego; puedes volver a activarla.",
   "screen.hud_config.shop_confirm": "Confirmar compras",
-  "screen.hud_config.shop_confirm.tooltip": "El primer clic en un objeto lo selecciona y el segundo lo compra. Tras una compra, los clics siguientes en el mismo objeto compran al momento hasta que hagas una pausa de 3 segundos.",
+  "screen.hud_config.shop_confirm.tooltip": "La confirmación de compra es opcional, está desactivada por defecto y se puede activar en los ajustes del HUD → Menús → Confirmar compras. El primer clic en un objeto lo selecciona y el segundo lo compra. Tras una compra, los clics siguientes en el mismo objeto compran al momento hasta que hagas una pausa de 3 segundos.",
   "screen.hud_config.shop_columns": "Objetos por fila: {count}",
   "screen.hud_config.shop_columns.tooltip": "Cuántos objetos muestra cada fila del puesto de un comerciante. Se añaden filas para llenar la ventana, y caben menos por fila si el texto quedara demasiado pequeño para leerse.",
   "screen.hud_config.menu_size": "Tamaño del menú: {percent} %",

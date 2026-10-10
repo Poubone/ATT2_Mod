@@ -239,7 +239,7 @@
   "screen.hud_config.shop_buy_hint": "Show the buy hint on items",
   "screen.hud_config.shop_buy_hint.tooltip": "The line under each item's name that tells you to click to buy. It turns itself off once you have played for 10 hours; you can turn it back on.",
   "screen.hud_config.shop_confirm": "Confirm purchases",
-  "screen.hud_config.shop_confirm.tooltip": "The first click on an item selects it and the second buys it. After a purchase, further clicks on the same item buy right away until you pause for 3 seconds.",
+  "screen.hud_config.shop_confirm.tooltip": "Purchase confirmation is optional, off by default, and can be enabled in HUD settings → Menus → Confirm purchases. The first click on an item selects it and the second buys it. After a purchase, further clicks on the same item buy right away until you pause for 3 seconds.",
   "screen.hud_config.shop_columns": "Items per row: {count}",
   "screen.hud_config.shop_columns.tooltip": "How many items each row of a merchant's stall shows. Rows are added to fill the window, and fewer fit per row when the text would be too small to read.",
   "screen.hud_config.menu_size": "Menu size: {percent}%",
