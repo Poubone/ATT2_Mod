@@ -247,6 +247,7 @@ public class ShopScreen extends Screen {
      * @return the right edge of the strip
      */
     private int drawMetaLabel(GuiGraphics graphics, Component meta) {
+        meta = ShopTheme.readableOnParchment(meta);
         float scaleText = textScale();
         int left = x(364), top = y(164);
         int width = Math.min(Math.round(font.width(meta) * scaleText) + 1, size(725));
@@ -348,7 +349,8 @@ public class ShopScreen extends Screen {
         if (model.isRepairView() && model.repairOffers().isEmpty()) {
             int lineY = 224;
             for (Component line : model.repairLines()) {
-                for (var wrapped : font.split(line, Math.max(1, (int) (size(956) / textScale())))) {
+                for (var wrapped : font.split(ShopTheme.readableOnParchment(line),
+                        Math.max(1, (int) (size(956) / textScale())))) {
                     graphics.pose().pushMatrix();
                     graphics.pose().translate(x(364), y(lineY));
                     graphics.pose().scale(textScale(), textScale());
