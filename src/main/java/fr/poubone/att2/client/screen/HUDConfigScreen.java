@@ -3,6 +3,7 @@ package fr.poubone.att2.client.screen;
 import fr.poubone.att2.client.discord.DiscordPresence;
 import fr.poubone.att2.client.sync.PartySync;
 import fr.poubone.att2.client.hud.HUDConfig;
+import fr.poubone.att2.client.shop.ShopBuyHint;
 import fr.poubone.att2.client.shop.ShopGrid;
 import fr.poubone.att2.client.shop.ShopPreview;
 import fr.poubone.att2.client.shop.ShopViewport;
@@ -150,6 +151,15 @@ public class HUDConfigScreen extends Screen {
                 contentY = addToggle(contentX, contentY, colW, "screen.hud_config.menu_background",
                         config.menuBackground, v -> config.menuBackground = v,
                         "screen.hud_config.menu_background.tooltip");
+                contentY = addToggle(contentX, contentY, colW, "screen.hud_config.shop_sort_by_tier",
+                        config.shopSortByTier, v -> config.shopSortByTier = v,
+                        "screen.hud_config.shop_sort_by_tier.tooltip");
+                contentY = addToggle(contentX, contentY, colW, "screen.hud_config.shop_buy_hint",
+                        ShopBuyHint.isShown(Minecraft.getInstance()), v -> config.shopBuyHint = v,
+                        "screen.hud_config.shop_buy_hint.tooltip");
+                contentY = addToggle(contentX, contentY, colW, "screen.hud_config.shop_confirm",
+                        config.shopConfirmPurchase, v -> config.shopConfirmPurchase = v,
+                        "screen.hud_config.shop_confirm.tooltip");
                 boolean sideBySide = available >= 350;
                 int sliderW = sideBySide ? 170 : Math.min(200, available);
                 addStepSlider(contentX, contentY, sliderW, SHOP_COLUMN_STEPS, config.shopColumns,

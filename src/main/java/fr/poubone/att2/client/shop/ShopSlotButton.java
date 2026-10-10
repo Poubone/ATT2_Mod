@@ -1,5 +1,6 @@
 package fr.poubone.att2.client.shop;
 
+import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -15,6 +16,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 /** Item preview + price. Hover shows the map item's lore / stats. */
 public class ShopSlotButton extends AbstractWidget {
@@ -24,22 +26,37 @@ public class ShopSlotButton extends AbstractWidget {
     static final float PRICE_TEXT_SCALE = 2.3f;
     /** Below this many physical pixels per font pixel, text is no longer legible. */
     static final float MIN_READABLE_PIXELS = 0.8f;
-    /** Card width in card units. */
-    static final int CARD_WIDTH = 312;
+    /** Card shape in card units; without the buy hint the price button moves up into its place. */
+    static final int CARD_WIDTH = 312, CARD_HEIGHT = 252, COMPACT_CARD_HEIGHT = 218;
+    private static final int BUY_Y = 202, COMPACT_BUY_Y = 168;
+    private static final int ARMED_OUTLINE = 0xFFE8B04A;
 
     private final ShopOffer offer;
     private final Runnable onPress;
     private final ShopType theme;
+    private final boolean hint;
+    private final BooleanSupplier armed;
 
     public ShopSlotButton(int x, int y, int width, int height, ShopOffer offer, Runnable onPress) {
         this(x, y, width, height, offer, onPress, ShopType.GENERAL);
     }
 
     public ShopSlotButton(int x, int y, int width, int height, ShopOffer offer, Runnable onPress, ShopType theme) {
+        this(x, y, width, height, offer, onPress, theme, true, () -> false);
+    }
+
+    /**
+     * @param hint  draw the "click to buy" line (a {@link #CARD_HEIGHT} card) or leave it out ({@link #COMPACT_CARD_HEIGHT})
+     * @param armed true while a first click waits for the confirming second one
+     */
+    public ShopSlotButton(int x, int y, int width, int height, ShopOffer offer, Runnable onPress, ShopType theme,
+                          boolean hint, BooleanSupplier armed) {
         super(x, y, width, height, offer.name());
         this.offer = offer;
         this.onPress = onPress;
         this.theme = theme;
+        this.hint = hint;
+        this.armed = armed;
     }
 
     public ShopOffer offer() {
@@ -66,8 +83,17 @@ public class ShopSlotButton extends AbstractWidget {
     @Override
     protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         boolean hover = isHovered();
-        ShopSkin.texture(graphics, theme, hover ? "card_hover" : "card_normal", getX(), getY(), width, height, 312, 252);
-        float s = width / 312f;
+        boolean confirming = armed.getAsBoolean();
+        ShopSkin.texture(graphics, theme, hover || confirming ? "card_hover" : "card_normal", getX(), getY(), width, height,
+                CARD_WIDTH, hint ? CARD_HEIGHT : COMPACT_CARD_HEIGHT);
+        float s = width / (float) CARD_WIDTH;
+        if (confirming) {
+            int t = Math.max(1, Math.round(4 * s));
+            graphics.fill(getX(), getY(), getX() + width, getY() + t, ARMED_OUTLINE);
+            graphics.fill(getX(), getBottom() - t, getX() + width, getBottom(), ARMED_OUTLINE);
+            graphics.fill(getX(), getY() + t, getX() + t, getBottom() - t, ARMED_OUTLINE);
+            graphics.fill(getRight() - t, getY() + t, getRight(), getBottom() - t, ARMED_OUTLINE);
+        }
         int iconSize = Math.max(1, Math.round(90 * s));
         int iconX = getX() + (width - iconSize) / 2;
         int iconY = getY() + Math.round(38 * s);
@@ -97,24 +123,22 @@ public class ShopSlotButton extends AbstractWidget {
         float textScale = s * NAME_TEXT_SCALE;
         ShopTheme.text(graphics, plainCardText(displayName()), getX() + Math.round(14 * s), getY() + Math.round(141 * s),
                 width - Math.round(28 * s), textScale, 0xFF382B21, true);
-        // The hint repeats what the price button says; it is dropped once too small to read.
-        float guiScale = (float) Minecraft.getInstance().getWindow().getGuiScale();
-        if (s * HINT_TEXT_SCALE * guiScale >= MIN_READABLE_PIXELS) {
+        if (hint) {
             ShopTheme.text(graphics, Component.translatable("att2.shop.hover_event.buy"),
                     getX() + Math.round(14 * s), getY() + Math.round(175 * s), width - Math.round(28 * s),
                     s * HINT_TEXT_SCALE, 0xFF705E47, true);
         }
         int buyX = getX() + Math.round(18 * s);
-        int buyY = getY() + Math.round(202 * s);
+        int buyY = getY() + Math.round((hint ? BUY_Y : COMPACT_BUY_Y) * s);
         int buyW = Math.round(276 * s), buyH = Math.round(38 * s);
-        ShopSkin.texture(graphics, theme, hover ? "button_buy_hover" : "button_buy_normal",
+        ShopSkin.texture(graphics, theme, hover || confirming ? "button_buy_hover" : "button_buy_normal",
                 buyX, buyY, buyW, buyH, 276, 38);
         // Preserve the full price, including its currency or exchange components.
-        Component price = offer.price() == null ? Component.literal("?")
-                : plainCardText(offer.price());
+        Component label = confirming ? ModLanguageManager.get("shop.confirm_buy")
+                : offer.price() == null ? Component.literal("?") : plainCardText(offer.price());
         float priceScale = s * PRICE_TEXT_SCALE;
-        ShopTheme.text(graphics, price, buyX + 2, buyY + Math.max(1, (int) ((buyH - 8 * priceScale) / 2)),
-                buyW - 4, priceScale, hover ? 0xFFF5EAD0 : 0xFF382B21, true);
+        ShopTheme.text(graphics, label, buyX + 2, buyY + Math.max(1, (int) ((buyH - 8 * priceScale) / 2)),
+                buyW - 4, priceScale, hover || confirming ? 0xFFF5EAD0 : 0xFF382B21, true);
     }
 
     @Override

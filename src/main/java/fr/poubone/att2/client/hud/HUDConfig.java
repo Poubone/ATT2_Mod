@@ -132,6 +132,15 @@ public class HUDConfig {
     public boolean questMenuEnabled = true;
     /** Blur and darken the game behind the shop-style menus. */
     public boolean menuBackground = false;
+    /** Show merchant offers highest rarity first, then by name, instead of the map's order. */
+    public boolean shopSortByTier = false;
+    /**
+     * Draw the "click to buy" line on merchant cards. {@code null} until chosen: shown, then turned off
+     * once the player has 10 hours of play, see {@link fr.poubone.att2.client.shop.ShopBuyHint}.
+     */
+    public Boolean shopBuyHint = null;
+    /** The first click on a merchant card selects it; the purchase needs a second click on the same card. */
+    public boolean shopConfirmPurchase = true;
     /** Merchant cards per row, see {@link fr.poubone.att2.client.shop.ShopGrid}. */
     public int shopColumns = fr.poubone.att2.client.shop.ShopGrid.DEFAULT_COLUMNS;
     /** Preferred size of the shop-style menus, in percent; they still shrink to fit the window. */
