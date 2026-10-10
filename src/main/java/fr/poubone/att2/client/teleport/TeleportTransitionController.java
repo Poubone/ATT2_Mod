@@ -23,6 +23,8 @@ public final class TeleportTransitionController {
     /** ATT2: how long after the transition the map's arrival effects (Blindness) keep being muted. */
     private static final int ARRIVAL_EFFECT_GRACE_TICKS = 40;
     private static int ticksSinceCleared = Integer.MAX_VALUE;
+    private static final int BEACON_HIDE_AFTER_HUD_TICKS = 60;
+    private static int ticksSinceHudRestored = Integer.MAX_VALUE;
 
     private static final int PRE_TRAVEL_WAIT_TICKS = 10;
     private static final int DEFAULT_TRAVEL_TICKS = 40;
@@ -190,6 +192,7 @@ public final class TeleportTransitionController {
     }
 
     public static void tick(Minecraft client) {
+        if (ticksSinceHudRestored < Integer.MAX_VALUE) ticksSinceHudRestored++;
         if (FlashbackCompat.isInReplay()) {
             if (isRunning()) clear(client);
             return;
@@ -300,6 +303,11 @@ public final class TeleportTransitionController {
 
     public static boolean shouldSuppressGameMenu() {
         return false;
+    }
+
+    /** Beacon beams ignore F1, so they are hidden while the transition keeps the GUI hidden and for a few seconds after. */
+    public static boolean shouldHideBeaconBeams() {
+        return (isRunning() && hudSuppressed) || ticksSinceHudRestored <= BEACON_HIDE_AFTER_HUD_TICKS;
     }
 
     public static boolean shouldHideLocalPlayerModel() {
@@ -1348,6 +1356,7 @@ public final class TeleportTransitionController {
         if (hudSuppressed && cameraReleased) {
             client.options.hideGui = previousHudHidden;
             hudSuppressed = false;
+            ticksSinceHudRestored = 0;
         }
     }
 
@@ -1371,6 +1380,7 @@ public final class TeleportTransitionController {
         SodiumCompat.endTransition();
         stopCustomTravelSound(client);
         client.options.hideGui = previousHudHidden;
+        if (hudSuppressed) ticksSinceHudRestored = 0;
 
         ticksSinceCleared = 0;
         pendingAction = null;
