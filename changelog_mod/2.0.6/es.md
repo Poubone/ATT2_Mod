@@ -5,6 +5,6 @@
 - Los puestos de hechizos pueden ocultar los aprendidos, los que llevas y los mejorados por completo. Mantén la tecla de agacharse para conservar los diálogos en el chat.
 - Los ajustes se desplazan en ventanas pequeñas y las columnas se adaptan al ancho. Las puntuaciones en carga muestran «...» en lugar de «null»; los haces de las balizas se ocultan durante la teletransportación.
 - Nuevas opciones de rendimiento: agrupación y límites de haces y partículas de objetos, descarte fuera de la vista, cachés de renderizado, dimensiones y etiquetas, contornos directos y partículas sin colisiones. El renderizado opaco sigue siendo opcional y desactivado por defecto.
-- Corregida la caché de etiquetas y la confirmación tras cambios del catálogo. Nuevos textos e historial en los once idiomas. Aportes de Simuciokas (PR #2–#10), integración y correcciones de Poubone.
+- Corregida la caché de etiquetas y la confirmación tras cambios del catálogo.
 - Aviso de actualización: una comprobación en segundo plano desde el menú principal muestra una ventana cuando hay una nueva versión compatible. Permite abrir la página de descarga, posponer el aviso o ignorar esa versión; la comprobación se puede desactivar en los ajustes.
 - La confirmación de compra es opcional, está desactivada por defecto y se puede activar en los ajustes del HUD → Menús → Confirmar compras.

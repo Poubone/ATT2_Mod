@@ -5,6 +5,6 @@
 - Les échoppes de sorts peuvent masquer les sorts déjà appris, transportés ou entièrement perfectionnés. Maintenir la touche d’accroupissement permet de conserver les dialogues dans le chat.
 - Les réglages défilent lorsque la fenêtre est trop petite ; les colonnes s’adaptent à la largeur. Les scores en chargement affichent « ... » au lieu de « null » et les faisceaux des balises sont masqués pendant les transitions de téléportation.
 - Nouveaux réglages de performances : regroupement et limites des faisceaux et particules des objets, traitement des éléments hors champ, caches du rendu, des dimensions et des étiquettes, contours directs et particules sans collisions. Le rendu opaque des objets reste facultatif et désactivé par défaut.
-- Correction du cache des étiquettes et protection de la confirmation d’achat après actualisation du catalogue. Nouveaux textes du mod et changelog disponibles dans les onze langues. Contributions de Simuciokas (PR #2 à #10), intégration et corrections par Poubone.
+- Correction du cache des étiquettes et protection de la confirmation d’achat après actualisation du catalogue.
 - Notification de mise à jour : vérification en arrière-plan depuis le menu principal et popup lorsqu’une nouvelle version compatible est disponible. Possibilité d’ouvrir la page de téléchargement, de reporter ou d’ignorer cette version ; vérification désactivable dans les réglages.
 - Confirmation d’achat facultative, désactivée par défaut et activable dans Configuration du HUD → Menus → Confirmer les achats.
