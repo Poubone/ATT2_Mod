@@ -13,6 +13,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -259,13 +260,13 @@ public class ShopScreen extends Screen {
             }
         }
         if (hoveredSlot != null) {
-            var equipmentSlot = ShopComparison.slot(hoveredSlot.offer());
+            var kind = ShopComparison.kind(hoveredSlot.offer());
             var lines = new ArrayList<>(hoveredSlot.tooltipLines());
             boolean held = comparisonHeld();
-            if (equipmentSlot != null && minecraft.player != null && held) {
-                ShopComparison.render(graphics, lines, minecraft.player.getItemBySlot(equipmentSlot), mouseX, mouseY, width, height);
+            if (kind != null && minecraft.player != null && held) {
+                ShopComparison.render(graphics, lines, minecraft.player, kind, ItemStack.EMPTY, mouseX, mouseY, width, height);
             } else {
-                if (ShopComparison.shouldShowHint(equipmentSlot == null ? null : equipmentSlot.name(), held)) {
+                if (ShopComparison.shouldShowHint(kind, held)) {
                     lines.add(Component.translatable("att2.ui.compare", KeybindManager.compareKeyLabel())
                             .withStyle(net.minecraft.ChatFormatting.GRAY));
                 }

@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -44,11 +45,55 @@ class ShopComparisonTest {
     }
 
     @Test
-    void hintAppearsOnlyForArmorWhileTheCompareKeyIsUp() {
-        assertTrue(ShopComparison.shouldShowHint("HEAD", false));
-        assertFalse(ShopComparison.shouldShowHint("HEAD", true));
+    void hintAppearsOnlyForComparableItemsWhileTheCompareKeyIsUp() {
+        assertTrue(ShopComparison.shouldShowHint(ShopComparison.Kind.HEAD, false));
+        assertTrue(ShopComparison.shouldShowHint(ShopComparison.Kind.MELEE, false));
+        assertFalse(ShopComparison.shouldShowHint(ShopComparison.Kind.HEAD, true));
         assertFalse(ShopComparison.shouldShowHint(null, false));
         assertFalse(ShopComparison.shouldShowHint(null, true));
+    }
+
+    @Test
+    void shieldsAndBowsGoByItemIdEvenThoughTheMapTagsShieldsAsRanged() {
+        assertEquals(ShopComparison.Kind.SHIELD, ShopComparison.weaponKind("rangeWeapon", "shield"));
+        assertEquals(ShopComparison.Kind.RANGED, ShopComparison.weaponKind("rangeWeapon", "bow"));
+        assertEquals(ShopComparison.Kind.RANGED, ShopComparison.weaponKind("rangeWeapon", "crossbow"));
+        assertEquals(ShopComparison.Kind.RANGED, ShopComparison.weaponKind("", "bow"));
+    }
+
+    @Test
+    void theMapsMeleeTagCoversItsScythesAndHammers() {
+        assertEquals(ShopComparison.Kind.MELEE, ShopComparison.weaponKind("meleeWeapon", "copper_hoe"));
+        assertEquals(ShopComparison.Kind.MELEE, ShopComparison.weaponKind("meleeWeapon", "netherite_shovel"));
+        assertEquals(ShopComparison.Kind.MELEE, ShopComparison.weaponKind("meleeWeapon", "iron_pickaxe"));
+    }
+
+    @Test
+    void untaggedItemsFallBackToVanillaWeaponIdsOnly() {
+        assertEquals(ShopComparison.Kind.MELEE, ShopComparison.weaponKind("", "iron_sword"));
+        assertEquals(ShopComparison.Kind.MELEE, ShopComparison.weaponKind("", "diamond_axe"));
+        assertEquals(ShopComparison.Kind.MELEE, ShopComparison.weaponKind("", "netherite_spear"));
+        assertEquals(ShopComparison.Kind.MELEE, ShopComparison.weaponKind("", "trident"));
+        assertNull(ShopComparison.weaponKind("", "iron_pickaxe"));
+        assertNull(ShopComparison.weaponKind("", "iron_shovel"));
+        assertNull(ShopComparison.weaponKind("tool", "iron_sword"));
+        assertNull(ShopComparison.weaponKind("potion", "potion"));
+        assertNull(ShopComparison.weaponKind("", "bread"));
+    }
+
+    @Test
+    void hotbarComparisonsStartWithTheItemInHand() {
+        assertArrayEquals(new int[] {4, 0, 1, 2, 3, 5, 6, 7, 8}, ShopComparison.hotbarOrder(4));
+        assertArrayEquals(new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8}, ShopComparison.hotbarOrder(0));
+    }
+
+    @Test
+    void stackedComparisonsAreLimitedByScreenHeight() {
+        // 24 margin, then each box's height with 10 between boxes; 16 of the screen is kept free.
+        assertEquals(4, ShopComparison.fitCount(new int[] {50, 50, 50, 50}, 540));
+        assertEquals(3, ShopComparison.fitCount(new int[] {50, 50, 50, 50}, 240));
+        assertEquals(1, ShopComparison.fitCount(new int[] {300, 50}, 240));
+        assertEquals(1, ShopComparison.fitCount(new int[] {50}, 240));
     }
 
     @Test
