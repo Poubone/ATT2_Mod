@@ -3,6 +3,7 @@ package fr.poubone.att2.client.hud;
 import fr.poubone.att2.client.data.DahalAmount;
 import fr.poubone.att2.client.data.MapStatBar;
 import fr.poubone.att2.client.data.ScoreCache;
+import fr.poubone.att2.client.util.LoadingText;
 import fr.poubone.att2.client.util.ModTextures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -75,8 +76,8 @@ public class ManaOrbDisplay {
 
         context.blit(RenderPipelines.GUI_TEXTURED, ModTextures.MANA_FRAME,
                 x, y, 0f, 0f, size, size, ORB_SRC, ORB_SRC, ORB_SRC, ORB_SRC);
-        String text = (currentOpt.isPresent() ? Integer.toString(current) : "null") + "/"
-                + (maxOpt.isPresent() ? Integer.toString(maxOpt.getAsInt()) : "null");
+        String text = (currentOpt.isPresent() ? Integer.toString(current) : LoadingText.PLACEHOLDER) + "/"
+                + LoadingText.of(maxOpt);
         int textWidth = client.font.width(text);
         int textColor = danger > 0.4f ? lerpRgb(0xFFFFFFFF, 0xFFFF6B6B, danger) : 0xFFFFFFFF;
         context.drawString(client.font, text, x + (size - textWidth) / 2, y + size - 4, textColor, true);

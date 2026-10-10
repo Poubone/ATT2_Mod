@@ -14,6 +14,7 @@ import fr.poubone.att2.client.shop.ShopPanelScreen;
 import fr.poubone.att2.client.shop.ShopSlotButton;
 import fr.poubone.att2.client.shop.ShopTheme;
 import fr.poubone.att2.client.shop.ShopType;
+import fr.poubone.att2.client.util.LoadingText;
 import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -357,7 +358,7 @@ public class MinerShopScreen extends ShopPanelScreen {
     private void drawHeader(GuiGraphics graphics) {
         String resin = ModLanguageManager.format("miner_shop.resin", "n", resin());
         var balance = ScoreCache.get("CHRONOTON");
-        String chrono = balance.isPresent() ? Integer.toString(balance.getAsInt()) : "null";
+        String chrono = LoadingText.of(balance);
         int icon = 8;
         fr.poubone.att2.client.shop.ShopSkin.texture(graphics, TYPE, "wallet", 454, 17, 140, 37, 232, 70);
         ShopTheme.text(graphics, Component.literal(resin), 465, 23, 116, 0.85f, 0xFFC8B8A0, false);

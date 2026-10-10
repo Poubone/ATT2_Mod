@@ -13,6 +13,7 @@ import fr.poubone.att2.client.hud.HUDConfig;
 import fr.poubone.att2.client.quest.QuestBookTextures;
 import fr.poubone.att2.client.quest.widget.IconButton;
 import fr.poubone.att2.client.quest.widget.QuestBookWidget;
+import fr.poubone.att2.client.util.LoadingText;
 import fr.poubone.att2.client.util.ModLanguageManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -250,7 +251,7 @@ public class CharlesScreen extends ShopPanelScreen {
         ShopTheme.text(graphics, ModLanguageManager.get("charles.title"), 62, 27, 410, 1.7f, 0xFFF0E3CC, false);
         fr.poubone.att2.client.shop.ShopSkin.texture(graphics, ShopType.CHARLES, "wallet", 574, 19, 124, 37, 232, 70);
         var balanceScore = ScoreCache.get("CHRONOTON");
-        String balance = balanceScore.isPresent() ? Integer.toString(balanceScore.getAsInt()) : "null";
+        String balance = LoadingText.of(balanceScore);
         ShopTheme.text(graphics, Component.literal(ModLanguageManager.format("charles.balance", "n", balance)), 584, 32, 104, 0.85f, 0xFFE8C86A, false);
     }
 
@@ -294,7 +295,7 @@ public class CharlesScreen extends ShopPanelScreen {
         int bottom = offsetY + 400;
 
         var balanceScore = ScoreCache.get("CHRONOTON");
-        String balance = balanceScore.isPresent() ? Integer.toString(balanceScore.getAsInt()) : "null";
+        String balance = LoadingText.of(balanceScore);
         y = drawWrapped(graphics, Component.literal(ModLanguageManager.format("charles.balance", "n", balance)), x, y, width, textColor, bottom) + 3;
 
         if (model.isNotEnoughChronotons()) {
