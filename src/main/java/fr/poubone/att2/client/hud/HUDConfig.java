@@ -140,6 +140,8 @@ public class HUDConfig {
      * {@code null} until {@link #load()} migrates an older config.
      */
     public Map<String, Boolean> shopMenus = null;
+    /** Spell stalls hide spells already learned or carried, and enhancements already maxed (toggled in the stall). */
+    public boolean shopHideOwnedSpells = true;
 
     public static final List<String> SHOP_MENU_IDS = List.of(
             "blacksmith", "food", "alchemist", "fletcher", "dahal",

@@ -258,6 +258,7 @@ public final class ShopModel {
                 Identifier sprite = customSprite(findSprite(message));
                 catalog.addOffer(new ShopOffer(items.get(i), names.get(i),
                         price == null ? fallbackPrice : price, trigger, currentCategory, key, sprite, findShowText(message)));
+                catalog.setOwned(trigger, ShopTellraws.hasOwnedMarker(message));
                 added = true;
             }
         } else if (!triggers.isEmpty() && !isSpecialOnly(triggers)) {
@@ -285,6 +286,7 @@ public final class ShopModel {
         String key = translationKey(name);
         catalog.addOffer(new ShopOffer(fake, name, price == null ? Component.empty() : price,
                 trigger, currentCategory, key, ShopIcons.keepNamedSprite(sprite), lore));
+        catalog.setOwned(trigger, ShopTellraws.hasOwnedMarker(message));
         return true;
     }
 
