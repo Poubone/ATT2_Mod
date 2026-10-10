@@ -36,48 +36,51 @@ public class NameTagRenderer {
       long worldtime,
       float pticks
    ) {
-      if (itemConfig.renderNametags && fr.poubone.att2.client.hud.HUDConfig.get().renderNametags) {
-         if (!itemConfig.advancedTooltips) {
-            if (Minecraft.getInstance().player.isCrouching()
-               || itemConfig.renderNametagsOnlook && TargetHelper.isLookingAt(Minecraft.getInstance().player, itemEntity, itemConfig.nametagLookSensitivity)) {
-               ItemStack itemStack = itemEntity.getItem();
-               float foregroundAlpha = itemConfig.nametagTextAlpha;
-               float backgroundAlpha = itemConfig.nametagBackgroundAlpha;
-               double yOffset = itemConfig.nametagYOffset;
-               int foregroundColor = color.getValue() & 16777215 | (int)(255.0F * foregroundAlpha) << 24;
-               int backgroundColor = color.getValue() & 16777215 | (int)(255.0F * backgroundAlpha) << 24;
-               matrixStack.pushPose();
-               matrixStack.translate(0.0, Math.min(1.0, Minecraft.getInstance().player.distanceToSqr(itemEntity) * 0.025) + yOffset, 0.0);
-               Quaternionf entityRotationQuaternion = Minecraft.getInstance().gameRenderer.getMainCamera().rotation();
-               matrixStack.mulPose(entityRotationQuaternion);
-               matrixStack.mulPose(new Quaternionf(0.0, Math.toRadians(90.0), 0.0, 0.0));
-               float nametagScale = itemConfig.nametagScale;
-               float nametagScaleCompensation = 0.25F;
-               matrixStack.scale(
-                  -0.02F * nametagScale * nametagScaleCompensation,
-                  -0.02F * nametagScale * nametagScaleCompensation,
-                  0.02F * nametagScale * nametagScaleCompensation
-               );
-               Font fontrenderer = Minecraft.getInstance().font;
-               String itemName = StringUtil.stripColor(itemStack.getHoverName().getString());
-               if (itemConfig.renderStackcount && fr.poubone.att2.client.hud.HUDConfig.get().renderStackcount) {
-                  int count = itemStack.getCount();
-                  if (count > 1) {
-                     itemName = itemName + " x" + count;
-                  }
-               }
-
-               matrixStack.translate(0.0F, 0.0F, -10.0F);
-               renderText(itemStack, itemConfig, fontrenderer, matrixStack, buffer, itemName, foregroundColor, backgroundColor, backgroundAlpha);
-               boolean alwaysRenderRarityOnItem = RarityHelper.alwaysHasRarity(itemStack);
-               if (itemConfig.renderItemRarity || alwaysRenderRarityOnItem) {
-                  renderRarity(itemStack, itemConfig, foregroundAlpha, backgroundAlpha, fontrenderer, matrixStack, buffer, alwaysRenderRarityOnItem);
-               }
-
-               matrixStack.popPose();
-            }
+      if (!showsFor(itemEntity, itemConfig)) {
+         return;
+      }
+      ItemStack itemStack = itemEntity.getItem();
+      float foregroundAlpha = itemConfig.nametagTextAlpha;
+      float backgroundAlpha = itemConfig.nametagBackgroundAlpha;
+      double yOffset = itemConfig.nametagYOffset;
+      int foregroundColor = color.getValue() & 16777215 | (int)(255.0F * foregroundAlpha) << 24;
+      int backgroundColor = color.getValue() & 16777215 | (int)(255.0F * backgroundAlpha) << 24;
+      matrixStack.pushPose();
+      matrixStack.translate(0.0, Math.min(1.0, Minecraft.getInstance().player.distanceToSqr(itemEntity) * 0.025) + yOffset, 0.0);
+      Quaternionf entityRotationQuaternion = Minecraft.getInstance().gameRenderer.getMainCamera().rotation();
+      matrixStack.mulPose(entityRotationQuaternion);
+      matrixStack.mulPose(new Quaternionf(0.0, Math.toRadians(90.0), 0.0, 0.0));
+      float nametagScale = itemConfig.nametagScale;
+      float nametagScaleCompensation = 0.25F;
+      matrixStack.scale(
+         -0.02F * nametagScale * nametagScaleCompensation,
+         -0.02F * nametagScale * nametagScaleCompensation,
+         0.02F * nametagScale * nametagScaleCompensation
+      );
+      Font fontrenderer = Minecraft.getInstance().font;
+      String itemName = StringUtil.stripColor(itemStack.getHoverName().getString());
+      if (itemConfig.renderStackcount && fr.poubone.att2.client.hud.HUDConfig.get().renderStackcount) {
+         int count = itemStack.getCount();
+         if (count > 1) {
+            itemName = itemName + " x" + count;
          }
       }
+
+      matrixStack.translate(0.0F, 0.0F, -10.0F);
+      renderText(itemStack, itemConfig, fontrenderer, matrixStack, buffer, itemName, foregroundColor, backgroundColor, backgroundAlpha);
+      boolean alwaysRenderRarityOnItem = RarityHelper.alwaysHasRarity(itemStack);
+      if (itemConfig.renderItemRarity || alwaysRenderRarityOnItem) {
+         renderRarity(itemStack, itemConfig, foregroundAlpha, backgroundAlpha, fontrenderer, matrixStack, buffer, alwaysRenderRarityOnItem);
+      }
+
+      matrixStack.popPose();
+   }
+
+   /** Whether {@link #renderNameTags} draws this item's tag now: shown while crouching, or on look. */
+   public static boolean showsFor(ItemEntity itemEntity, Configuration itemConfig) {
+      return itemConfig.renderNametags && fr.poubone.att2.client.hud.HUDConfig.get().renderNametags && !itemConfig.advancedTooltips
+         && (Minecraft.getInstance().player.isCrouching()
+            || itemConfig.renderNametagsOnlook && TargetHelper.isLookingAt(Minecraft.getInstance().player, itemEntity, itemConfig.nametagLookSensitivity));
    }
 
    private static void renderText(

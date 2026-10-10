@@ -5,6 +5,7 @@ import com.lootbeams.config.Configuration;
 import com.lootbeams.features.CustomLootBeamsConfig;
 import com.lootbeams.managers.ParticleManager;
 import com.lootbeams.managers.RenderManager;
+import com.lootbeams.render.LootBeamPerf;
 import com.lootbeams.render.LootBeamRenderLayers;
 import com.lootbeams.shaders.LootBeamShaders;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -181,7 +182,7 @@ public class VFXParticle extends SingleQuadParticle {
          this.trail.setCenterPoint(this.particleCenter);
          RenderManager.addRenderBeforeEnd((matrixStack, consumer) -> this.trail.render(
                matrixStack,
-               Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(LootBeamRenderLayers.translucentNoCull(TRAIL_TEXTURE))));
+               LootBeamPerf.buffers().getBuffer(LootBeamRenderLayers.translucentNoCull(TRAIL_TEXTURE))));
       }
    }
 

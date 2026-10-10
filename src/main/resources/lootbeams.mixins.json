@@ -13,7 +13,6 @@
     "EntityRendererMixin",
     "InGameHudMixin",
     "ParticleManagerMixin",
-    "RenderTypeMixin",
     "TextureAtlasAccessor",
     "WorldRendererMixin"
   ],

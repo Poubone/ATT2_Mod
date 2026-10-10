@@ -3,6 +3,7 @@ package com.lootbeams.features;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lootbeams.LootBeams;
+import com.lootbeams.render.LootBeamPerf;
 import com.lootbeams.config.Configuration;
 import com.lootbeams.dconfig.DynamicConfig;
 import com.lootbeams.managers.GlowEffectManager;
@@ -206,8 +207,9 @@ public class CustomLootBeamsConfig {
    }
 
    public static Configuration fromItemStack(ItemStack itemStack) {
-      if (CONFIG_CACHE.containsKey(itemStack)) {
-         return CONFIG_CACHE.get(itemStack);
+      Configuration cached = CONFIG_CACHE.get(itemStack);
+      if (cached != null) {
+         return cached;
       } else {
          if (itemStack.getComponents().has(DataComponents.CUSTOM_DATA)) {
             CustomData itemCustomData = (CustomData)itemStack.get(DataComponents.CUSTOM_DATA);
@@ -230,6 +232,10 @@ public class CustomLootBeamsConfig {
             CONFIG_CACHE.put(itemStack, newConfig);
             return newConfig;
          } else {
+            // Cached too: this runs several times per item per frame, and the lookup copies the item's NBT.
+            if (LootBeamPerf.cachedConfig()) {
+               CONFIG_CACHE.put(itemStack, LootBeams.config);
+            }
             return LootBeams.config;
          }
       }

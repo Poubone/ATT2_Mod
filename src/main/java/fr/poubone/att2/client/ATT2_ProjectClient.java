@@ -16,6 +16,7 @@ import fr.poubone.att2.client.data.ScoreCache;
 import fr.poubone.att2.client.data.StatUpgradeModel;
 import fr.poubone.att2.client.gambling.GamblingModel;
 import fr.poubone.att2.client.miner.MinerShopModel;
+import fr.poubone.att2.client.renderer.ItemParticleBudget;
 import fr.poubone.att2.client.rune.RuneCodexModel;
 import fr.poubone.att2.client.rune.WorkshopHopperCraft;
 import fr.poubone.att2.client.shop.ShopModel;
@@ -110,6 +111,7 @@ public class ATT2_ProjectClient implements ClientModInitializer {
             HudFx.tick();
             ChronotonPickupTracker.tick(client);
             LootShimmerTracker.tick(client);
+            ItemParticleBudget.tick(client);
             SpellLauncherTracker.tick(client);
             SpellLevelSelector.tick();
             SpellXpRefresh.tick(client);

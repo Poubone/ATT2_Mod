@@ -9,10 +9,12 @@ in vec2 UV0;
 in vec4 Color;
 in vec4 Color1;
 in vec4 CustomData;
+in float BeamAlpha;
 
 out vec2 texCoord0;
 out vec4 vertexColor0;
 out vec4 vertexColor1;
+out float beamAlpha;
 out float animationSpeed;
 out float itemTime;
 out float beamWidth;
@@ -25,6 +27,7 @@ void main()
 	texCoord0 = UV0;
 	vertexColor0 = Color;
 	vertexColor1 = Color1;
+	beamAlpha = BeamAlpha;
 	beamWidth = CustomData.x;
 	beamHeight = CustomData.y;
 	animationSpeed = CustomData.z;

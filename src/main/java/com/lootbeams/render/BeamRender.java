@@ -14,8 +14,8 @@ import com.lootbeams.renderers.LootBeamRenderer;
 import com.lootbeams.renderers.NameTagRenderer;
 import com.lootbeams.utils.ParticleEmitter;
 import com.mojang.blaze3d.vertex.PoseStack;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
@@ -23,7 +23,8 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.entity.item.ItemEntity;
 
 public class BeamRender {
-   private static final Map<ItemEntity, Integer> ITEM_GROUND_START_TIMES = new HashMap<>();
+   /** When each item landed, for the beam's grow-in; weak keys so removed items do not pile up. */
+   private static final Map<ItemEntity, Integer> ITEM_GROUND_START_TIMES = new WeakHashMap<>();
    private static boolean loggedRenderer;
 
    public BeamRender() {
@@ -109,7 +110,41 @@ public class BeamRender {
             ParticleEmitter.createParticlesForItem(item, itemConfig, item.getAge(), color, fadeAlpha, pticks);
          }
 
-         ITEM_GROUND_START_TIMES.keySet().removeIf(itemEntity -> !itemEntity.onGround());
+         if (!LootBeamPerf.prunedPerFrame()) {
+            pruneTimers(); // the original tidied the whole table after every beam
+         }
       }
+   }
+
+   /** Only the name tag (shown on look or while crouching), for an item whose pile's beam is drawn by another item. */
+   public static void renderNameTagOnly(PoseStack stack, BufferSource buffer, ItemEntity item, long worldtime, float pticks) {
+      if (!item.onGround()) {
+         return;
+      }
+      Configuration itemConfig = CustomLootBeamsConfig.fromItemStack(item.getItem());
+      LocalPlayer player = Minecraft.getInstance().player;
+      float distance = player != null ? player.distanceTo(item) : 0.0F;
+      float fadeAlpha = fadeDistanceAlpha(distance, itemConfig);
+      if (!canRenderBeam(itemConfig, fadeAlpha)) {
+         return;
+      }
+      float groundStart = ITEM_GROUND_START_TIMES.computeIfAbsent(item, ItemEntity::getAge);
+      // Most of these tags are hidden (shown on look), and the colour lookup is the costly part.
+      if (fr.poubone.att2.client.hud.HUDConfig.get().lightItemChecks && !NameTagRenderer.showsFor(item, itemConfig)) {
+         return;
+      }
+      NameTagRenderer.renderNameTags(buffer, stack, item, itemConfig, TextColorHelper.getItemColor(item.getItem()), fadeAlpha,
+            item.getAge() - groundStart + pticks, worldtime, pticks);
+   }
+
+   /** Forgets items that left the ground or the world, so a re-landed item grows its beam again. Once per frame. */
+   public static void pruneGroundTimes() {
+      if (LootBeamPerf.prunedPerFrame()) {
+         pruneTimers();
+      }
+   }
+
+   private static void pruneTimers() {
+      ITEM_GROUND_START_TIMES.keySet().removeIf(itemEntity -> !itemEntity.onGround() || itemEntity.isRemoved());
    }
 }

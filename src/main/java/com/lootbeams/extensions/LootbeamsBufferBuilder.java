@@ -10,4 +10,6 @@ public interface LootbeamsBufferBuilder {
    LootbeamsBufferBuilder shortCustomData(float var1, float var2);
 
    LootbeamsBufferBuilder longCustomData(float var1, float var2, float var3, float var4);
+
+   LootbeamsBufferBuilder beamAlpha(float alpha);
 }

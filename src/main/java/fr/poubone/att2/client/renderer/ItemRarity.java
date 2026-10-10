@@ -1,5 +1,6 @@
 package fr.poubone.att2.client.renderer;
 
+import fr.poubone.att2.client.data.CustomDataView;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -52,7 +53,7 @@ public enum ItemRarity {
         if (stack == null || stack.isEmpty()) return null;
         CustomData data = stack.get(DataComponents.CUSTOM_DATA);
         if (data == null || data.isEmpty()) return null;
-        return data.copyTag().getString("Rarity").map(ItemRarity::fromId).orElse(null);
+        return CustomDataView.read(data).getString("Rarity").map(ItemRarity::fromId).orElse(null);
     }
 
     public int argb(int alpha) {

@@ -4,10 +4,12 @@ import com.lootbeams.config.Configuration;
 import com.lootbeams.containers.EntityRenderStateContainer;
 import com.lootbeams.features.CustomLootBeamsConfig;
 import com.lootbeams.helpers.ViewHelper;
+import com.lootbeams.managers.BeamBudget;
 import com.lootbeams.managers.ItemEntityManager;
 import com.lootbeams.managers.RenderManager;
 import com.lootbeams.managers.TooltipManager;
 import com.lootbeams.render.BeamRender;
+import com.lootbeams.render.LootBeamPerf;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -57,12 +59,21 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
       if (!ViewHelper.shouldRenderOnItem(itemEntity.getItem()) || !itemEntity.onGround()) {
          return;
       }
+      BeamBudget.offer(itemEntity, state.distanceToCameraSq);
       RenderManager.addRenderAfterWeather((stack, consumer) -> {
+         if (!BeamBudget.allows(itemEntity)) {
+            stack.pushPose();
+            stack.translate(itemEntity.position().x(), itemEntity.position().y(), itemEntity.position().z());
+            BeamRender.renderNameTagOnly(stack, LootBeamPerf.buffers(), itemEntity, itemEntity.level().getGameTime(),
+                  Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true));
+            stack.popPose();
+            return;
+         }
          stack.pushPose();
          stack.translate(itemEntity.position().x(), itemEntity.position().y(), itemEntity.position().z());
          BeamRender.render(
                stack,
-               Minecraft.getInstance().renderBuffers().bufferSource(),
+               LootBeamPerf.buffers(),
                itemEntity,
                itemEntity.level().getGameTime(),
                Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true));
@@ -70,15 +81,29 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
       });
    }
 
+   /**
+    * Items stay drawn out to the beam render distance, but still only when on screen: the culling box is
+    * raised by the beam's height so a beam whose item is just below the view still shows.
+    */
    @Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true)
    private void lootbeams$extendItemRenderDistance(T entity, Frustum frustum, double x, double y, double z, CallbackInfoReturnable<Boolean> cir) {
       if (entity instanceof ItemEntity itemEntity) {
-         double maxDistance = CustomLootBeamsConfig.fromItemStack(itemEntity.getItem()).renderDistance;
+         Configuration itemConfig = CustomLootBeamsConfig.fromItemStack(itemEntity.getItem());
+         double maxDistance = itemConfig.renderDistance;
          if (this.entityRenderDispatcher.distanceToSqr(entity) < maxDistance * maxDistance) {
-            cir.setReturnValue(true);
+            if (!LootBeamPerf.culled()) {
+               cir.setReturnValue(true); // the original drew every item in range, on screen or not
+               return;
+            }
+            double beamTop = Math.max(itemConfig.beamHeight, BEAM_GLOW_HEIGHT) + itemConfig.beamYOffset + 1.0;
+            cir.setReturnValue(frustum.isVisible(entity.getBoundingBox().inflate(0.5).expandTowards(0.0, beamTop, 0.0)));
          }
       }
    }
+
+   /** The Droplight glow is drawn up to this height whatever the beam height. */
+   @Unique
+   private static final double BEAM_GLOW_HEIGHT = 2.5;
 
    @Inject(method = "submitNameTag", at = @At("HEAD"), cancellable = true)
    private void lootbeams$hideItemFrameLabels(S state, PoseStack matrices, SubmitNodeCollector collector, CameraRenderState camera, CallbackInfo ci) {

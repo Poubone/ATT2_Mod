@@ -3,11 +3,13 @@ package fr.poubone.att2.mixin;
 import fr.poubone.att2.client.gambling.GamblingModel;
 import fr.poubone.att2.client.hud.CityToast;
 import fr.poubone.att2.client.data.SpellXpRefresh;
+import fr.poubone.att2.client.renderer.ItemParticleBudget;
 import fr.poubone.att2.client.teleport.TeleportCommandSender;
 import fr.poubone.att2.client.teleport.WaypointTeleportDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundOpenBookPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
@@ -50,6 +52,22 @@ public abstract class ClientPacketListenerMixin {
                 packet.getSource(),
                 packet.getX(), packet.getY(), packet.getZ());
         GamblingModel.get().onSound(packet.getSound().value().location(), packet.getSource());
+    }
+
+    @Inject(method = "handleParticleEvent", at = @At("HEAD"), cancellable = true)
+    private void att2$thinItemParticles(ClientboundLevelParticlesPacket packet, CallbackInfo ci) {
+        if (!Minecraft.getInstance().isSameThread()) return;
+        switch (ItemParticleBudget.classify(packet)) {
+            case HIDE -> ci.cancel();
+            case SHOW -> ItemParticleBudget.setSpawningItemDust(true);
+            case NOT_ITEM_DUST -> {
+            }
+        }
+    }
+
+    @Inject(method = "handleParticleEvent", at = @At("RETURN"))
+    private void att2$endItemParticles(ClientboundLevelParticlesPacket packet, CallbackInfo ci) {
+        ItemParticleBudget.setSpawningItemDust(false);
     }
 
     @Inject(method = "setTitleText", at = @At("HEAD"), cancellable = true)
