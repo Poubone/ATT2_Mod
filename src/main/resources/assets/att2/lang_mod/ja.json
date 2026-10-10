@@ -341,5 +341,12 @@
   "att2.ui.unequipped_weapon": "ホットバーに同じ種類の武器はありません",
   "att2.ui.in_hand": "手に持っている装備",
   "att2.ui.hotbar_slot": "ホットバーのスロット {slot}",
-  "att2.ui.compare_more": "ホットバーにほか {count} 個"
+  "att2.ui.compare_more": "ホットバーにほか {count} 個",
+  "update.title": "ATT2 の更新があります",
+  "update.available": "お使いの Minecraft 向けにバージョン {version} が公開されています。",
+  "update.open_page": "Mod のページを開く",
+  "update.later": "後で",
+  "update.ignore": "このバージョンをスキップ",
+  "screen.hud_config.check_updates": "Mod の更新を確認",
+  "screen.hud_config.cat.updates": "更新"
 }

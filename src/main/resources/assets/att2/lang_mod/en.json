@@ -368,5 +368,12 @@
   "att2.ui.unequipped_weapon": "No weapon of this kind in your hotbar",
   "att2.ui.in_hand": "In your hand",
   "att2.ui.hotbar_slot": "Hotbar slot {slot}",
-  "att2.ui.compare_more": "+{count} more in your hotbar"
+  "att2.ui.compare_more": "+{count} more in your hotbar",
+  "update.title": "ATT2 update available",
+  "update.available": "Version {version} is available for your Minecraft.",
+  "update.open_page": "Open the mod page",
+  "update.later": "Later",
+  "update.ignore": "Ignore this version",
+  "screen.hud_config.check_updates": "Check for mod updates",
+  "screen.hud_config.cat.updates": "Updates"
 }

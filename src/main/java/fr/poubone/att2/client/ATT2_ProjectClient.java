@@ -64,6 +64,7 @@ public class ATT2_ProjectClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        fr.poubone.att2.client.update.ModUpdateChecker.register();
         TeleportAnimationConfig.load();
         new com.lootbeams.LootBeams().onInitializeClient();
 

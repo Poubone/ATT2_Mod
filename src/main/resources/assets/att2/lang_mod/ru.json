@@ -341,5 +341,12 @@
   "att2.ui.unequipped_weapon": "На панели быстрого доступа нет оружия этого типа",
   "att2.ui.in_hand": "В вашей руке",
   "att2.ui.hotbar_slot": "Слот {slot} панели быстрого доступа",
-  "att2.ui.compare_more": "Ещё {count} на панели быстрого доступа"
+  "att2.ui.compare_more": "Ещё {count} на панели быстрого доступа",
+  "update.title": "Доступно обновление ATT2",
+  "update.available": "Версия {version} доступна для вашей версии Minecraft.",
+  "update.open_page": "Открыть страницу мода",
+  "update.later": "Позже",
+  "update.ignore": "Пропустить эту версию",
+  "screen.hud_config.check_updates": "Проверять обновления мода",
+  "screen.hud_config.cat.updates": "Обновления"
 }

@@ -341,5 +341,12 @@
   "att2.ui.unequipped_weapon": "단축바에 같은 종류의 무기가 없습니다",
   "att2.ui.in_hand": "손에 든 장비",
   "att2.ui.hotbar_slot": "단축바 슬롯 {slot}",
-  "att2.ui.compare_more": "단축바에 {count}개 더 있음"
+  "att2.ui.compare_more": "단축바에 {count}개 더 있음",
+  "update.title": "ATT2 업데이트 가능",
+  "update.available": "현재 Minecraft에 맞는 {version} 버전이 출시되었습니다.",
+  "update.open_page": "모드 페이지 열기",
+  "update.later": "나중에",
+  "update.ignore": "이 버전 무시",
+  "screen.hud_config.check_updates": "모드 업데이트 확인",
+  "screen.hud_config.cat.updates": "업데이트"
 }

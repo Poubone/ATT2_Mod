@@ -341,5 +341,12 @@
   "att2.ui.unequipped_weapon": "لا يوجد سلاح من هذا النوع في شريط الوصول السريع",
   "att2.ui.in_hand": "في يدك",
   "att2.ui.hotbar_slot": "الخانة {slot} في شريط الوصول السريع",
-  "att2.ui.compare_more": "{count} إضافية في شريط الوصول السريع"
+  "att2.ui.compare_more": "{count} إضافية في شريط الوصول السريع",
+  "update.title": "يتوفر تحديث ATT2",
+  "update.available": "الإصدار {version} متاح لإصدار Minecraft لديك.",
+  "update.open_page": "فتح صفحة المود",
+  "update.later": "لاحقًا",
+  "update.ignore": "تجاهل هذا الإصدار",
+  "screen.hud_config.check_updates": "التحقق من تحديثات المود",
+  "screen.hud_config.cat.updates": "التحديثات"
 }

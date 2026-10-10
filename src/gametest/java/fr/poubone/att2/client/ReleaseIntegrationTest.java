@@ -5,15 +5,19 @@ import fr.poubone.att2.client.renderer.ItemNameTags;
 import fr.poubone.att2.client.renderer.ItemParticleBudget;
 import fr.poubone.att2.client.screen.HUDConfigScreen;
 import fr.poubone.att2.client.util.ModLanguageManager;
+import fr.poubone.att2.client.update.ModUpdateChecker;
+import fr.poubone.att2.client.update.ModUpdateScreen;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.world.entity.item.ItemEntity;
 
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.net.URI;
 
 /** Exercises the real mixins, shaders and widgets in a disposable world. */
 public class ReleaseIntegrationTest implements FabricClientGameTest {
@@ -91,6 +95,57 @@ public class ReleaseIntegrationTest implements FabricClientGameTest {
                 HUDConfig.get().solidItemEntities = false;
             });
         }
+        testUpdatePopup(context);
+    }
+
+    private static void testUpdatePopup(ClientGameTestContext context) {
+        String ignored = context.computeOnClient(client -> HUDConfig.get().ignoredModUpdateVersion);
+        boolean enabled = context.computeOnClient(client -> HUDConfig.get().checkModUpdates);
+        try {
+            context.runOnClient(client -> {
+                HUDConfig.get().checkModUpdates = false;
+                ModLanguageManager.loadLanguage(client, "fr");
+                client.setScreen(new ModUpdateScreen(new TitleScreen(),
+                        new ModUpdateChecker.Release("3.0.0", URI.create("https://guide-att2.com/mod/"))));
+            });
+            context.waitTicks(3);
+            context.takeScreenshot(TestScreenshotOptions.of("release-update-popup-fr").withSize(1280, 720));
+            context.runOnClient(client -> {
+                clickPopup(client.screen.children(), ModLanguageManager.getString("update.later"));
+                if (!(client.screen instanceof TitleScreen)) throw new AssertionError("Later did not return to the menu");
+                client.setScreen(new ModUpdateScreen(client.screen,
+                        new ModUpdateChecker.Release("3.0.0", URI.create("https://guide-att2.com/mod/"))));
+                clickPopup(client.screen.children(), ModLanguageManager.getString("update.ignore"));
+                if (!(client.screen instanceof TitleScreen) || !"3.0.0".equals(HUDConfig.get().ignoredModUpdateVersion))
+                    throw new AssertionError("Ignore did not save the version and close the popup");
+                for (String lang : ModLanguageManager.CODES) {
+                    ModLanguageManager.loadLanguage(client, lang);
+                    for (String key : new String[]{"update.title", "update.open_page", "update.later", "update.ignore",
+                            "screen.hud_config.cat.updates", "screen.hud_config.check_updates"}) {
+                        if (ModLanguageManager.getString(key).startsWith("§c?")) throw new AssertionError(lang + " missing " + key);
+                    }
+                    if (!ModLanguageManager.format("update.available", "version", "3.0.0").contains("3.0.0"))
+                        throw new AssertionError(lang + " missing version placeholder");
+                }
+            });
+        } finally {
+            context.runOnClient(client -> {
+                HUDConfig.get().ignoredModUpdateVersion = ignored;
+                HUDConfig.get().checkModUpdates = enabled;
+                HUDConfig.save();
+            });
+        }
+    }
+
+    private static void clickPopup(java.util.List<? extends net.minecraft.client.gui.components.events.GuiEventListener> children,
+                                   String label) {
+        for (var child : children) {
+            if (child instanceof Button button && button.getMessage().getString().equals(label)) {
+                button.onPress(null);
+                return;
+            }
+        }
+        throw new AssertionError("Popup button not found: " + label);
     }
 
     private static Map<?, ?> layouts() {

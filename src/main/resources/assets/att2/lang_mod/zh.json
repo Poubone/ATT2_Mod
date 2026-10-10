@@ -341,5 +341,12 @@
   "att2.ui.unequipped_weapon": "快捷栏中没有此类武器",
   "att2.ui.in_hand": "手持物品",
   "att2.ui.hotbar_slot": "快捷栏第 {slot} 格",
-  "att2.ui.compare_more": "快捷栏中还有 {count} 件"
+  "att2.ui.compare_more": "快捷栏中还有 {count} 件",
+  "update.title": "ATT2 有可用更新",
+  "update.available": "适用于当前 Minecraft 的 {version} 版本已发布。",
+  "update.open_page": "打开模组页面",
+  "update.later": "稍后",
+  "update.ignore": "忽略此版本",
+  "screen.hud_config.check_updates": "检查模组更新",
+  "screen.hud_config.cat.updates": "更新"
 }

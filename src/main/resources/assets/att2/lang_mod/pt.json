@@ -341,5 +341,12 @@
   "att2.ui.unequipped_weapon": "Nenhuma arma deste tipo na barra rápida",
   "att2.ui.in_hand": "Na sua mão",
   "att2.ui.hotbar_slot": "Espaço {slot} da barra rápida",
-  "att2.ui.compare_more": "+{count} na barra rápida"
+  "att2.ui.compare_more": "+{count} na barra rápida",
+  "update.title": "Atualização do ATT2 disponível",
+  "update.available": "A versão {version} está disponível para o seu Minecraft.",
+  "update.open_page": "Abrir a página do mod",
+  "update.later": "Mais tarde",
+  "update.ignore": "Ignorar esta versão",
+  "screen.hud_config.check_updates": "Verificar atualizações do mod",
+  "screen.hud_config.cat.updates": "Atualizações"
 }

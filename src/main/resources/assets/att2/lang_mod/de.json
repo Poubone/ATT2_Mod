@@ -341,5 +341,12 @@
   "att2.ui.unequipped_weapon": "Keine Waffe dieser Art in der Schnellleiste",
   "att2.ui.in_hand": "In deiner Hand",
   "att2.ui.hotbar_slot": "Schnellleistenplatz {slot}",
-  "att2.ui.compare_more": "+{count} weitere in der Schnellleiste"
+  "att2.ui.compare_more": "+{count} weitere in der Schnellleiste",
+  "update.title": "ATT2-Update verfügbar",
+  "update.available": "Version {version} ist für deine Minecraft-Version verfügbar.",
+  "update.open_page": "Mod-Seite öffnen",
+  "update.later": "Später",
+  "update.ignore": "Diese Version ignorieren",
+  "screen.hud_config.check_updates": "Nach Mod-Updates suchen",
+  "screen.hud_config.cat.updates": "Updates"
 }

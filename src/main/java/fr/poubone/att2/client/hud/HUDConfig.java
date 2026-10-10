@@ -111,6 +111,11 @@ public class HUDConfig {
     /** Legacy optional field; no token is needed by the public party-sync API. */
     public String partySyncToken = "";
 
+    /** Check published compatible releases once per launch, without blocking startup. */
+    public boolean checkModUpdates = true;
+    public String modUpdateApiUrl = "https://sync.guide-att2.com";
+    public String ignoredModUpdateVersion = "";
+
     /** Values of the {@code custom_data.Rarity} string used by the map's items. */
     public List<String> renderRarities = new ArrayList<>(List.of(
             "com", "cur", "epi", "epi_set", "leg", "leg_armset",

@@ -341,5 +341,12 @@
   "att2.ui.unequipped_weapon": "त्वरित पट्टी में इस प्रकार का कोई हथियार नहीं है",
   "att2.ui.in_hand": "आपके हाथ में",
   "att2.ui.hotbar_slot": "त्वरित पट्टी का स्लॉट {slot}",
-  "att2.ui.compare_more": "त्वरित पट्टी में {count} और"
+  "att2.ui.compare_more": "त्वरित पट्टी में {count} और",
+  "update.title": "ATT2 अपडेट उपलब्ध है",
+  "update.available": "आपके Minecraft के लिए संस्करण {version} उपलब्ध है।",
+  "update.open_page": "मॉड का पेज खोलें",
+  "update.later": "बाद में",
+  "update.ignore": "इस संस्करण को अनदेखा करें",
+  "screen.hud_config.check_updates": "मॉड के अपडेट जाँचें",
+  "screen.hud_config.cat.updates": "अपडेट"
 }

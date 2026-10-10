@@ -30,7 +30,7 @@ import java.util.function.IntFunction;
  * Categorized settings: HUD widgets, menus, loot beams, performance, then general / Discord.
  */
 public class HUDConfigScreen extends Screen {
-    private enum Category {HUD, MENUS, QUESTS, LOOT, PERFORMANCE, GENERAL}
+    private enum Category {HUD, MENUS, QUESTS, LOOT, PERFORMANCE, GENERAL, UPDATES}
 
     private static final List<String> RARITY_KEYS = List.of(
             "com", "cur", "epi", "epi_set", "leg", "leg_armset",
@@ -281,6 +281,10 @@ public class HUDConfigScreen extends Screen {
                             config.discordShowQuest = v;
                             DiscordPresence.onConfigChanged();
                         });
+            }
+            case UPDATES -> {
+                addToggle(contentX, contentY, colW, "screen.hud_config.check_updates",
+                        config.checkModUpdates, v -> config.checkModUpdates = v);
             }
         }
 
